@@ -2,4 +2,4 @@
 /.cache/
 /public/
 /build/
-/!!TEST!!
+/test/
