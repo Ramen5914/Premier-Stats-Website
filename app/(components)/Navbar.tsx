@@ -21,8 +21,6 @@ export default function Navbar() {
                             <Link className="bg-gray-500 dark:bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page" href={"/"}>Home</Link>
                             <Link className="rounded-md px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-transparent hover:bg-gray-300 hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300" href={"/teams"}>Teams</Link>
                             <Link className="rounded-md px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-transparent hover:bg-gray-300 hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300" href={"/players"}>Players</Link>
-                            {/* <Link className="rounded-md px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-transparent hover:bg-gray-300 hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300" href={"/team/0"}>My Team</Link>
-                            <Link className="rounded-md px-3 py-2 text-sm font-medium bg-gray-200 dark:bg-transparent hover:bg-gray-300 hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-300" href={"/team/0/player/0"}>Me</Link> */}
                         </div>
                     </div>
                     <div className="flex items-center">
