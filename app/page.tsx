@@ -38,14 +38,11 @@ export default async function Page() {
     return (
         <main className="grow max-w-7xl flex flex-col space-y-4">
             {teamCardRenderer(data)}
-            {/* <Image src={data.allTeams[0].imageLink} alt='' width={256} height={256} priority={true} quality={100}/> */}
-            {/* <img src={data.allTeams[0].imageLink} /> */}
-            {/* <p>{JSON.stringify(data.allTeams[0].imageLink)}</p> */}
         </main>
     )
 }
 
-export function teamCardRenderer(data) {
+export function teamCardRenderer(data: { allTeams: any }) {
     const teams = data.allTeams;
     
     const region = {
