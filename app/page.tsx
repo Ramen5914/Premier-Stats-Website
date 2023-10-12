@@ -1,8 +1,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import TeamCard from './(components)/TeamCard'
+import type { Team } from './(types)/GraphQLStructures'
 
 export default async function Page() {
+    const { data } = await loadData();
+
+    return (
+        <main className="grow max-w-7xl flex flex-col space-y-4">
+            {teamCardRenderer(data.allTeams)}
+        </main>
+    )
+}
+
+async function loadData() {
     const response = await fetch(`http://localhost:8080/graphql`, {
         method: "POST",
         headers: {
@@ -30,35 +41,24 @@ export default async function Page() {
     })
 
     if (!response.ok) {
-        // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data')
+        throw new Error('Failed to fetch data');
     }
-    const { data } = await response.json()
 
-    return (
-        <main className="grow max-w-7xl flex flex-col space-y-4">
-            {teamCardRenderer(data)}
-        </main>
-    )
+    return await response.json();
 }
 
-function teamCardRenderer(data) {
-    // const teams = data.allTeams;
-    const teams = [
-        1, 2, 3
-    ]
-    
+function teamCardRenderer(teams: Team[]) {
     const region = {
         "US_West": ["US West", "united_states"]
     }
 
     var teamCards = [];
 
-    for (let contact  of teams) {
+    for (let team of teams) {
         teamCards.push(
-            <TeamCard id={team} />
+            <TeamCard id={team.id} />
         )
-    }   
+    }
 
     return (
         teamCards
