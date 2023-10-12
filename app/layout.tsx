@@ -12,7 +12,9 @@ export default function RootLayout({
             <body className="text-slate-400 bg-white dark:text-slate-500 dark:bg-slate-800 dark">
                 <div className="flex flex-col h-screen">
                     <Navbar />
-                    {children}
+                    <main className="grow max-w-7xl flex flex-col space-y-4 mx-auto px-4">
+                        {children}
+                    </main>
                     <Footer />
                 </div>
             </body>

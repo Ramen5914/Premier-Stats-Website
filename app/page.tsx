@@ -7,9 +7,9 @@ export default async function Page() {
     const { data } = await loadData();
 
     return (
-        <main className="grow max-w-7xl flex flex-col space-y-4">
+        <>
             {teamCardRenderer(data.allTeams)}
-        </main>
+        </>
     )
 }
 
@@ -56,7 +56,7 @@ function teamCardRenderer(teams: Team[]) {
 
     for (let team of teams) {
         teamCards.push(
-            <TeamCard id={team.id} />
+            <TeamCard id={team.id} key={team.id} />
         )
     }
 
