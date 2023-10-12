@@ -1,5 +1,9 @@
 export default function TeamCard({id}: {id: number}) {
+    const order = "order-[" + id + "]"
+    
     return (
-        <h1>Test {id}</h1>
+        <div key={id}>
+            <h1>Test {id}</h1>
+        </div>
     )
 }
