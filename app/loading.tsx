@@ -1,7 +1,7 @@
 export default function Loading() {
     return (
-        <main className="grow">
-            <h1>Loading!</h1>
-        </main>
+        <div className="grow flex flex-row items-center justify-center">
+            <h1 className='pr-[23px] py-3 text-4xl'>Loading...</h1>
+        </div>
     )
 }
