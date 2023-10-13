@@ -1,5 +1,5 @@
-import { Division, Team } from "@/app/(types)/GraphQLStructures";
-import { stringify } from "querystring";
+import { Team, TeamChange } from "@/app/(types)/GraphQLStructures";
+import { FormEvent } from "react";
 
 export default async function Page({ params }: { params: { teamid: number } }) {
     const data = await getTeamData(params.teamid);
@@ -13,10 +13,10 @@ export default async function Page({ params }: { params: { teamid: number } }) {
     return (
         <div className="flex flex-col items-center space-y-4">
             <h1 className="text-3xl">Team {params.teamid}</h1>
-            <form method="POST" className="flex flex-col space-y-2">
+            <form method="GET" className="flex flex-col space-y-2" action={"/api/edit/team"}>
                 <div>
                     <label>Team Name: </label>
-                    <input type="text" name="team-name" defaultValue={team.name}></input>
+                    <input type="text" name="team-name" defaultValue={team.name} />
                     <span>#</span>
                     <input type="text" name="team-tag" defaultValue={team.tag} maxLength={5} />
                 </div>
@@ -28,7 +28,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                 </div>
                 <div>
                     <label itemType="number">Division: </label>
-                    <select itemType="text" defaultValue={team.division}>
+                    <select itemType="text" name="division" defaultValue={team.division}>
                         <option value={"Unranked"}>Unranked</option>
                         <option value={"Open_1"}>Open 1</option>
                         <option value={"Open_2"}>Open 2</option>
@@ -55,15 +55,15 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                 </div>
                 <div>
                     <label>Tracker Network Link: </label>
-                    <input type="text" defaultValue={team.link}></input>
+                    <input type="text" name="link" defaultValue={team.link} />
                 </div>
                 <div>
                     <label>Tracker Network Image Link: </label>
-                    <input type="text" defaultValue={team.imageLink}></input>
+                    <input type="text" name="image-link" defaultValue={team.imageLink} />
                 </div>
                 <div>
                     <label>Region: </label>
-                    <select itemType="number">
+                    <select itemType="number" name="region" defaultValue={team.region}>
                         <option value={"US_West"}>US West</option>
                         <option value={"US_East"}>US East</option>
                         <option value={"Western_Europe"}>Western Europe</option>
@@ -101,17 +101,17 @@ async function getTeamData(id: number) {
             query: `
             query GetTeamByTeamID {
                 teamById(teamId: ${id}) {
-                  id
-                  createdAt
-                  lastModifiedAt
-                  name
-                  tag
-                  episode
-                  act
-                  division
-                  link
-                  imageLink
-                  region
+                    id
+                    createdAt
+                    lastModifiedAt
+                    name
+                    tag
+                    episode
+                    act
+                    division
+                    link
+                    imageLink
+                    region
                 }
               }
             `
