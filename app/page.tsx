@@ -4,7 +4,7 @@ import TeamCard from './(components)/TeamCard'
 import type { Team } from './(types)/GraphQLStructures'
 
 export default async function Page() {
-    const { data } = await loadData();
+    const { data } = await getData();
 
     return (
         <>
@@ -13,7 +13,7 @@ export default async function Page() {
     )
 }
 
-async function loadData() {
+async function getData() {
     const response = await fetch(`http://localhost:8080/graphql`, {
         method: "POST",
         headers: {
@@ -48,10 +48,6 @@ async function loadData() {
 }
 
 function teamCardRenderer(teams: Team[]) {
-    const region = {
-        "US_West": ["US West", "united_states"]
-    }
-
     var teamCards = [];
 
     for (let team of teams) {
