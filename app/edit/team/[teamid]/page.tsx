@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
 
     async function validate(formData: FormData) {
         'use server'
-        
+
         const teamName = formData.get('team-name')?.toString();
         if (teamName == undefined) {
             return false;
@@ -213,8 +213,8 @@ async function setTeamData(teamChange: TeamChange) {
                   episode: 1
                   act: 1
                   division: Unranked
-                  link: "121312312"
-                  imageLink: "114123134"
+                  link: "https://tracker.gg/valorant/premier/teams/46670252-1199-4b6f-a94d-cf69b98f6ece"
+                  imageLink: "https://imgsvc.trackercdn.com/url/size(256),rgb-map(0.323143,0.076185,0.008023,1;0.838799,0.806952,0.752942,1;1,0.242281,0.029557,1)/https%3A%2F%2Ftrackercdn.com%2Fcdn%2Ftracker.gg%2Fvalorant%2Fpremier%2Fteam-icons%2Fddb06790-40b5-b91d-1c4b-868ed97a0bea.png/image.png"
                   region: Brazil
                 }) {
                   id
