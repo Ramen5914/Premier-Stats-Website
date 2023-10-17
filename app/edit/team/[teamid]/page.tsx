@@ -4,13 +4,14 @@ import { redirect } from 'next/navigation'
 import { isType } from "graphql";
 
 export default async function Page({ params }: { params: { teamid: number } }) {
-    const data = await getTeamData(params.teamid);
+    const body = await getTeamData(params.teamid);
 
-    if (data.data.teamById == null) {
-        throw new Error(data.errors[0].message)
+    if (body.data.teamById == null) {
+        throw new Error(body.errors[0].message)
     }
 
-    const team: Team = data.data.teamById;
+    const team: Team = body.data.teamById;
+
     async function validate(formData: FormData) {
         'use server'
         
