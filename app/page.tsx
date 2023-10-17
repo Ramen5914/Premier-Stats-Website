@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import TeamCard from './(components)/TeamCard'
+import TeamCard from '../components/TeamCard'
 import type { Team } from './(types)/GraphQLStructures'
 
 export default async function Page() {
@@ -52,7 +52,7 @@ function teamCardRenderer(teams: Team[]) {
 
     for (let team of teams) {
         teamCards.push(
-            <TeamCard id={team.id} key={team.id} />
+            <TeamCard team={team} key={team.id} />
         )
     }
 
