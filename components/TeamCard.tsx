@@ -87,7 +87,7 @@ export default async function TeamCard({ team }: { team: Team }) {
 
     return (
         <Link href={"/team/" + team.id}>
-            <div className='dark:bg-slate-900 shadow-2xl p-4 rounded-2xl flex flex-row space-x-4 xl:w-[76rem]'>
+            <div className='dark:bg-slate-900 shadow-2xl p-4 rounded-2xl flex flex-row space-x-4 xl:w-[76rem] ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[300ms]'>
                 <Image src={team.imageLink} alt="" width={128} height={128} />
                 <div className='dark:bg-current w-[2px]'></div>
                 <div className='flex flex-col grow'>
