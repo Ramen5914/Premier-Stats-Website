@@ -9,26 +9,75 @@ export default async function Page({ params }: { params: { teamid: number } }) {
     }
 
     const team: Team = data.data.teamById;
+    async function validate(formData: FormData) {
+        'use server'
+        
+        const teamName = formData.get('team-name')?.toString();
+        if (teamName == undefined) {
+            return false;
+        }
+        const teamTag = formData.get('team-tag')?.toString();
+        if (teamTag == undefined) {
+            return false;
+        }
+        const episodeValue = formData.get('episode')?.toString();
+        var episode: number
+        if (episodeValue !== undefined && !isNaN(parseInt(episodeValue))) {
+            episode = parseInt(episodeValue);
+        } else {
+            return false
+        }
+
+        const actValue = formData.get('act')?.toString();
+        var act: number
+        if (actValue !== undefined && !isNaN(parseInt(actValue))) {
+            act = parseInt(actValue);
+        } else {
+            return false
+        }
+        const divisionValue = formData.get('division')?.toString();
+        var division: Division
+        if (divisionValue !== undefined && divisionValue in Division) {
+            division = Division[divisionValue as keyof typeof Division];
+        } else {
+            return false;
+        }
+        const link = formData.get('link')?.toString();
+        if (link == undefined) {
+            return false;
+        }
+        const imageLink = formData.get('image-link')?.toString();
+        if (imageLink == undefined) {
+            return false;
+        }
+
+        const regionValue = formData.get('region')?.toString();
+        var region: Region
+        if (regionValue !== undefined && regionValue in Region) {
+            region = Region[regionValue as keyof typeof Region];
+        } else {
+            return false;
+        }
 
     return (
         <div className="flex flex-col items-center space-y-4">
             <h1 className="text-3xl">Team {params.teamid}</h1>
-            <form method="GET" className="flex flex-col space-y-2" action={"/api/edit/team"}>
+            <form method="GET" className="flex flex-col space-y-2" action={validate}>
                 <div>
                     <label>Team Name: </label>
-                    <input type="text" name="team-name" defaultValue={team.name} />
+                    <input required type="text" name="team-name" defaultValue={team.name} />
                     <span>#</span>
-                    <input type="text" name="team-tag" defaultValue={team.tag} maxLength={5} />
+                    <input required type="text" name="team-tag" defaultValue={team.tag} maxLength={5} />
                 </div>
                 <div>
                     <label>Episode: </label>
-                    <input type="number" name="episode" defaultValue={team.episode} min={1} max={7} />
+                    <input required type="number" name="episode" defaultValue={team.episode} min={1} max={7} />
                     <label>Act: </label>
-                    <input type="number" name="act" defaultValue={team.act} min={1} max={3} />
+                    <input required type="number" name="act" defaultValue={team.act} min={1} max={3} />
                 </div>
                 <div>
-                    <label itemType="number">Division: </label>
-                    <select itemType="text" name="division" defaultValue={team.division}>
+                    <label>Division: </label>
+                    <select required itemType="text" name="division" defaultValue={team.division}>
                         <option value={"Unranked"}>Unranked</option>
                         <option value={"Open_1"}>Open 1</option>
                         <option value={"Open_2"}>Open 2</option>
@@ -55,15 +104,15 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                 </div>
                 <div>
                     <label>Tracker Network Link: </label>
-                    <input type="text" name="link" defaultValue={team.link} />
+                    <input required type="text" name="link" defaultValue={team.link} />
                 </div>
                 <div>
                     <label>Tracker Network Image Link: </label>
-                    <input type="text" name="image-link" defaultValue={team.imageLink} />
+                    <input required type="text" name="image-link" defaultValue={team.imageLink} />
                 </div>
                 <div>
                     <label>Region: </label>
-                    <select itemType="number" name="region" defaultValue={team.region}>
+                    <select required itemType="number" name="region" defaultValue={team.region}>
                         <option value={"US_West"}>US West</option>
                         <option value={"US_East"}>US East</option>
                         <option value={"Western_Europe"}>Western Europe</option>
@@ -78,7 +127,6 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Latin_America_North"}>Latin America North</option>
                         <option value={"Latin_America_South"}>Latin America South</option>
                         <option value={"Brazil"}>Brazil</option>
-
                     </select>
                 </div>
 
@@ -123,4 +171,41 @@ async function getTeamData(id: number) {
     }
 
     return await response.json();
+}
+
+async function setTeamData(teamChange: TeamChange) {
+    const response = await fetch(`http://localhost:8080/graphql`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `
+            mutation UpdateTeam {
+                updateTeam(teamChange: {
+                  teamId: ${teamChange.teamId}
+              
+                  name: "hello"
+                  tag: "text"
+                  episode: 1
+                  act: 1
+                  division: Unranked
+                  link: "121312312"
+                  imageLink: "114123134"
+                  region: Brazil
+                }) {
+                  id
+                }
+              }
+            `
+        })
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to set data');
+    }
+
+    return await response.json();
+
+    return true;
 }
