@@ -110,7 +110,6 @@ export default async function TeamCard({ team }: { team: Team }) {
                         <span>{team.players.length}</span>
                     </div>
                 </div>
-                {/* <Link href={"/edit/team/" + team.id}>EDIT</Link> */}
             </div>
         </Link>
     )
