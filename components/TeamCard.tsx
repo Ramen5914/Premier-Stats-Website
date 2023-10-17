@@ -5,7 +5,7 @@ import Link from 'next/link'
 export default function TeamCard({ team }: { team: Team }) {
     return (
         <Link href={"/team/" + team.id}>
-            <div className='dark:bg-slate-900 shadow-2xl p-4 rounded-2xl flex flex-row space-x-4 min-w-max'>
+            <div className='dark:bg-slate-900 shadow-2xl p-4 rounded-2xl flex flex-row space-x-4'>
                 <Image src={team.imageLink} alt="" width={128} height={128} />
                 <div className='dark:bg-current w-[2px]'></div>
                 <div className='flex flex-col'>
