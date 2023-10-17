@@ -1,5 +1,7 @@
-import { Team, TeamChange } from "@/app/(types)/GraphQLStructures";
+import { Division, Region, Team, TeamChange } from "@/app/(types)/GraphQLStructures";
 import { FormEvent } from "react";
+import { redirect } from 'next/navigation'
+import { isType } from "graphql";
 
 export default async function Page({ params }: { params: { teamid: number } }) {
     const data = await getTeamData(params.teamid);
