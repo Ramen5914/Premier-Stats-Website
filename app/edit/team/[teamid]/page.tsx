@@ -62,6 +62,26 @@ export default async function Page({ params }: { params: { teamid: number } }) {
             return false;
         }
 
+        const teamChange: TeamChange = {
+            teamId: params.teamid,
+            name: teamName,
+            tag: teamTag,
+            episode: episode,
+            act: act,
+            division: division,
+            link: link,
+            imageLink: imageLink,
+            region: region
+        }
+
+        if (await setTeamData(teamChange)) {
+            redirect("/team/" + params.teamid)
+        } else {
+            return false
+        }
+
+    }
+
     return (
         <div className="flex flex-col items-center space-y-4">
             <h1 className="text-3xl">Team {params.teamid}</h1>
