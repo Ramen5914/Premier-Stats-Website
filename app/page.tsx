@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import TeamCard from '../components/TeamCard'
 import type { Team } from './(types)/GraphQLStructures'
+
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
     const { data } = await getData();
@@ -15,6 +15,7 @@ export default async function Page() {
 
 async function getData() {
     const response = await fetch(`http://localhost:8080/graphql`, {
+        // next: { revalidate: 10 },
         method: "POST",
         headers: {
             "Content-Type": "application/json",
