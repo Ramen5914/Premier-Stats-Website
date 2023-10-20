@@ -11,7 +11,7 @@
             "type": "node-terminal"
         },
         {
-            "command": "npm run start",
+            "command": "npm run build && npm run start",
             "name": "Start",
             "request": "launch",
             "type": "node-terminal"
