@@ -11,8 +11,10 @@ export type Team = {
     link: string
     imageLink: string
     region: Region
+    rank: number
     teamMatches: TeamMatch[]
     players: Player[]
+    playerCount: number
 }
 
 export type TeamMatch = {
@@ -45,6 +47,7 @@ export type Player = {
     imageLink: string
     role: Role
     playerMatches: PlayerMatch[]
+    playerMatchCount: number
 }
 
 export type PlayerMatch = {
