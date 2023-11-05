@@ -32,7 +32,7 @@ export default function Footer() {
                 </div>
                 <div className="mt-8 md:order-1 md:mt-0">
                     <p className="text-center text-xs leading-5">
-                        © 2023 Omar Rahman. All rights reserved.
+                        © 2023 Omar Rahman. All rights reserved. Not affiliated with Riot Games.
                     </p>
                 </div>
             </div>
