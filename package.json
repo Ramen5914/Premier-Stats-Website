@@ -10,25 +10,27 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.5",
+    "@clerk/nextjs": "^4.26.2",
     "@headlessui/react": "^1.7.17",
     "chart.js": "^4.4.0",
     "graphql": "^16.8.1",
-    "next": "^13.5.5",
-    "react": "^18",
+    "next": "^14.0.1",
+    "next-auth": "^4.24.4",
+    "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18",
+    "react-dom": "^18.2.0",
     "sharp": "^0.32.6"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.6",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.2.34",
+    "@types/react-dom": "^18.2.14",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.50.0",
-    "eslint-config-next": "^13.5.4",
+    "eslint-config-next": "^14.0.1",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^3.3.5",
     "typescript": "^5"
   }
 }

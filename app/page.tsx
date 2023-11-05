@@ -30,11 +30,10 @@ async function getData() {
                   episode
                   act
                   division
+                  rank
                   imageLink
                   region
-                  players {
-                    id
-                  }
+                  playerCount
                 }
               }
             `
