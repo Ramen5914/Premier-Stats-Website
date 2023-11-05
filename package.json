@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.5",
+    "@clerk/nextjs": "^4.26.2",
     "@headlessui/react": "^1.7.17",
     "chart.js": "^4.4.0",
     "graphql": "^16.8.1",
@@ -29,7 +30,7 @@
     "eslint": "^8.50.0",
     "eslint-config-next": "^14.0.1",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^3.3.5",
     "typescript": "^5"
   }
 }
