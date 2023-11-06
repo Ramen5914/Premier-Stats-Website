@@ -1,30 +1,64 @@
+// Team
 export type Team = {
     id: number
 
     createdAt: string
     lastModifiedAt: string
+
     name: string
     tag: string
     episode: number
     act: number
-    division: Division
+    division: string
+    score: number
+    rank: number
     link: string
     imageLink: string
-    region: Region
-    rank: number
-    teamMatches: TeamMatch[]
+    region: string
+
+    tournament: Tournament
     players: Player[]
     playerCount: number
+    teamMatches: TeamMatch[]
+    teamMatchCount: number
+}
+export type NewTeam = {
+    name: string
+    tag: string
+    episode: number
+    act: number
+    division: string
+    rank: number
+    link: string
+    imageLink: string
+    region: string
+}
+export type TeamChange = {
+    id: number
+
+    name: string | undefined
+    tag: string | undefined 
+    episode: number | undefined
+    act: number | undefined
+    division: string | undefined
+    rank: number | undefined
+    link: string | undefined
+    imageLink: string | undefined
+    region: string | undefined
 }
 
+// Team Match
 export type TeamMatch = {
     id: number
+    teamId: number
 
     createdAt: string
     lastModifiedAt: string
+
     playedAt: string
     duration: string
-    map: Map
+    practice: boolean
+    map: string
     enemyName: string
     enemyTag: string
     enemyLink: string
@@ -32,256 +66,119 @@ export type TeamMatch = {
     teamScore: number
     enemyScore: number
 }
+export type NewTeamMatch = {
+    teamId: number
 
+    playedAt: string
+    duration: string
+    practice: boolean
+    map: string
+    enemyName: string
+    enemyTag: string
+    enemyLink: string
+    enemyImageLink: string
+    teamScore: number
+    enemyScore: number
+}
+export type TeamMatchChange = {
+    id: number
+    teamId: number | undefined
+
+    playedAt: string | undefined
+    duration: string | undefined
+    practice: boolean | undefined
+    map: string | undefined
+    enemyName: string | undefined
+    enemyTag: string | undefined
+    enemyLink: string | undefined
+    enemyImageLink: string | undefined
+    teamScore: number | undefined
+    enemyScore: number | undefined
+}
+
+// Player
 export type Player = {
     id: number
+    teamId: number
 
     createdAt: string
     lastModifiedAt: string
+
     displayName: string
     name: string
     tag: string
-    currentRank: Rank
-    peakRank: Rank
+    currentRank: string
+    peakRank: string
     link: string
     imageLink: string
-    role: Role
+    role: string
+
     playerMatches: PlayerMatch[]
     playerMatchCount: number
 }
-
-export type PlayerMatch = {
-    id: number
-
-    createdAt: string
-    lastModifiedAt: string
-    agent: Agent
-    mvp: MVP
-    placement: number
-    trackerNetworkScore: number
-    averageCombatScore: number
-    kills: number
-    deaths: number
-    assists: number
-    damageDelta: number
-    averageDamagePerRound: number
-    headshotPercentage: number
-    killedAssistedSurvivedTraded: number
-    firstKills: number
-    firstDeaths: number
-    threeK: number
-    fourK: number
-    fiveK: number
-    sixK: number
-}
-
-export enum Division {
-    Unranked,
-    Open_1,
-    Open_2,
-    Open_3,
-    Open_4,
-    Open_5,
-    numberermediate_1,
-    numberermediate_2,
-    numberermediate_3,
-    numberermediate_4,
-    numberermediate_5,
-    Advanced_1,
-    Advanced_2,
-    Advanced_3,
-    Advanced_4,
-    Advanced_5,
-    Elite_1,
-    Elite_2,
-    Elite_3,
-    Elite_4,
-    Elite_5,
-    Contender
-}
-
-export enum Region {
-    US_West,
-    US_East,
-    Western_Europe,
-    Central_And_Eastern_Europe,
-    Middle_East,
-    Turkiye,
-    Asia,
-    Japan,
-    Oceania,
-    South_Asia,
-    Korea,
-    Latin_America_North,
-    Latin_America_South,
-    Brazil
-}
-
-export enum Map {
-    Ascent,
-    Bind,
-    Breeze,
-    Fracture,
-    Haven,
-    Icebox,
-    Lotus,
-    Pearl,
-    Split,
-    Sunset
-}
-
-export enum Rank {
-    Unranked,
-    Iron_1,
-    Iron_2,
-    Iron_3,
-    Bronze_1,
-    Bronze_2,
-    Bronze_3,
-    Silver_1,
-    Silver_2,
-    Silver_3,
-    Gold_1,
-    Gold_2,
-    Gold_3,
-    Platinum_1,
-    Platinum_2,
-    Platinum_3,
-    Diamond_1,
-    Diamond_2,
-    Diamond_3,
-    Ascendant_1,
-    Ascendant_2,
-    Ascendant_3,
-    Immortal_1,
-    Immortal_2,
-    Immortal_3,
-    Radiant
-}
-
-export enum Role {
-    Captain,
-    Member,
-    Substitute
-}
-
-export enum Agent {
-    Astra,
-    Breach,
-    Brimstone,
-    Chamber,
-    Cypher,
-    Deadlock,
-    Fade,
-    Gekko,
-    Harbor,
-    Jett,
-    KAY_O,
-    Killjoy,
-    Neon,
-    Omen,
-    Phoenix,
-    Raze,
-    Reyna,
-    Sage,
-    Skye,
-    Sova,
-    Viper,
-    Yoru
-}
-
-export enum MVP {
-    None,
-    Team_MVP,
-    Match_MVP
-}
-
-export type NewTeam = {
-    name: string
-    tag: string
-    episode: number
-    act: number
-    division: Division
-    link: string
-    imageLink: string
-    region: Region
-}
-
-export type TeamChange = {
-    teamId: number
-
-    name: string
-    tag: string
-    episode: number
-    act: number
-    division: Division
-    link: string
-    imageLink: string
-    region: Region
-}
-
 export type NewPlayer = {
     teamId: number
 
     displayName: string
     name: string
     tag: string
-    currentRank: Rank
-    peakRank: Rank
+    currentRank: string
+    peakRank: string
     link: string
     imageLink: string
-    role: Role
+    role: string
 }
-
 export type PlayerChange = {
+    id: number
+    teamId: number | undefined
+
+    displayName: string | undefined
+    name: string | undefined
+    tag: string | undefined
+    currentRank: string | undefined
+    peakRank: string | undefined
+    link: string | undefined
+    imageLink: string | undefined
+    role: string | undefined
+}
+
+// Player Match
+export type PlayerMatch = {
+    id: number
     playerId: number
-
-    teamId: number
-    displayName: string
-    name: string
-    tag: string
-    currentRank: Rank
-    peakRank: Rank
-    link: string
-    imageLink: string
-    role: Role
-}
-
-export type NewTeamMatch = {
-    teamId: number
-
-    playedAt: string
-    duration: string
-    map: Map
-    enemyName: string
-    enemyTag: string
-    enemyLink: string
-    enemyImageLink: string
-    teamScore: number
-    enemyScore: number
-}
-
-export type TeamMatchChange = {
     teamMatchId: number
 
-    teamId: number
-    playedAt: string
-    duration: string
-    map: Map
-    enemyName: string
-    enemyTag: string
-    enemyLink: string
-    enemyImageLink: string
-    teamScore: number
-    enemyScore: number
-}
+    createdAt: string
+    lastModifiedAt: string
 
+    agent: string
+    mvp: string
+    placement: number
+    trackerNetworkScore: number
+    averageCombatScore: number
+    kills: number
+    deaths: number
+    assists: number
+    killDeathRatio: number
+    plusMinus: number
+    damageDelta: number
+    averageDamagePerRound: number
+    headshotPercentage: number
+    killedAssistedSurvivedTraded: number
+    firstKills: number
+    firstDeaths: number
+    threeK: number
+    fourK: number
+    fiveK: number
+    sixK: number
+    multies: number
+}
 export type NewPlayerMatch = {
     playerId: number
     teamMatchId: number
 
-    agent: Agent
-    mvp: MVP
+    agent: string
+    mvp: string
     placement: number
     trackerNetworkScore: number
     averageCombatScore: number
@@ -299,29 +196,135 @@ export type NewPlayerMatch = {
     fiveK: number
     sixK: number
 }
-
 export type PlayerMatchChange = {
     id: number
+    playerId: number | undefined
+    teamMatchId: number | undefined
 
-    playerId: number
-    teamMatchId: number
+    agent: string | undefined
+    mvp: string | undefined
+    placement: number | undefined
+    trackerNetworkScore: number | undefined
+    averageCombatScore: number | undefined
+    kills: number | undefined
+    deaths: number | undefined
+    assists: number | undefined
+    damageDelta: number | undefined
+    averageDamagePerRound: number | undefined
+    headshotPercentage: number | undefined
+    killedAssistedSurvivedTraded: number | undefined
+    firstKills: number | undefined
+    firstDeaths: number | undefined
+    threeK: number | undefined
+    fourK: number | undefined
+    fiveK: number | undefined
+    sixK: number | undefined
+}
 
-    agent: Agent
-    mvp: MVP
-    placement: number
-    trackerNetworkScore: number
-    averageCombatScore: number
-    kills: number
-    deaths: number
-    assists: number
-    damageDelta: number
-    averageDamagePerRound: number
-    headshotPercentage: number
-    killedAssistedSurvivedTraded: number
-    firstKills: number
-    firstDeaths: number
-    threeK: number
-    fourK: number
-    fiveK: number
-    sixK: number
+// Tournament
+export type Tournament = {
+    id: number
+    teamId: number
+
+    createdAt: string
+    lastModifiedAt: string
+
+    datePlayedAt: string
+
+    tournamentGames: TournamentGame[]
+    tournamentTeams: TournamentTeam[]
+}
+export type NewTournament = {
+    teamId: number
+
+    datePlayedAt: string
+}
+export type TournamentChange = {
+    id: number
+    teamId: number | undefined
+
+    datePlayedAt: string | undefined
+}
+
+// Tournament Game 
+export type TournamentGame = {
+    id: number
+    tournamentId: number
+
+    createdAt: string
+    lastModifiedAt: string
+
+    playedAt: string
+    duration: string
+
+    team1: TournamentTeam
+    team1Score: number
+
+    team2: TournamentTeam
+    team2Score: number
+}
+export type NewTournamentGame = {
+    tournamentId: number
+
+    createdAt: string
+    lastModifiedAt: string
+
+    playedAt: string
+    duration: string
+
+    team1Id: number
+    team1Score: number
+
+    team2Id: number
+    team2Score: number
+}
+export type TournamentGameChange = {
+    id: number
+    tournamentId: number | undefined
+
+    createdAt: string | undefined
+    lastModifiedAt: string | undefined
+
+    playedAt: string | undefined
+    duration: string | undefined
+
+    team1Id: number | undefined
+    team1Score: number | undefined
+
+    team2Id: number | undefined
+    team2Score: number | undefined
+}
+
+// Tournament Team
+export type TournamentTeam = {   
+    id: number
+    tournamentId: number
+
+    createdAt: string
+    lastModifiedAt: string
+
+    name: string
+    tag: string
+    rank: string
+    link: string
+    imageLink: string
+}
+export type NewTournamentTeam = {
+    tournamentId: number
+
+    name: string
+    tag: string
+    rank: string
+    link: string
+    imageLink: string
+}
+export type TournamentTeamChange = {
+    id: number
+    tournamentId: number | undefined
+
+    name: string | undefined
+    tag: string | undefined
+    rank: string | undefined
+    link: string | undefined
+    imageLink: string | undefined
 }
