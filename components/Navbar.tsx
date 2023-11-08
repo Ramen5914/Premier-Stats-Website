@@ -1,7 +1,21 @@
+'use client'
+
+import { isType } from "graphql";
 import Link from "next/link"
-import Image from "next/image"
+import { usePathname } from "next/navigation"
+import { TeamPath } from "@/app/(types)/stringmatchers";
 
 export default function Navbar() {
+    const pathname = usePathname();
+    var redirect: [string, string] = ["", ""]
+    if (pathname == "/") {
+        redirect[0] = '/add/team';
+        redirect[1] = 'Add Team'
+    } else if (pathname as TeamPath) {
+        redirect[0] = pathname + '/add/player';
+        redirect[1] = 'Add Player'
+    }
+
     return (
         <nav className="text-gray-400 dark:text-gray-300">
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -25,9 +39,9 @@ export default function Navbar() {
                     </div>
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
-                            <Link href={"/add/team"} type="button" className="text-white relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold shadow-sm">
+                            <Link href={redirect[0]} type="button" className="text-white relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold shadow-sm">
                                 <svg className="-ml-0.5 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                                Add Team
+                                {redirect[1]}
                             </Link>
                         </div>
                     </div>
