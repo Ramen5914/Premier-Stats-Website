@@ -1,4 +1,4 @@
-import { NewTeam } from "@/app/(types)/graphQLStructures";
+import { NewTeam } from "@/app/(types)/GraphQLStructures";
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
@@ -72,7 +72,7 @@ export default async function Page() {
 
     return (
         <div className="flex flex-col items-center space-y-4">
-            <h1 className="text-3xl">Create new Team</h1>
+            <h1 className="text-3xl">Create New Team</h1>
             <form method="GET" className="flex flex-col space-y-2" action={validate}>
                 <div>
                     <label>Team Name: </label>
@@ -155,28 +155,6 @@ export default async function Page() {
 }
 
 async function createNewTeam(newTeam: NewTeam) {
-    console.log(JSON.stringify({
-        query: `
-            mutation CreateTeam {
-                createTeam(
-                    newTeam: {
-                        name: ${newTeam.name}
-                        tag: ${newTeam.tag}
-                        episode: ${newTeam.episode}
-                        act: ${newTeam.act}
-                        division: ${newTeam.division}
-                        rank: ${newTeam.rank}
-                        link: ${newTeam.link}
-                        imageLink: ${newTeam.imageLink}
-                        region: ${newTeam.region}
-                    }
-                ) {
-                    id
-                }
-            }
-        `
-    }));
-
     const response = await fetch(`http://localhost:8080/graphql`, {
         method: "POST",
         headers: {
