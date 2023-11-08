@@ -1,4 +1,4 @@
-import { Player } from '@/app/(types)/GraphQLStructures'
+import { Player } from '@/app/(types)/graphQLStructures'
 import Image from 'next/image'
 import Link from 'next/link'
 
