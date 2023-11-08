@@ -1,9 +1,24 @@
 import PlayerCard from '@/components/PlayerCard'
 import type { Player } from '@/app/(types)/GraphQLStructures'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
-export default async function Page({ params }: { params: { teamid: number } }) {
+type Props = {
+    params: { teamid: number }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const id = params.teamid
+
+    const data = await getTeamName(id);
+
+    return {
+        title: `${data.name}#${data.tag}`
+    }
+}
+
+export default async function Page({ params }: Props) {
     const { data } = await getData(params.teamid);
 
     return (
@@ -13,139 +28,165 @@ export default async function Page({ params }: { params: { teamid: number } }) {
     )
 }
 
-async function getData(teamid: number) {
+async function getTeamName(id: number) {
     const response = await fetch(`http://localhost:8080/graphql`, {
-        // next: { revalidate: 10 },
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
             query: `
-            query TeamById {
-                teamById(id: ${teamid}) {
-                    id
-                    name
-                    tag
-                    episode
-                    act
-                    division
-                    score
-                    rank
-                    link
-                    imageLink
-                    region
-                    tournament {
+                query TeamById {
+                    teamById(id: ${id}) {
+                        name
+                        tag
+                    }
+                }              
+            `
+        })
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch data');
+    }
+
+    var resJson = await response.json();
+
+    return await resJson.data.teamById;
+}
+
+async function getData(id: number) {
+    const response = await fetch(`http://localhost:8080/graphql`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `
+                query TeamById {
+                    teamById(id: ${id}) {
                         id
-                        teamId
-                        createdAt
-                        lastModifiedAt
-                        datePlayedAt
-                        tournamentGames {
+                        name
+                        tag
+                        episode
+                        act
+                        division
+                        score
+                        rank
+                        link
+                        imageLink
+                        region
+                        tournament {
                             id
-                            tournamentId
+                            teamId
+                            createdAt
+                            lastModifiedAt
+                            datePlayedAt
+                            tournamentGames {
+                                id
+                                tournamentId
+                                createdAt
+                                lastModifiedAt
+                                playedAt
+                                duration
+                                team1 {
+                                    id
+                                    tournamentId
+                                    createdAt
+                                    lastModifiedAt
+                                    name
+                                    tag
+                                    rank
+                                    link
+                                    imageLink
+                                }
+                                team1Score
+                                team2 {
+                                    id
+                                    tournamentId
+                                    createdAt
+                                    lastModifiedAt
+                                    name
+                                    tag
+                                    rank
+                                    link
+                                    imageLink
+                                }
+                                team2Score
+                            }
+                            tournamentTeams {
+                                id
+                                tournamentId
+                                createdAt
+                                lastModifiedAt
+                                name
+                                tag
+                                rank
+                                link
+                                imageLink
+                            }
+                        }
+                        players {
+                            id
+                            teamId
+                            createdAt
+                            lastModifiedAt
+                            displayName
+                            name
+                            tag
+                            currentRank
+                            peakRank
+                            link
+                            imageLink
+                            role
+                            playerMatches {
+                                id
+                                playerId
+                                teamMatchId
+                                createdAt
+                                lastModifiedAt
+                                agent
+                                mvp
+                                placement
+                                trackerNetworkScore
+                                averageCombatScore
+                                kills
+                                deaths
+                                assists
+                                killDeathRatio
+                                plusMinus
+                                damageDelta
+                                averageDamagePerRound
+                                headshotPercentage
+                                killedAssistedSurvivedTraded
+                                firstKills
+                                firstDeaths
+                                threeK
+                                fourK
+                                fiveK
+                                sixK
+                                multies
+                            }
+                            playerMatchCount
+                        }
+                        teamMatches {
+                            id
+                            teamId
                             createdAt
                             lastModifiedAt
                             playedAt
                             duration
-                            team1 {
-                                id
-                                tournamentId
-                                createdAt
-                                lastModifiedAt
-                                name
-                                tag
-                                rank
-                                link
-                                imageLink
-                            }
-                            team1Score
-                            team2 {
-                                id
-                                tournamentId
-                                createdAt
-                                lastModifiedAt
-                                name
-                                tag
-                                rank
-                                link
-                                imageLink
-                            }
-                            team2Score
-                        }
-                        tournamentTeams {
-                            id
-                            tournamentId
-                            createdAt
-                            lastModifiedAt
-                            name
-                            tag
-                            rank
-                            link
-                            imageLink
+                            practice
+                            map
+                            enemyName
+                            enemyTag
+                            enemyLink
+                            enemyImageLink
+                            teamScore
+                            enemyScore
                         }
                     }
-                    players {
-                        id
-                        teamId
-                        createdAt
-                        lastModifiedAt
-                        displayName
-                        name
-                        tag
-                        currentRank
-                        peakRank
-                        link
-                        imageLink
-                        role
-                        playerMatches {
-                            id
-                            playerId
-                            teamMatchId
-                            createdAt
-                            lastModifiedAt
-                            agent
-                            mvp
-                            placement
-                            trackerNetworkScore
-                            averageCombatScore
-                            kills
-                            deaths
-                            assists
-                            killDeathRatio
-                            plusMinus
-                            damageDelta
-                            averageDamagePerRound
-                            headshotPercentage
-                            killedAssistedSurvivedTraded
-                            firstKills
-                            firstDeaths
-                            threeK
-                            fourK
-                            fiveK
-                            sixK
-                            multies
-                        }
-                        playerMatchCount
-                    }
-                    teamMatches {
-                        id
-                        teamId
-                        createdAt
-                        lastModifiedAt
-                        playedAt
-                        duration
-                        practice
-                        map
-                        enemyName
-                        enemyTag
-                        enemyLink
-                        enemyImageLink
-                        teamScore
-                        enemyScore
-                    }
-                }
-              }              
+                }              
             `
         })
     })
