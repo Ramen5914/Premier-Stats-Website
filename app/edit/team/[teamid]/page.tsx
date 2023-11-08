@@ -1,4 +1,4 @@
-import { Division, Region, Team, TeamChange } from "@/app/(types)/GraphQLStructures";
+import { Team, TeamChange } from "@/app/(types)/graphQLStructures";
 import { FormEvent } from "react";
 import { redirect } from 'next/navigation'
 import { isType } from "graphql";
