@@ -1,34 +1,44 @@
-import { NewTeam } from "@/app/(types)/graphQLStructures";
+import { NewPlayer } from "@/app/(types)/GraphQLStructures";
 import { redirect } from 'next/navigation'
 
-export default async function Page() {
+export default async function Page({ params }: { params: { teamid: number } }) {
     async function validate(formData: FormData) {
         'use server'
 
-        const teamName = formData.get('team-name')?.toString();
-        if (teamName == undefined) {
+        const displayName = formData.get('display-name')?.toString();
+        if (displayName == undefined) {
             return false;
         }
-        const teamTag = formData.get('team-tag')?.toString();
-        if (teamTag == undefined) {
+        const playerName = formData.get('player-name')?.toString();
+        if (playerName == undefined) {
             return false;
         }
-        const episodeValue = formData.get('episode')?.toString();
-        var episode: number
-        if (episodeValue !== undefined && !isNaN(parseInt(episodeValue))) {
-            episode = parseInt(episodeValue);
-        } else {
-            return false
+        const playerTag = formData.get('player-tag')?.toString();
+        if (playerTag == undefined) {
+            return false;
         }
-        const actValue = formData.get('act')?.toString();
-        var act: number
-        if (actValue !== undefined && !isNaN(parseInt(actValue))) {
-            act = parseInt(actValue);
+        const currentRankName = formData.get('current-rank')?.toString();
+        const currentRankValue = formData.get('current-level')?.toString();
+        var currentRank: string;
+        if (currentRankName != undefined && currentRankName != "null") {
+            if (currentRankName == "Radiant") {
+                currentRank = currentRankName;
+            } else {
+                currentRank = `${currentRankName} ${currentRankValue}`
+            }
         } else {
-            return false
+            return false;
         }
-        const division = formData.get('division')?.toString();
-        if (division == undefined || division == "null") {
+        const peakRankName = formData.get('peak-rank')?.toString();
+        const peakRankValue = formData.get('peak-level')?.toString();
+        var peakRank: string;
+        if (peakRankName != undefined && peakRankName != "null") {
+            if (peakRankName == "Radiant") {
+                peakRank = peakRankName;
+            } else {
+                peakRank = `${peakRankName} ${peakRankValue}`
+            }
+        } else {
             return false;
         }
         const link = formData.get('link')?.toString();
@@ -39,32 +49,25 @@ export default async function Page() {
         if (imageLink == undefined) {
             return false;
         }
-        const region = formData.get('region')?.toString();
-        if (region == undefined || region == "null") {
+        const role = formData.get('role')?.toString();
+        if (role == undefined || role == "null") {
             return false;
         }
-        const rankValue = formData.get('rank')?.toString();
-        var rank: number
-        if (rankValue !== undefined && !isNaN(parseInt(rankValue))) {
-            rank = parseInt(rankValue);
-        } else {
-            return false
-        }
 
-        const newTeam: NewTeam = {
-            name: teamName,
-            tag: teamTag,
-            episode: episode,
-            act: act,
-            division: division,
+        const newPlayer: NewPlayer = {
+            name: playerName,
+            tag: playerTag,
+            teamId: params.teamid,
+            displayName: displayName,
+            currentRank: currentRank,
+            peakRank: peakRank,
             link: link,
             imageLink: imageLink,
-            region: region,
-            rank: rank
+            role: role
         }
 
-        if (await createNewTeam(newTeam)) {
-            redirect("/")
+        if (await createNewPlayer(newPlayer)) {
+            redirect(`/team/${params.teamid}`)
         } else {
             return false
         }
@@ -72,81 +75,74 @@ export default async function Page() {
 
     return (
         <div className="flex flex-col items-center space-y-4">
-            <h1 className="text-3xl">Create new Team</h1>
-            <form method="GET" className="flex flex-col space-y-2" action={validate}>
+            <h1 className="text-3xl">Add New Player</h1>
+            <form method="POST" className="flex flex-col space-y-2" action={validate}>
                 <div>
-                    <label>Team Name: </label>
-                    <input required type="text" name="team-name" size={17} maxLength={15} minLength={5} />
+                    <label>Display Name: </label>
+                    <input required type="text" name="display-name" />
+                </div>
+                <div>
+                    <label>In-Game Name: </label>
+                    <input required type="text" name="player-name" size={17} minLength={3} maxLength={16} />
                     <span>#</span>
-                    <input required type="text" name="team-tag" size={6} maxLength={5} minLength={1} />
+                    <input required type="text" name="player-tag" size={6} minLength={3} maxLength={5} />
                 </div>
                 <div>
-                    <label>Episode: </label>
-                    <input required type="number" name="episode" min={1} max={7} />
-                    <label>Act: </label>
-                    <input required type="number" name="act" min={1} max={3} />
-                </div>
-                <div>
-                    <label>Division: </label>
-                    <select required itemType="text" name="division">
-                        <option value={"null"}>--Select Division--</option>
+                    <label>Current Rank: </label>
+                    <select required itemType="text" name="current-rank">
+                        <option value={"null"}>--Select Rank--</option>
                         <option value={"Unranked"}>Unranked</option>
-                        <option value={"Open 1"}>Open 1</option>
-                        <option value={"Open 2"}>Open 2</option>
-                        <option value={"Open 3"}>Open 3</option>
-                        <option value={"Open 4"}>Open 4</option>
-                        <option value={"Open 5"}>Open 5</option>
-                        <option value={"Intermediate 1"}>Intermediate 1</option>
-                        <option value={"Intermediate 2"}>Intermediate 2</option>
-                        <option value={"Intermediate 3"}>Intermediate 3</option>
-                        <option value={"Intermediate 4"}>Intermediate 4</option>
-                        <option value={"Intermediate 5"}>Intermediate 5</option>
-                        <option value={"Advanced 1"}>Advanced 1</option>
-                        <option value={"Advanced 2"}>Advanced 2</option>
-                        <option value="Advanced 3">Advanced 3</option>
-                        <option value={"Advanced 4"}>Advanced 4</option>
-                        <option value={"Advanced 5"}>Advanced 5</option>
-                        <option value={"Elite 1"}>Elite 1</option>
-                        <option value={"Elite 2"}>Elite 2</option>
-                        <option value={"Elite 3"}>Elite 3</option>
-                        <option value={"Elite 4"}>Elite 4</option>
-                        <option value={"Elite 5"}>Elite 5</option>
-                        <option value={"Contender"}>Contender</option>
+                        <option value={"Iron"}>Iron</option>
+                        <option value={"Bronze"}>Bronze</option>
+                        <option value={"Gold"}>Gold</option>
+                        <option value={"Silver"}>Silver</option>
+                        <option value={"Platinum"}>Platinum</option>
+                        <option value={"Diamond"}>Diamond</option>
+                        <option value={"Ascendant"}>Ascendant</option>
+                        <option value={"Immortal"}>Immortal</option>
+                        <option value={"Radiant"}>Radiant</option>
                     </select>
-                    <label>Rank: </label>
-                    <input required type="number" name="rank" min={1} max={999} />
+                    <input type="number" name="current-level" min={1} max={3} />
                 </div>
                 <div>
-                    <label>Tracker Network Link: </label>
+                    <label>Peak Rank: </label>
+                    <select required itemType="text" name="peak-rank">
+                        <option value={"null"}>--Select Rank--</option>
+                        <option value={"Unranked"}>Unranked</option>
+                        <option value={"Iron"}>Iron</option>
+                        <option value={"Bronze"}>Bronze</option>
+                        <option value={"Gold"}>Gold</option>
+                        <option value={"Silver"}>Silver</option>
+                        <option value={"Platinum"}>Platinum</option>
+                        <option value={"Diamond"}>Diamond</option>
+                        <option value={"Ascendant"}>Ascendant</option>
+                        <option value={"Immortal"}>Immortal</option>
+                        <option value={"Radiant"}>Radiant</option>
+                    </select>
+                    <input type="number" name="peak-level" min={1} max={3} />
+                </div>
+                <div>
+                    <label>Profile Link: </label>
                     <input required type="url" name="link" />
                 </div>
                 <div>
-                    <label>Tracker Network Image Link: </label>
+                    <label>Image Link: </label>
                     <input required type="url" name="image-link" />
                 </div>
                 <div>
-                    <label>Region: </label>
-                    <select required itemType="number" name="region" >
-                        <option value={"null"}>--Select Region--</option>
-                        <option value={"US West"}>US West</option>
-                        <option value={"US East"}>US East</option>
-                        <option value={"Western Europe"}>Western Europe</option>
-                        <option value={"Central & Eastern Europe"}>Central And Eastern Europe</option>
-                        <option value={"Middle East"}>Middle East</option>
-                        <option value={"Turkiye"}>Turkiye</option>
-                        <option value={"Asia"}>Asia</option>
-                        <option value={"Japan"}>Japan</option>
-                        <option value={"Oceania"}>Oceania</option>
-                        <option value={"South Asia"}>South Asia</option>
-                        <option value={"Korea"}>Korea</option>
-                        <option value={"Latin America North"}>Latin America North</option>
-                        <option value={"Latin America South"}>Latin America South</option>
-                        <option value={"Brazil"}>Brazil</option>
+                    <label>Role: </label>
+                    <select required itemType="text" name="role">
+                        <option value={"null"}>--Select Role--</option>
+                        <option value={"Captain"}>Captain</option>
+                        <option value={"Member"}>Member</option>
+                        <option value={"Substitute"}>Substitute</option>
                     </select>
                 </div>
-
                 <button className="px-3 py-2 bg-indigo-500 text-white hover:bg-indigo-400 w-fit mx-auto shadow-sm font-semibold text-sm rounded-md inline-flex items-center gap-x-1.5" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M12 2h-2v3h2V2Z" /><path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0H1.5ZM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1H4ZM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1Z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M12 2h-2v3h2V2Z" />
+                        <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0H1.5ZM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1H4ZM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1Z" />
+                    </svg>
                     Save Changes
                 </button>
             </form>
@@ -154,29 +150,7 @@ export default async function Page() {
     )
 }
 
-async function createNewTeam(newTeam: NewTeam) {
-    console.log(JSON.stringify({
-        query: `
-            mutation CreateTeam {
-                createTeam(
-                    newTeam: {
-                        name: ${newTeam.name}
-                        tag: ${newTeam.tag}
-                        episode: ${newTeam.episode}
-                        act: ${newTeam.act}
-                        division: ${newTeam.division}
-                        rank: ${newTeam.rank}
-                        link: ${newTeam.link}
-                        imageLink: ${newTeam.imageLink}
-                        region: ${newTeam.region}
-                    }
-                ) {
-                    id
-                }
-            }
-        `
-    }));
-
+async function createNewPlayer(newPlayer: NewPlayer) {
     const response = await fetch(`http://localhost:8080/graphql`, {
         method: "POST",
         headers: {
@@ -184,18 +158,18 @@ async function createNewTeam(newTeam: NewTeam) {
         },
         body: JSON.stringify({
             query: `
-                mutation CreateTeam {
-                    createTeam(
-                        newTeam: {
-                            name: "${newTeam.name}"
-                            tag: "${newTeam.tag}"
-                            episode: ${newTeam.episode}
-                            act: ${newTeam.act}
-                            division: "${newTeam.division}"
-                            rank: ${newTeam.rank}
-                            link: "${newTeam.link}"
-                            imageLink: "${newTeam.imageLink}"
-                            region: "${newTeam.region}"
+                mutation CreatePlayer {
+                    createPlayer(
+                        newPlayer: {
+                            teamId: ${newPlayer.teamId}
+                            displayName: "${newPlayer.displayName}"
+                            name: "${newPlayer.name}"
+                            tag: "${newPlayer.tag}"
+                            currentRank: "${newPlayer.currentRank}"
+                            peakRank: "${newPlayer.peakRank}"
+                            link: "${newPlayer.link}"
+                            imageLink: "${newPlayer.imageLink}"
+                            role: "${newPlayer.role}"
                         }
                     ) {
                         id
