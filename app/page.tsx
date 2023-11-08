@@ -1,5 +1,5 @@
 import TeamCard from '../components/TeamCard'
-import type { Team } from './(types)/GraphQLStructures'
+import type { Team } from './(types)/graphQLStructures'
 
 export const dynamic = 'force-dynamic'
 
