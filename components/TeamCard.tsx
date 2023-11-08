@@ -1,4 +1,4 @@
-import { Team } from '@/app/(types)/graphQLStructures'
+import { Team } from '@/app/(types)/GraphQLStructures'
 import Image from 'next/image'
 import Link from 'next/link'
 
