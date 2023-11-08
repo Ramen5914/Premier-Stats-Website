@@ -1,5 +1,5 @@
 import PlayerCard from '@/components/PlayerCard'
-import type { Player } from '@/app/(types)/GraphQLStructures'
+import type { Player } from '@/app/(types)/graphQLStructures'
 
 export const dynamic = 'force-dynamic'
 
