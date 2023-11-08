@@ -6,7 +6,7 @@ export default async function TeamCard({ team }: { team: Team }) {
     return (
         <Link href={"/team/" + team.id}>
             <div className='dark:bg-slate-900 shadow-lg hover:shadow-2xl p-4 rounded-2xl flex flex-row space-x-4 xl:w-[76rem] ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[300ms] hover:translate-x-1 hover:-translate-y-1'>
-                <Image src={team.imageLink} alt="" width={128} height={128} />
+                <Image priority src={team.imageLink} alt="" width={128} height={128} />
                 <div className='dark:bg-current w-[2px]'></div>
                 <div className='flex flex-col justify-between grow'>
                     <div className='flex flex-row grow h-min justify-between items-center'>
@@ -22,11 +22,11 @@ export default async function TeamCard({ team }: { team: Team }) {
                     </div>
                     <div className='grid grid-cols-4 items-center'>
                         <div className='flex flex-row items-center m-auto'>
-                            <Image src={'/images/premier/' + team.division + '.png'} alt='' width={64} height={64} />
+                            <Image priority src={'/images/premier/' + team.division + '.png'} alt='' width={64} height={64} />
                             <span className='text-xl'>{team.division}</span>
                         </div>
                         <div className='flex flex-row items-center m-auto'>
-                            <Image src={'/images/region/' + team.region + '.png'} alt='' width={64} height={64} />
+                            <Image priority src={'/images/region/' + team.region + '.png'} alt='' width={64} height={64} />
                             <span className='text-xl'>{team.region}</span>
                         </div>
                         <div className='flex flex-row items-center m-auto'>
@@ -38,9 +38,9 @@ export default async function TeamCard({ team }: { team: Team }) {
                             <span className='text-xl'>{team.playerCount}</span>
                         </div>
                         <div className='flex flex-row items-center m-auto'>
-                            <svg className="p-3" width="64" height="64" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke="#ff4d4d" strokeLinejoin='round' d="M 21,16.5 16.5,21 m 0,0 L 12,16.5 M 16.5,21 V 7.5" id="path2" />
-                                <path stroke="#5eff6c" strokeLinejoin='round' d="M 3,7.5 7.5,3 m 0,0 4.5,4.5 M 7.5,3 v 13.5" id="path1" />
+                            <svg className="p-3" width="64" height="64" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" strokeLinecap='round'>
+                                <path stroke="#ff4d4d" d="M 21,16.5 16.5,21 m 0,0 L 12,16.5 M 16.5,21 V 7.5" id="path2" />
+                                <path stroke="#5eff6c" d="M 3,7.5 7.5,3 m 0,0 4.5,4.5 M 7.5,3 v 13.5" id="path1" />
                             </svg>
                             <span className='text-xl'>#{team.rank}</span>
                         </div>
