@@ -1,7 +1,13 @@
 import TeamCard from '../components/TeamCard'
 import type { Team } from './(types)/GraphQLStructures'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+    title: "Premier Teams",
+    description: "List of all teams tracked by my website."
+}
 
 export default async function Page() {
     const { data } = await getData();
