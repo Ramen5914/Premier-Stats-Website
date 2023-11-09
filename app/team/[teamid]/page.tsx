@@ -78,22 +78,13 @@ async function getData(id: number) {
                         region
                         tournament {
                             id
-                            teamId
-                            createdAt
-                            lastModifiedAt
                             datePlayedAt
                             tournamentGames {
                                 id
-                                tournamentId
-                                createdAt
-                                lastModifiedAt
                                 playedAt
                                 duration
                                 team1 {
                                     id
-                                    tournamentId
-                                    createdAt
-                                    lastModifiedAt
                                     name
                                     tag
                                     rank
@@ -103,9 +94,6 @@ async function getData(id: number) {
                                 team1Score
                                 team2 {
                                     id
-                                    tournamentId
-                                    createdAt
-                                    lastModifiedAt
                                     name
                                     tag
                                     rank
@@ -116,9 +104,6 @@ async function getData(id: number) {
                             }
                             tournamentTeams {
                                 id
-                                tournamentId
-                                createdAt
-                                lastModifiedAt
                                 name
                                 tag
                                 rank
@@ -129,8 +114,6 @@ async function getData(id: number) {
                         players {
                             id
                             teamId
-                            createdAt
-                            lastModifiedAt
                             displayName
                             name
                             tag
@@ -141,10 +124,6 @@ async function getData(id: number) {
                             role
                             playerMatches {
                                 id
-                                playerId
-                                teamMatchId
-                                createdAt
-                                lastModifiedAt
                                 agent
                                 mvp
                                 placement
@@ -171,9 +150,6 @@ async function getData(id: number) {
                         }
                         teamMatches {
                             id
-                            teamId
-                            createdAt
-                            lastModifiedAt
                             playedAt
                             duration
                             practice
@@ -185,6 +161,7 @@ async function getData(id: number) {
                             teamScore
                             enemyScore
                         }
+                        teamMatchCount
                     }
                 }              
             `

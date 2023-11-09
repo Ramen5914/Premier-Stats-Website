@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         const currentRankValue = formData.get('current-level')?.toString();
         var currentRank: string;
         if (currentRankName != undefined && currentRankName != "null") {
-            if (currentRankName == "Radiant") {
+            if (currentRankName == "Radiant" || currentRankName == "Unranked") {
                 currentRank = currentRankName;
             } else {
                 currentRank = `${currentRankName} ${currentRankValue}`
@@ -136,6 +136,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Captain"}>Captain</option>
                         <option value={"Member"}>Member</option>
                         <option value={"Substitute"}>Substitute</option>
+                        <option value={"Ex-Partner"}>Substitute</option>
                     </select>
                 </div>
                 <button className="px-3 py-2 bg-indigo-500 text-white hover:bg-indigo-400 w-fit mx-auto shadow-sm font-semibold text-sm rounded-md inline-flex items-center gap-x-1.5" type="submit">

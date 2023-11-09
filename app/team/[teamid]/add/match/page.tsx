@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         const currentRankValue = formData.get('current-level')?.toString();
         var currentRank: string;
         if (currentRankName != undefined && currentRankName != "null") {
-            if (currentRankName == "Radiant") {
+            if (currentRankName == "Radiant" || currentRankName == "Unranked") {
                 currentRank = currentRankName;
             } else {
                 currentRank = `${currentRankName} ${currentRankValue}`
@@ -55,17 +55,15 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         }
 
         const newTeamMatch: NewTeamMatch = {
+            name: playerName,
+            tag: playerTag,
             teamId: params.teamid,
-            playedAt: "",
-            duration: "",
-            practice: false,
-            map: "",
-            enemyName: "",
-            enemyTag: "",
-            enemyLink: "",
-            enemyImageLink: "",
-            teamScore: 0,
-            enemyScore: 0
+            displayName: displayName,
+            currentRank: currentRank,
+            peakRank: peakRank,
+            link: link,
+            imageLink: imageLink,
+            role: role
         }
 
         if (await createNewTeamMatch(newTeamMatch)) {
@@ -77,7 +75,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
 
     return (
         <div className="flex flex-col items-center space-y-4">
-            <h1 className="text-3xl">Add New Team Match</h1>
+            <h1 className="text-3xl">Add New Player</h1>
             <form method="POST" className="flex flex-col space-y-2" action={validate}>
                 <div>
                     <label>Display Name: </label>
@@ -138,6 +136,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Captain"}>Captain</option>
                         <option value={"Member"}>Member</option>
                         <option value={"Substitute"}>Substitute</option>
+                        <option value={"Ex-Partner"}>Substitute</option>
                     </select>
                 </div>
                 <button className="px-3 py-2 bg-indigo-500 text-white hover:bg-indigo-400 w-fit mx-auto shadow-sm font-semibold text-sm rounded-md inline-flex items-center gap-x-1.5" type="submit">
@@ -152,7 +151,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
     )
 }
 
-async function createNewTeamMatch(newTeamMatch: NewTeamMatch) {
+async function createNewTeamMatch(newPlayer: NewTeamMatch) {
     const response = await fetch(`http://localhost:8080/graphql`, {
         method: "POST",
         headers: {
@@ -163,15 +162,15 @@ async function createNewTeamMatch(newTeamMatch: NewTeamMatch) {
                 mutation CreatePlayer {
                     createPlayer(
                         newPlayer: {
-                            teamId: ${newTeamMatch.teamId}
-                            displayName: "${newTeamMatch.displayName}"
-                            name: "${newTeamMatch.name}"
-                            tag: "${newTeamMatch.tag}"
-                            currentRank: "${newTeamMatch.currentRank}"
-                            peakRank: "${newTeamMatch.peakRank}"
-                            link: "${newTeamMatch.link}"
-                            imageLink: "${newTeamMatch.imageLink}"
-                            role: "${newTeamMatch.role}"
+                            teamId: ${newPlayer.teamId}
+                            displayName: "${newPlayer.displayName}"
+                            name: "${newPlayer.name}"
+                            tag: "${newPlayer.tag}"
+                            currentRank: "${newPlayer.currentRank}"
+                            peakRank: "${newPlayer.peakRank}"
+                            link: "${newPlayer.link}"
+                            imageLink: "${newPlayer.imageLink}"
+                            role: "${newPlayer.role}"
                         }
                     ) {
                         id
