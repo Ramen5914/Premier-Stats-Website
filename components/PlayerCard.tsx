@@ -4,7 +4,9 @@ import Link from 'next/link'
 
 export default async function PlayerCard({ player }: { player: Player }) {
     const rankSize: number = 45;
-    var captain: boolean = (player.role == "Captain")
+    const captain: boolean = (player.role == "Captain")
+    const substitute: boolean = (player.role == "Substitute")
+    const exPlayer: boolean = (player.role == "Ex-Player")
 
     return (
         <Link href={`/team/${player.teamId}/player/${player.id}`}>
@@ -13,13 +15,33 @@ export default async function PlayerCard({ player }: { player: Player }) {
                 <div className='dark:bg-current w-[2px]'></div>
                 <div className='flex flex-col justify-between grow'>
                     <div className='flex flex-row grow h-min justify-between items-center'>
-                        <div className='flex flex-row h-min items-center'>
-                            <h1 className='text-3xl font-medium'>{player.name}</h1>
-                            <span className='text-xl ml-2 px-2 py-1 bg-indigo-500 text-white rounded-md'>#{player.tag}</span>
-                            {captain && 
-                                <svg className='w-6 h-6 ml-3 text-yellow-500' fill='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
-                                </svg>
+                        <div className='flex flex-row items-center space-x-2 '>
+                            <h1 className='text-3xl font-medium'>{player.displayName}</h1>
+                            <span className='text-lg font-normal text-white bg-indigo-500 px-[0.25rem] rounded-lg'>{player.name}#{player.tag}</span>
+                            {
+                                (
+                                    captain
+                                    && 
+                                    <svg className='w-6 h-6 ml-3 text-yellow-500' fill='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
+                                    </svg>
+                                )
+                                ||
+                                (
+                                    substitute
+                                    &&
+                                    <svg className='w-6 h-6 ml-3 text-orange-400' xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 24 24">
+                                        <path fill="none" fillOpacity="1" fillRule="evenodd" stroke="currentColor" strokeDasharray="none" strokeLinecap="round" strokeOpacity="1" strokeWidth="1.667" d="M2.29 16.95l6.694-6.217M2.29 16.95l6.695 6.217m13.294-6.217H2.29m19.422-9.9L15.016.833M21.71 7.05l-6.695 6.217M1.722 7.05H21.71" />
+                                    </svg>
+                                )
+                                ||
+                                (
+                                    exPlayer
+                                    &&
+                                    <svg className="w-6 h-6 ml-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#ff4040">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                                    </svg>
+                                )
                             }
                         </div>
                         <div className='flex flex-row h-min'>
