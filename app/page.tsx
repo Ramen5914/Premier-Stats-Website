@@ -13,9 +13,9 @@ export default async function Page() {
     const { data } = await getData();
 
     return (
-        <>
+        <main className="grow max-w-7xl flex flex-col space-y-4 mx-auto px-4 sm:px-6 md:px-8">
             {teamCardRenderer(data.allTeams)}
-        </>
+        </main>
     )
 }
 

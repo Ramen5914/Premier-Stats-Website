@@ -11,10 +11,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const id = params.playerid
-    console.log(params)
 
     const data = await getPlayerName(id);
-    console.log(data)
 
     return {
         title: `${data.name}#${data.tag}`
