@@ -17,7 +17,7 @@ export default async function Page({ params }: Props) {
     )
 }
 
-async function playerCardRenderer(teamId: number): Promise<React.ReactNode[]> {
+async function playerCardRenderer(teamId: number) {
     var players: Player[] = await getPlayers(teamId);
 
     var playerCards: React.ReactNode[] = [];
@@ -110,7 +110,7 @@ async function playerCardRenderer(teamId: number): Promise<React.ReactNode[]> {
         </>
     );
 
-    return await cards;
+    return cards;
 }
 
 async function getPlayers(teamid: number): Promise<Player[]> {
