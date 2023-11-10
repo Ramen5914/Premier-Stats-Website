@@ -9,7 +9,7 @@ type Props = {
 export default async function Page({ params }: Props) {
     return (
         <div className='dark:bg-slate-900 shadow-lg py-1 pb-4 px-4 rounded-2xl flex flex-col max-w-min ml-auto'>
-            <h1 className="text-3xl mb-2 self-center text-slate-400">Players:</h1>
+            <h1 className="text-3xl mb-2 self-center">Players:</h1>
             <div className="flex flex-col space-y-2">
                 {await playerCardRenderer(params.teamid)}
             </div>
@@ -18,34 +18,35 @@ export default async function Page({ params }: Props) {
 }
 
 async function playerCardRenderer(teamId: number) {
-    var players: Player[] = await getPlayers(teamId);
+    const rankSize: number = 35;
+    const bannerSize: number = 64;
+    const roleSize: number = 20;
+    
+    let players: Player[] = await getPlayers(teamId);
 
-    var playerCards: React.ReactNode[] = [];
-    var subCards: React.ReactNode[] = [];
-    var exCards: React.ReactNode[] = [];
+    let playerCards: React.ReactNode[] = [];
+    let subCards: React.ReactNode[] = [];
+    let exCards: React.ReactNode[] = [];
 
     for (let player of players) {
-        const rankSize: number = 35;
-        const bannerSize: number = 64;
-        const roleSize: number = 20;
         const captain: boolean = (player.role == "Captain")
         const substitute: boolean = (player.role == "Substitute")
         const exPlayer: boolean = (player.role == "Ex-Player")
 
-        var tempCard = (
+        let tempCard = (
             <Link href={`/team/${teamId}/player/${player.id}`}>
-                <div className="rounded-lg border-slate-800 hover:border-slate-600 duration-[350ms] border-2 py-1 px-2 flex flex-row min-w-max space-x-2">
+                <div className="rounded-lg border-slate-800 hover:border-slate-600 duration-[350ms] border-2 p-1 flex flex-row min-w-max space-x-2">
                     <Image priority className='rounded-md' src={player.imageLink} alt="" width={bannerSize} height={bannerSize} />
-                    <div className="my-1 w-[2px] bg-current"></div>
+                    <div className="my-1 w-[2px] bg-slate-800"></div>
                     <div className="flex flex-col grow">
                         <div className="flex flex-row justify-between items-center space-x-8">
-                            <div className="flex flex-row items-center space-x-1">
+                            <div className="flex flex-row items-center space-x-2">
                                 <h1 className="text-2xl">{player.displayName}</h1>
-                                <span className='text-sm font-normal text-white bg-indigo-500 px-[0.25rem] rounded-lg'>{player.name}#{player.tag}</span>
+                                <span className='text-sm font-normal text-white bg-indigo-500 px-[0.4rem] rounded-lg'>{player.name}#{player.tag}</span>
                                 {
                                     (
                                         captain
-                                        && 
+                                        &&
                                         <svg className='text-yellow-500' fill='currentColor' width={roleSize} height={roleSize} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                             <path d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
                                         </svg>
@@ -69,11 +70,11 @@ async function playerCardRenderer(teamId: number) {
                                 }
                             </div>
                             <div>
-                                Hello
+                                <Image src={'/images/rank/' + player.peakRank + '.png'} alt='' width={rankSize} height={rankSize} />
                             </div>
                         </div>
                         <div className="flex flex-row">
-                            <Image src={'/images/rank/' + player.peakRank + '.png'} alt='' width={rankSize} height={rankSize} />
+                            <span className="italic text-slate-700">&quot;{player.title}&quot;</span>
                         </div>
                     </div>
                 </div>
@@ -89,21 +90,21 @@ async function playerCardRenderer(teamId: number) {
         }
     }
 
-    var cards: React.ReactNode = (
+    let cards: React.ReactNode = (
         <>
-            <h1>Current Roster:</h1>
+            <h1 className="text-lg border-b-[1px] border-current">Current Roster:</h1>
             {playerCards}
             {
                 (subCards.length > 0) &&
                 <>
-                    <h1>Substitutes:</h1>
+                    <h1 className="text-lg border-b-[1px] border-current">Substitutes:</h1>
                     {subCards}
                 </>
             }
             {
-                (subCards.length > 0) &&
+                (exCards.length > 0) &&
                 <>
-                    <h1>Ex-Players:</h1>
+                    <h1 className="text-lg border-b-[1px] border-current">Ex-Players:</h1>
                     {exCards}
                 </>
             }
@@ -131,9 +132,9 @@ async function getPlayers(teamid: number): Promise<Player[]> {
                             peakRank
                             imageLink
                             role
+                            title
                             playerMatchCount
                         }
-                        playerCount
                     }
                 }
                             
@@ -145,7 +146,7 @@ async function getPlayers(teamid: number): Promise<Player[]> {
         throw new Error('Failed to fetch data');
     }
 
-    var resJson = await response.json();
-    
+    let resJson = await response.json();
+
     return await resJson.data.teamById.players;
 }
