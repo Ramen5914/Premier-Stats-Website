@@ -50,7 +50,7 @@ async function getPlayerName(id: number) {
         throw new Error('Failed to fetch data');
     }
 
-    var resJson = await response.json();
+    let resJson = await response.json();
 
     return await resJson.data.playerById;
 }

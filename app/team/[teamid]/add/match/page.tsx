@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         }
         const currentRankName = formData.get('current-rank')?.toString();
         const currentRankValue = formData.get('current-level')?.toString();
-        var currentRank: string;
+        let currentRank: string;
         if (currentRankName != undefined && currentRankName != "null") {
             if (currentRankName == "Radiant" || currentRankName == "Unranked") {
                 currentRank = currentRankName;
@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         }
         const peakRankName = formData.get('peak-rank')?.toString();
         const peakRankValue = formData.get('peak-level')?.toString();
-        var peakRank: string;
+        let peakRank: string;
         if (peakRankName != undefined && peakRankName != "null") {
             if (peakRankName == "Radiant") {
                 peakRank = peakRankName;

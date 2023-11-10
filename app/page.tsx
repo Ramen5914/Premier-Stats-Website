@@ -54,7 +54,7 @@ async function getData() {
 }
 
 function teamCardRenderer(teams: Team[]) {
-    var teamCards = [];
+    let teamCards = [];
 
     for (let team of teams) {
         teamCards.push(

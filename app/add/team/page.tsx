@@ -14,14 +14,14 @@ export default async function Page() {
             return false;
         }
         const episodeValue = formData.get('episode')?.toString();
-        var episode: number
+        let episode: number
         if (episodeValue !== undefined && !isNaN(parseInt(episodeValue))) {
             episode = parseInt(episodeValue);
         } else {
             return false
         }
         const actValue = formData.get('act')?.toString();
-        var act: number
+        let act: number
         if (actValue !== undefined && !isNaN(parseInt(actValue))) {
             act = parseInt(actValue);
         } else {
@@ -44,7 +44,7 @@ export default async function Page() {
             return false;
         }
         const rankValue = formData.get('rank')?.toString();
-        var rank: number
+        let rank: number
         if (rankValue !== undefined && !isNaN(parseInt(rankValue))) {
             rank = parseInt(rankValue);
         } else {
