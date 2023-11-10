@@ -22,8 +22,20 @@ export default async function Page({ params }: Props) {
     const { data } = await getData(params.teamid);
 
     return (
-        <main className="grow max-w-7xl flex flex-col space-y-4 mx-auto px-4">
-            {playerCardRenderer(data.teamById.players)}
+        <main className="grow flex flex-row px-4">
+            <div className="grow">
+                <div>
+
+                </div>
+            </div>
+            <div className="grow max-w-7xl flex flex-col space-y-4 mx-auto px-1">
+                {playerCardRenderer(data.teamById.players)}  
+            </div>
+            <div className="grow">
+                <div>
+                    
+                </div>
+            </div>
         </main>
     )
 }
