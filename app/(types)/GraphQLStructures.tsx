@@ -65,6 +65,7 @@ export type TeamMatch = {
     enemyImageLink: string
     teamScore: number
     enemyScore: number
+    score: number
 }
 export type NewTeamMatch = {
     teamId: number
@@ -112,6 +113,8 @@ export type Player = {
     link: string
     imageLink: string
     role: string
+    quote: string
+    title: string
 
     playerMatches: PlayerMatch[]
     playerMatchCount: number
@@ -127,6 +130,8 @@ export type NewPlayer = {
     link: string
     imageLink: string
     role: string
+    quote: string
+    title: string
 }
 export type PlayerChange = {
     id: number
@@ -140,6 +145,8 @@ export type PlayerChange = {
     link: string | undefined
     imageLink: string | undefined
     role: string | undefined
+    quote: string | undefined
+    title: string | undefined
 }
 
 // Player Match

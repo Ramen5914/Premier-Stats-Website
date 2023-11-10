@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         }
         const currentRankName = formData.get('current-rank')?.toString();
         const currentRankValue = formData.get('current-level')?.toString();
-        var currentRank: string;
+        let currentRank: string;
         if (currentRankName != undefined && currentRankName != "null") {
             if (currentRankName == "Radiant" || currentRankName == "Unranked") {
                 currentRank = currentRankName;
@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         }
         const peakRankName = formData.get('peak-rank')?.toString();
         const peakRankValue = formData.get('peak-level')?.toString();
-        var peakRank: string;
+        let peakRank: string;
         if (peakRankName != undefined && peakRankName != "null") {
             if (peakRankName == "Radiant") {
                 peakRank = peakRankName;
@@ -53,6 +53,14 @@ export default async function Page({ params }: { params: { teamid: number } }) {
         if (role == undefined || role == "null") {
             return false;
         }
+        const title = formData.get('title')?.toString();
+        if (title == undefined) {
+            return false;
+        }
+        const quote = formData.get('quote')?.toString();
+        if (quote == undefined) {
+            return false;
+        }
 
         const newPlayer: NewPlayer = {
             name: playerName,
@@ -63,7 +71,9 @@ export default async function Page({ params }: { params: { teamid: number } }) {
             peakRank: peakRank,
             link: link,
             imageLink: imageLink,
-            role: role
+            role: role,
+            quote: quote,
+            title: title
         }
 
         if (await createNewPlayer(newPlayer)) {
@@ -139,6 +149,14 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Ex-Partner"}>Substitute</option>
                     </select>
                 </div>
+                <div>
+                    <label>Title: </label>
+                    <input required type="text" name="title" />
+                </div>
+                <div>
+                    <label>Quote: </label>
+                    <textarea required name="quote" className="resize-none" />
+                </div>
                 <button className="px-3 py-2 bg-indigo-500 text-white hover:bg-indigo-400 w-fit mx-auto shadow-sm font-semibold text-sm rounded-md inline-flex items-center gap-x-1.5" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M12 2h-2v3h2V2Z" />
@@ -171,6 +189,8 @@ async function createNewPlayer(newPlayer: NewPlayer) {
                             link: "${newPlayer.link}"
                             imageLink: "${newPlayer.imageLink}"
                             role: "${newPlayer.role}"
+                            quote: "${newPlayer.quote}"
+                            title: "${newPlayer.title}"
                         }
                     ) {
                         id
