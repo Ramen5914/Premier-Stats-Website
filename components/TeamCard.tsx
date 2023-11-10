@@ -9,7 +9,7 @@ export default async function TeamCard({ team }: { team: Team }) {
                 <Image priority src={team.imageLink} alt="" width={128} height={128} />
                 <div className='dark:bg-current w-[2px]'></div>
                 <div className='flex flex-col justify-between grow'>
-                    <div className='flex flex-row grow h-min justify-between items-center'>
+                    <div className='flex flex-row h-min justify-between items-center'>
                         <div className='flex flex-row h-min'>
                             <h1 className='text-3xl font-medium'>{team.name}</h1>
                             <span className='text-xl ml-2 px-2 py-1 bg-indigo-500 text-white rounded-md'>#{team.tag}</span>
