@@ -9,7 +9,7 @@ type Props = {
 export default async function Page({ params }: Props) {
     return (
         <div className='dark:bg-slate-900 shadow-lg py-1 pb-4 px-4 rounded-2xl flex flex-col max-w-min ml-auto'>
-            <h1 className="text-3xl mb-2 self-center">Players:</h1>
+            <h1 className="text-3xl self-center">Players:</h1>
             <div className="flex flex-col space-y-2">
                 {await playerCardRenderer(params.teamid)}
             </div>
@@ -34,7 +34,7 @@ async function playerCardRenderer(teamId: number) {
         const exPlayer: boolean = (player.role == "Ex-Player")
 
         let tempCard = (
-            <Link href={`/team/${teamId}/player/${player.id}`}>
+            <Link key={player.id} href={`/team/${teamId}/player/${player.id}`}>
                 <div className="rounded-lg border-slate-800 hover:border-slate-600 duration-[350ms] border-2 p-1 flex flex-row min-w-max space-x-2">
                     <Image priority className='rounded-md' src={player.imageLink} alt="" width={bannerSize} height={bannerSize} />
                     <div className="my-1 w-[2px] bg-slate-800"></div>
