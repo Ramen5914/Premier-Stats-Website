@@ -6,9 +6,9 @@ type Props = {
     params: { teamid: number }
 }
 
-export default async function Page({ params }: Props) {
+export default async function Players({ params }: Props) {
     return (
-        <div className='dark:bg-slate-900 shadow-lg py-1 pb-4 px-4 rounded-2xl flex flex-col max-w-min ml-auto'>
+        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col max-w-min'>
             <h1 className="text-3xl self-center">Players:</h1>
             <div className="flex flex-col space-y-2">
                 {await playerCardRenderer(params.teamid)}
@@ -21,7 +21,7 @@ async function playerCardRenderer(teamId: number) {
     const rankSize: number = 35;
     const bannerSize: number = 64;
     const roleSize: number = 20;
-    
+
     let players: Player[] = await getPlayers(teamId);
 
     let playerCards: React.ReactNode[] = [];

@@ -2,6 +2,8 @@ import type { TeamMatch, Tournament } from '@/app/(types)/GraphQLStructures'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import Players from './@players/page'
+import Team from './@team/page'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,12 +42,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
     return (
-        <main className="grow flex flex-row px-4">
-            <div>
-
+        <main className="grow grid grid-cols-7 mx-auto">
+            <div className='col-span-2'>
+                <Players params={{teamid: params.teamid}} />
             </div>
-            <div className="grow-0 max-w-7xl flex flex-col space-y-4 mx-auto px-8">
+            <div className="flex flex-col space-y-4 col-span-3 mx-12">
                 {await teamMatchCardRenderer(params.teamid)}
+            </div>
+            <div className='col-span-2'>
+                <Team params={{teamid: params.teamid}} />
             </div>
         </main>
     )
@@ -94,7 +99,7 @@ async function teamMatchCardRenderer(teamid: number) {
 
         compiledMatches.push(
             <Link key={teamMatch.id} href={`/team/${teamid}/match/${teamMatch.id}`}>
-                <div className='text-slate-300 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 xl:w-[48rem] ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[300ms] hover:translate-x-1 hover:-translate-y-1'>
+                <div className='text-slate-300 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[300ms] hover:translate-x-1 hover:-translate-y-1'>
                     <Image className='rounded-md' priority src={teamMatch.enemyImageLink} alt="" width={enemyImageSize} height={enemyImageSize} />
                     <div className='dark:bg-slate-200 w-[2px]'></div>
                     <div className='flex flex-col grow'>
@@ -139,7 +144,7 @@ async function teamMatchCardRenderer(teamid: number) {
                                     )
                                 }
                             </h1>
-                            
+
                             {
                                 (
                                     win

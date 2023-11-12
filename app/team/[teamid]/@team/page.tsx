@@ -1,12 +1,11 @@
 import { Team } from "@/app/(types)/GraphQLStructures";
-import Link from 'next/link'
 import Image from 'next/image'
 
 type Props = {
     params: { teamid: number }
 }
 
-export default async function Page({ params }: Props) {
+export default async function Team({ params }: Props) {
     return (
         <>
             {await teamCardRenderer(params.teamid)}
@@ -28,41 +27,25 @@ async function teamCardRenderer(teamId: number) {
     const barFill: string = `${barPercent}%`
 
     return (
-        <div className="max-w-min">
-            <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col mr-auto min-w-max space-y-2'>
-                <div className="flex flex-row justify-between">
-                    <Image priority src={team.imageLink} alt="" width={teamIconSize} height={teamIconSize} />
-                    <div className='flex flex-row space-x-2 items-center h-min'>
-                        <span className="text-xl">{team.division}</span>
-                        <Image className='h-min' priority src={`/images/premier/${team.division}.png`} alt="" width={divisionSize} height={divisionSize} />
-                    </div>
+        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2'>
+            <div className="flex flex-row justify-between">
+                <Image priority src={team.imageLink} alt="" width={teamIconSize} height={teamIconSize} />
+                <div className='flex flex-row space-x-2 items-center h-min'>
+                    <span className="text-xl">{team.division}</span>
+                    <Image className='h-min' priority src={`/images/premier/${team.division}.png`} alt="" width={divisionSize} height={divisionSize} />
                 </div>
-                <div className="flex flex-row items-center space-x-2">
-                    <h1 className="text-3xl">
-                        {team.name}
-                        <span className='ml-2 text-xl font-normal text-white bg-indigo-500 px-2 py-1 rounded-lg'>#{team.tag}</span>
-                    </h1>
+            </div>
+            <div className="flex flex-row items-center space-x-2">
+                <h1 className="text-3xl">
+                    {team.name}
+                    <span className='ml-2 text-xl font-normal text-white bg-indigo-500 px-2 py-1 rounded-lg'>#{team.tag}</span>
+                </h1>
+            </div>
+            <div className="flex flex-row items-center space-x-2">
+                <label className="text-lg">{team.score}/600</label>
+                <div className="bg-slate-700 h-5 rounded-lg" style={{width: "100%"}}>
+                    <div style={{ width: barFill, height: "100%" }} className="bg-amber-400 rounded-lg" />
                 </div>
-                <div className="flex flex-row items-center space-x-2">
-                    <label className="text-lg">{team.score}/600</label>
-                    <div className="bg-slate-700 w-96 h-5 rounded-lg">
-                        <div style={{ width: barFill, height: "100%" }} className="bg-amber-400 rounded-lg" />
-                    </div>
-                </div>
-                {/* <div className="flex flex-col grow">
-                        <div className="flex flex-row justify-between items-center space-x-8">
-                            <div className="flex flex-row items-center space-x-2">
-                                <h1 className="text-2xl">{team.name}</h1>
-                                <span className='text-sm font-normal text-white bg-indigo-500 px-[0.4rem] rounded-lg'>{team.name}#{team.tag}</span>
-                            </div>
-                            <div>
-                                <Image src={'/images/premier/' + team.division + '.png'} alt='' width={rankSize} height={rankSize} />
-                            </div>
-                        </div>
-                        <div className="flex flex-row">
-                            <span className="italic text-slate-700">{`"${team.playerCount}"`}</span>
-                        </div>
-                    </div> */}
             </div>
         </div>
     )
