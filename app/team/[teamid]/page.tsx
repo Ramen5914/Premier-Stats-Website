@@ -42,11 +42,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
     return (
-        <main className="grow grid grid-cols-7 mx-auto">
+        <main className="grow grid grid-cols-8 mx-auto">
             <div className='col-span-2'>
                 <Players params={{teamid: params.teamid}} />
             </div>
-            <div className="flex flex-col space-y-4 col-span-3 mx-12">
+            <div className="flex flex-col space-y-4 col-span-4 mx-12">
                 {await teamMatchCardRenderer(params.teamid)}
             </div>
             <div className='col-span-2'>
@@ -84,10 +84,15 @@ async function teamMatchCardRenderer(teamid: number) {
 
     for (let teamMatch of teamMatches) {
         let win: boolean = teamMatch.teamScore > teamMatch.enemyScore;
+
         let [date, time] = teamMatch.playedAt.split('T');
         let [year, month, day] = date.split('-');
         let [hour, minute] = time.split(':');
         let timeOfDay: String = "AM";
+        let duration = formatDuration(teamMatch.duration);
+
+        console.log(formatDuration(''))
+
         let mapColor = mapColors[teamMatch.map];
 
         if (hour == '00') {
@@ -109,11 +114,10 @@ async function teamMatchCardRenderer(teamid: number) {
                                 <span className='text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min'>#{teamMatch.enemyTag}</span>
                             </div>
                             <span className='text-lg text-slate-500 items-start h-min'>
-                                {`${month}/${day}/${year}, ${hour}:${minute} ${timeOfDay}`}
+                                {`${month}/${day}/${year}, ${hour}:${minute} ${timeOfDay} | ${duration}`}
                             </span>
                         </div>
                         <div className='grid grid-cols-3 grow items-center'>
-                            {/* style={{color: mapColor}} */}
                             <h1 className='text-xl'>{teamMatch.map}
                                 {
                                     teamMatch.practice
@@ -275,4 +279,35 @@ async function getTeamMatches(teamid: number): Promise<[TeamMatch[], Tournament 
     let data = (await response.json()).data.teamById;
 
     return await [data.teamMatches, data.tournament];
+}
+
+function formatDuration(duration: string): string {
+    // Regular expression to extract hours, minutes, and seconds
+    const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+
+    // Extracting hours, minutes, and seconds using regex
+    const match = duration.match(regex);
+
+    if (!match) {
+        throw new Error('Invalid duration format');
+    }
+
+    // Helper function to pad a number with leading zeros
+    const padWithZeros = (num: string | number, targetLength: number): string => {
+        let paddedNum = String(num);
+        while (paddedNum.length < targetLength) {
+            paddedNum = '0' + paddedNum;
+        }
+        return paddedNum;
+    };
+
+    // Extracted values for hours, minutes, and seconds
+    const hours = match[1] ? padWithZeros(match[1], 2) + 'h' : '';
+    const minutes = match[2] ? padWithZeros(match[2], 2) + 'm' : '00m';
+    const seconds = match[3] ? padWithZeros(match[3], 2) + 's' : '00s';
+
+    // Formatting the result
+    const formattedDuration = [hours, minutes, seconds].join(' ').trim();
+
+    return formattedDuration || '00s'; // Return '00s' if the duration is empty
 }
