@@ -19,7 +19,7 @@ async function teamCardRenderer(teamId: number) {
     const qualifyReq: number = 600;
     const divisionSize: number = 56;
     const teamIconSize: number = 128;
-    var barPercent: number = (team.score / qualifyReq) * 100
+    var barPercent: number = (team.score / qualifyReq) * 100;
     if (barPercent > 100) {
         barPercent = 100;
     }
