@@ -1,1 +1,1 @@
-[![wakatime](https://wakatime.com/badge/github/Ramen5914/Premier-Stats-Website.svg)](https://wakatime.com/badge/github/Ramen5914/Premier-Stats-Website)
+[![wakatime](https://wakatime.com/badge/user/7665ba68-57be-4a2f-b258-72b43367c940/project/9e7c8100-7348-4b83-865b-4541c7c10997.svg)](https://wakatime.com/badge/user/7665ba68-57be-4a2f-b258-72b43367c940/project/9e7c8100-7348-4b83-865b-4541c7c10997)
