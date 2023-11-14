@@ -42,11 +42,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
     return (
-        <main className="grow grid grid-cols-8 mx-auto">
+        <main className="grow grid grid-cols-7 mx-auto">
             <div className='col-span-2'>
                 <Players params={{teamid: params.teamid}} />
             </div>
-            <div className="flex flex-col space-y-4 col-span-4 mx-12">
+            <div className="flex flex-col space-y-4 col-span-3 mx-12">
                 {await teamMatchCardRenderer(params.teamid)}
             </div>
             <div className='col-span-2'>
@@ -84,13 +84,13 @@ async function teamMatchCardRenderer(teamid: number) {
 
     for (let teamMatch of teamMatches) {
         let win: boolean = teamMatch.teamScore > teamMatch.enemyScore;
-
         let [date, time] = teamMatch.playedAt.split('T');
         let [year, month, day] = date.split('-');
         let [hour, minute] = time.split(':');
         let timeOfDay: String = "AM";
-        let duration = formatDuration(teamMatch.duration);
 
+        let duration = formatDuration(teamMatch.duration);
+        
         let mapColor = mapColors[teamMatch.map];
 
         if (hour == '00') {
@@ -112,10 +112,11 @@ async function teamMatchCardRenderer(teamid: number) {
                                 <span className='text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min'>#{teamMatch.enemyTag}</span>
                             </div>
                             <span className='text-lg text-slate-500 items-start h-min'>
-                                {`${month}/${day}/${year}, ${hour}:${minute} ${timeOfDay} | ${duration}`}
+                                {`${month}/${day}/${year}, ${hour}:${minute} ${timeOfDay}`}
                             </span>
                         </div>
                         <div className='grid grid-cols-3 grow items-center'>
+                            {/* style={{color: mapColor}} */}
                             <h1 className='text-xl'>{teamMatch.map}
                                 {
                                     teamMatch.practice
