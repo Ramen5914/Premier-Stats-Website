@@ -11,6 +11,8 @@ export type Team = {
     act: number
     division: string
     score: number
+    record: Record
+    roundRecord: Record
     rank: number
     link: string
     imageLink: string
@@ -334,4 +336,9 @@ export type TournamentTeamChange = {
     rank: string | undefined
     link: string | undefined
     imageLink: string | undefined
+}
+
+type Record = { 
+    wins: number
+    losses: number
 }

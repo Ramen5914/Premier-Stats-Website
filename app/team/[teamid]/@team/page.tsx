@@ -17,21 +17,6 @@ export default async function Team({ params }: Props) {
 async function teamCardRenderer(teamId: number) {
     let team: Team = await getTeam(teamId);
 
-    var wins: number = 0;
-    var losses: number = 0;
-    var wonRounds: number = 0;
-    var lostRounds: number = 0;
-
-    for (let teamMatch of team.teamMatches) {
-        if (teamMatch.score == 100) {
-            wins += 1;
-        } else if (teamMatch.score == 25) {
-            losses += 1;
-        }
-        wonRounds += teamMatch.teamScore;
-        lostRounds += teamMatch.enemyScore;
-    }
-
     const qualifyReq: number = 600;
     const divisionSize: number = 56;
     const teamIconSize: number = 128;
@@ -75,7 +60,7 @@ async function teamCardRenderer(teamId: number) {
                 </div>
             </div>
             <div>
-                Record: {wins}-{losses} | Rounds: {wonRounds}-{lostRounds}
+                Record: {team.record.wins}-{team.record.losses} | Rounds: {team.roundRecord.wins}-{team.roundRecord.losses}
             </div>
         </div>
     )
@@ -101,10 +86,13 @@ async function getTeam(teamid: number): Promise<Team> {
                         link
                         imageLink
                         region
-                        teamMatches {
-                            score
-                            teamScore
-                            enemyScore
+                        record {
+                            wins
+                            losses
+                        }
+                        roundRecord {
+                            wins
+                            losses
                         }
                     }
                 }   
