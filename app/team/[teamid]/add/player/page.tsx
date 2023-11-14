@@ -146,7 +146,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Captain"}>Captain</option>
                         <option value={"Member"}>Member</option>
                         <option value={"Substitute"}>Substitute</option>
-                        <option value={"Ex-Partner"}>Substitute</option>
+                        <option value={"Ex-Member"}>Ex-Member</option>
                     </select>
                 </div>
                 <div>
