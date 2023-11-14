@@ -91,8 +91,6 @@ async function teamMatchCardRenderer(teamid: number) {
         let timeOfDay: String = "AM";
         let duration = formatDuration(teamMatch.duration);
 
-        console.log(formatDuration(''))
-
         let mapColor = mapColors[teamMatch.map];
 
         if (hour == '00') {
@@ -285,29 +283,54 @@ function formatDuration(duration: string): string {
     // Regular expression to extract hours, minutes, and seconds
     const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
 
-    // Extracting hours, minutes, and seconds using regex
     const match = duration.match(regex);
-
-    if (!match) {
-        throw new Error('Invalid duration format');
+    
+    if (match == null) {
+        throw new Error(`RegEx match not found in ${duration}`)
     }
 
-    // Helper function to pad a number with leading zeros
-    const padWithZeros = (num: string | number, targetLength: number): string => {
-        let paddedNum = String(num);
-        while (paddedNum.length < targetLength) {
-            paddedNum = '0' + paddedNum;
+    let h: number = parseInt(match[1]);
+    let hours: string;
+    let m: number = parseInt(match[2]);
+    let minutes: string;
+    let s: number = parseInt(match[3]);
+    let seconds: string;
+
+    if (Number.isNaN(h) || h == 0) {
+        hours = '';
+    } else {
+        if (h.toString().length > 2) {
+            throw new Error('Hours in duration is too long.');
+        } else if (h.toString().length == 2) {
+            hours = `${h}h `;
+        } else {
+            hours = `0${h}h `;
         }
-        return paddedNum;
-    };
+    }
 
-    // Extracted values for hours, minutes, and seconds
-    const hours = match[1] ? padWithZeros(match[1], 2) + 'h' : '';
-    const minutes = match[2] ? padWithZeros(match[2], 2) + 'm' : '00m';
-    const seconds = match[3] ? padWithZeros(match[3], 2) + 's' : '00s';
+    if (Number.isNaN(m) || m == 0) {
+        minutes = '00m '
+    } else {
+        if (m.toString().length > 2) {
+            throw new Error('Minutes in duration is too long.');
+        } else if (m.toString().length == 2) {
+            minutes = `${m}m `;
+        } else {
+            minutes = `0${m}m `;
+        }
+    }
 
-    // Formatting the result
-    const formattedDuration = [hours, minutes, seconds].join(' ').trim();
+    if (Number.isNaN(s) || s == 0) {
+        seconds = '00s'
+    } else {
+        if (s.toString().length > 2) {
+            throw new Error('Seconds in duration is too long.');
+        } else if (m.toString().length == 2) {
+            seconds = `${s}s`
+        } else {
+            seconds = `0${s}s`
+        }
+    }
 
-    return formattedDuration || '00s'; // Return '00s' if the duration is empty
+    return `${hours}${minutes}${seconds}`;
 }
