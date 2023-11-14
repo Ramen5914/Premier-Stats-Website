@@ -18,7 +18,7 @@ export default async function Players({ params }: Props) {
 }
 
 async function playerCardRenderer(teamId: number) {
-    const rankSize: number = 35;
+    const rankSize: number = 40;
     const bannerSize: number = 64;
     const roleSize: number = 20;
 
@@ -36,7 +36,7 @@ async function playerCardRenderer(teamId: number) {
         let tempCard = (
             <Link key={player.id} href={`/team/${teamId}/player/${player.id}`}>
                 <div className="rounded-lg border-slate-800 hover:border-slate-600 duration-[350ms] border-2 p-1 flex flex-row min-w-max space-x-2">
-                    <Image priority className='rounded-md' src={player.imageLink} alt="" width={bannerSize} height={bannerSize} />
+                    <Image priority className='rounded-sm' src={player.imageLink} alt="" width={bannerSize} height={bannerSize} />
                     <div className="my-1 w-[2px] bg-slate-800"></div>
                     <div className="flex flex-col grow">
                         <div className="flex flex-row justify-between items-center space-x-8">
@@ -69,13 +69,13 @@ async function playerCardRenderer(teamId: number) {
                                     )
                                 }
                             </div>
-                            <div>
-                                <Image src={'/images/rank/' + player.peakRank + '.png'} alt='' width={rankSize} height={rankSize} />
-                            </div>
                         </div>
                         <div className="flex flex-row">
-                            <span className="italic text-slate-700">&quot;{player.title}&quot;</span>
+                            <span className="italic text-slate-700">{player.title}</span>
                         </div>
+                    </div>
+                    <div className="items-center flex">
+                        <Image className="mr-2" src={'/images/rank/' + player.peakRank + '.png'} alt='' width={rankSize} height={rankSize} />
                     </div>
                 </div>
             </Link>
