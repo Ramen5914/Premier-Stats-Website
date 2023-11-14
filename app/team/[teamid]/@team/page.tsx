@@ -59,8 +59,19 @@ async function teamCardRenderer(teamId: number) {
                     <div style={{ width: barFill, height: "100%" }} className="bg-amber-400 rounded-lg" />
                 </div>
             </div>
-            <div>
-                Record: {team.record.wins}-{team.record.losses} | Rounds: {team.roundRecord.wins}-{team.roundRecord.losses}
+            <div className="flex flex-row justify-between">
+                <h2 className="text-xl">
+                    <span>Record: </span>
+                    <span className="text-green-400">{team.record.wins}W</span>
+                    <span className="font-bold m-1">-</span>
+                    <span className="text-red-500">{team.record.losses}L</span>
+                </h2>
+                <h2 className="text-xl">
+                    <span>Rounds: </span>
+                    <span className="text-green-400">{team.roundRecord.wins}</span>
+                    <span className="font-bold m-1">-</span>
+                    <span className="text-red-500">{team.roundRecord.losses}</span>
+                </h2>
             </div>
         </div>
     )
