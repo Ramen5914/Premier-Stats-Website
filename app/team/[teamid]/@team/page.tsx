@@ -42,10 +42,17 @@ async function teamCardRenderer(teamId: number) {
         <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2'>
             <div className="flex flex-row justify-between">
                 <Image priority src={team.imageLink} alt="" width={teamIconSize} height={teamIconSize} />
-                <div className='flex flex-row space-x-2 items-center h-min'>
-                    <span className="text-xl">{team.division}</span>
-                    <Image className='h-min' priority src={`/images/premier/${team.division}.png`} alt="" width={divisionSize} height={divisionSize} />
+                <div className="flex flex-col justify-between items-end">
+                    <div className='flex flex-row space-x-2 items-center h-min'>
+                        <span className="text-xl">{team.division}</span>
+                        <Image className='h-min' priority src={`/images/premier/${team.division}.png`} alt="" width={divisionSize} height={divisionSize} />
+                    </div>
+                    <div className='flex flex-row space-x-2 items-center h-min'>
+                        <span className="text-xl">{team.region}</span>
+                        <Image className='h-min' priority src={`/images/region/${team.region}.png`} alt="" width={divisionSize} height={divisionSize} />
+                    </div>
                 </div>
+                
             </div>
             <div className="flex flex-row items-center space-x-2 justify-between">
                 <h1 className="text-3xl flex-row flex items-center">
