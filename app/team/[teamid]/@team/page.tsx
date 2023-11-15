@@ -2,6 +2,7 @@ import { Team } from "@/app/(types)/GraphQLStructures";
 import Image from 'next/image'
 import Link from "next/link";
 
+
 type Props = {
     params: { teamid: number }
 }
@@ -15,6 +16,7 @@ export default async function Team({ params }: Props) {
 }
 
 async function teamCardRenderer(teamId: number) {
+
     let team: Team = await getTeam(teamId);
 
     const qualifyReq: number = 600;
@@ -26,6 +28,15 @@ async function teamCardRenderer(teamId: number) {
     }
 
     const barFill: string = `${barPercent}%`
+
+    // Chart Stuff:
+    const datasetIdKey = 'id';
+    let labels: string[] = [];
+    let data: number[] = [];
+    for (let teamMatch of team.teamMatches) {
+        labels.push(teamMatch.enemyName);
+        data.push(teamMatch.teamScore - teamMatch.enemyScore)
+    }
 
     return (
         <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2'>
@@ -51,11 +62,10 @@ async function teamCardRenderer(teamId: number) {
                         </g>
                     </svg>
                 </Link>
-                
             </div>
             <div className="flex flex-row items-center space-x-2">
                 <label className="text-lg">{team.score}/600</label>
-                <div className="bg-slate-700 h-5 rounded-lg" style={{width: "100%"}}>
+                <div className="bg-slate-700 h-5 rounded-lg" style={{ width: "100%" }}>
                     <div style={{ width: barFill, height: "100%" }} className="bg-amber-400 rounded-lg" />
                 </div>
             </div>
@@ -97,6 +107,11 @@ async function getTeam(teamid: number): Promise<Team> {
                         link
                         imageLink
                         region
+                        teamMatches {
+                            enemyName
+                            teamScore
+                            enemyScore
+                        }
                         record {
                             wins
                             losses
