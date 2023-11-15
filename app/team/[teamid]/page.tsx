@@ -58,18 +58,6 @@ export default async function Page({ params }: Props) {
 
 async function teamMatchCardRenderer(teamid: number) {
     const enemyImageSize: number = 80;
-    const mapColors: { [key: string]: string } = {
-        Ascent: "#B86368",
-        Bind: "#93735F",
-        Breeze: "#F4ECD2",
-        Fracture: "#678258",
-        Haven: "#B47D79",
-        Icebox: "#5A8EE4",
-        Lotus: "#AA7993",
-        Pearl: "#3A9FA9",
-        Split: "#638B76",
-        Sunset: "#98403A"
-    }
 
     let data: [TeamMatch[], Tournament | null] = await getTeamMatches(teamid);
 
@@ -87,18 +75,19 @@ async function teamMatchCardRenderer(teamid: number) {
         let [date, time] = teamMatch.playedAt.split('T');
         let [year, month, day] = date.split('-');
         let [hour, minute] = time.split(':');
-        let timeOfDay: String = "AM";
+        let timeOfDay: String = "a";
 
-        let duration = formatDuration(teamMatch.duration);
         
-        let mapColor = mapColors[teamMatch.map];
-
         if (hour == '00') {
             hour = "12";
         } else if (parseInt(hour) > 12) {
             hour = (parseInt(hour) - 12).toString();
-            timeOfDay = "PM"
+            timeOfDay = "p"
         }
+        
+        let finalDuration = formatDuration(teamMatch.duration);
+        let finalDate = `${month}/${day}/${year.toString().substring(2)}`;
+        let finalTime = `${hour}:${minute}${timeOfDay}`;
 
         compiledMatches.push(
             <Link key={teamMatch.id} href={`/team/${teamid}/match/${teamMatch.id}`}>
@@ -112,11 +101,10 @@ async function teamMatchCardRenderer(teamid: number) {
                                 <span className='text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min'>#{teamMatch.enemyTag}</span>
                             </div>
                             <span className='text-lg text-slate-500 items-start h-min'>
-                                {`${month}/${day}/${year}, ${hour}:${minute} ${timeOfDay}`}
+                                {`${finalDate}@${finalTime} | ${finalDuration}`}
                             </span>
                         </div>
                         <div className='grid grid-cols-3 grow items-center'>
-                            {/* style={{color: mapColor}} */}
                             <h1 className='text-xl'>{teamMatch.map}
                                 {
                                     teamMatch.practice
