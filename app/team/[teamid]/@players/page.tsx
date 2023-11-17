@@ -8,7 +8,7 @@ type Props = {
 
 export default async function Players({ params }: Props) {
     return (
-        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col max-w-min'>
+        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max mr-2'>
             <h1 className="text-3xl self-center">Players:</h1>
             <div className="flex flex-col space-y-2">
                 {await playerCardRenderer(params.teamid)}
