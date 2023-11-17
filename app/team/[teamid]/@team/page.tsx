@@ -39,7 +39,7 @@ async function teamCardRenderer(teamId: number) {
     }
 
     return (
-        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2'>
+        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
             <div className="flex flex-row justify-between">
                 <Image priority src={team.imageLink} alt="" width={teamIconSize} height={teamIconSize} />
                 <div className="flex flex-col justify-between items-end">
