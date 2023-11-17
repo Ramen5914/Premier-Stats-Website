@@ -1,28 +1,28 @@
 // Team
 export type Team = {
-    id: number
+    id?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    name: string
-    tag: string
-    episode: number
-    act: number
-    division: string
-    score: number
-    record: Record
-    roundRecord: Record
-    rank: number
-    link: string
-    imageLink: string
-    region: string
+    name?: string
+    tag?: string
+    episode?: number
+    act?: number
+    division?: string
+    score?: number
+    record?: Record
+    roundRecord?: Record
+    rank?: number
+    link?: string
+    imageLink?: string
+    region?: string
 
-    tournament: Tournament
-    players: Player[]
-    playerCount: number
-    teamMatches: TeamMatch[]
-    teamMatchCount: number
+    tournament?: Tournament
+    players?: Player[]
+    playerCount?: number
+    teamMatches?: TeamMatch[]
+    teamMatchCount?: number
 }
 export type NewTeam = {
     name: string
@@ -38,36 +38,36 @@ export type NewTeam = {
 export type TeamChange = {
     id: number
 
-    name: string | undefined
-    tag: string | undefined 
-    episode: number | undefined
-    act: number | undefined
-    division: string | undefined
-    rank: number | undefined
-    link: string | undefined
-    imageLink: string | undefined
-    region: string | undefined
+    name?: string
+    tag?: string 
+    episode?: number
+    act?: number
+    division?: string
+    rank?: number
+    link?: string
+    imageLink?: string
+    region?: string
 }
 
 // Team Match
 export type TeamMatch = {
-    id: number
-    teamId: number
+    id?: number
+    teamId?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    playedAt: string
-    duration: string
-    practice: boolean
-    map: string
-    enemyName: string
-    enemyTag: string
-    enemyLink: string
-    enemyImageLink: string
-    teamScore: number
-    enemyScore: number
-    score: number
+    playedAt?: string
+    duration?: string
+    practice?: boolean
+    map?: string
+    enemyName?: string
+    enemyTag?: string
+    enemyLink?: string
+    enemyImageLink?: string
+    teamScore?: number
+    enemyScore?: number
+    score?: number
 }
 export type NewTeamMatch = {
     teamId: number
@@ -85,41 +85,41 @@ export type NewTeamMatch = {
 }
 export type TeamMatchChange = {
     id: number
-    teamId: number | undefined
+    teamId?: number
 
-    playedAt: string | undefined
-    duration: string | undefined
-    practice: boolean | undefined
-    map: string | undefined
-    enemyName: string | undefined
-    enemyTag: string | undefined
-    enemyLink: string | undefined
-    enemyImageLink: string | undefined
-    teamScore: number | undefined
-    enemyScore: number | undefined
+    playedAt?: string
+    duration?: string
+    practice?: boolean
+    map?: string
+    enemyName?: string
+    enemyTag?: string
+    enemyLink?: string
+    enemyImageLink?: string
+    teamScore?: number
+    enemyScore?: number
 }
 
 // Player
 export type Player = {
-    id: number
-    teamId: number
+    id?: number
+    teamId?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    displayName: string
-    name: string
-    tag: string
-    currentRank: string
-    peakRank: string
-    link: string
-    imageLink: string
-    role: string
-    quote: string
-    title: string
+    displayName?: string
+    name?: string
+    tag?: string
+    currentRank?: string
+    peakRank?: string
+    link?: string
+    imageLink?: string
+    role?: string
+    quote?: string
+    title?: string
 
-    playerMatches: PlayerMatch[]
-    playerMatchCount: number
+    playerMatches?: PlayerMatch[]
+    playerMatchCount?: number
 }
 export type NewPlayer = {
     teamId: number
@@ -137,50 +137,50 @@ export type NewPlayer = {
 }
 export type PlayerChange = {
     id: number
-    teamId: number | undefined
+    teamId?: number
 
-    displayName: string | undefined
-    name: string | undefined
-    tag: string | undefined
-    currentRank: string | undefined
-    peakRank: string | undefined
-    link: string | undefined
-    imageLink: string | undefined
-    role: string | undefined
-    quote: string | undefined
-    title: string | undefined
+    displayName?: string
+    name?: string
+    tag?: string
+    currentRank?: string
+    peakRank?: string
+    link?: string
+    imageLink?: string
+    role?: string
+    quote?: string
+    title?: string
 }
 
 // Player Match
 export type PlayerMatch = {
-    id: number
-    playerId: number
-    teamMatchId: number
+    id?: number
+    playerId?: number
+    teamMatchId?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    agent: string
-    mvp: string
-    placement: number
-    trackerNetworkScore: number
-    averageCombatScore: number
-    kills: number
-    deaths: number
-    assists: number
-    killDeathRatio: number
-    plusMinus: number
-    damageDelta: number
-    averageDamagePerRound: number
-    headshotPercentage: number
-    killedAssistedSurvivedTraded: number
-    firstKills: number
-    firstDeaths: number
-    threeK: number
-    fourK: number
-    fiveK: number
-    sixK: number
-    multies: number
+    agent?: string
+    mvp?: string
+    placement?: number
+    trackerNetworkScore?: number
+    averageCombatScore?: number
+    kills?: number
+    deaths?: number
+    assists?: number
+    killDeathRatio?: number
+    plusMinus?: number
+    damageDelta?: number
+    averageDamagePerRound?: number
+    headshotPercentage?: number
+    killedAssistedSurvivedTraded?: number
+    firstKills?: number
+    firstDeaths?: number
+    threeK?: number
+    fourK?: number
+    fiveK?: number
+    sixK?: number
+    multies?: number
 }
 export type NewPlayerMatch = {
     playerId: number
@@ -207,41 +207,41 @@ export type NewPlayerMatch = {
 }
 export type PlayerMatchChange = {
     id: number
-    playerId: number | undefined
-    teamMatchId: number | undefined
+    playerId?: number
+    teamMatchId?: number
 
-    agent: string | undefined
-    mvp: string | undefined
-    placement: number | undefined
-    trackerNetworkScore: number | undefined
-    averageCombatScore: number | undefined
-    kills: number | undefined
-    deaths: number | undefined
-    assists: number | undefined
-    damageDelta: number | undefined
-    averageDamagePerRound: number | undefined
-    headshotPercentage: number | undefined
-    killedAssistedSurvivedTraded: number | undefined
-    firstKills: number | undefined
-    firstDeaths: number | undefined
-    threeK: number | undefined
-    fourK: number | undefined
-    fiveK: number | undefined
-    sixK: number | undefined
+    agent?: string
+    mvp?: string
+    placement?: number
+    trackerNetworkScore?: number
+    averageCombatScore?: number
+    kills?: number
+    deaths?: number
+    assists?: number
+    damageDelta?: number
+    averageDamagePerRound?: number
+    headshotPercentage?: number
+    killedAssistedSurvivedTraded?: number
+    firstKills?: number
+    firstDeaths?: number
+    threeK?: number
+    fourK?: number
+    fiveK?: number
+    sixK?: number
 }
 
 // Tournament
 export type Tournament = {
-    id: number
-    teamId: number
+    id?: number
+    teamId?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    datePlayedAt: string
+    datePlayedAt?: string
 
-    tournamentGames: TournamentGame[]
-    tournamentTeams: TournamentTeam[]
+    tournamentGames?: TournamentGame[]
+    tournamentTeams?: TournamentTeam[]
 }
 export type NewTournament = {
     teamId: number
@@ -250,27 +250,27 @@ export type NewTournament = {
 }
 export type TournamentChange = {
     id: number
-    teamId: number | undefined
+    teamId?: number
 
-    datePlayedAt: string | undefined
+    datePlayedAt?: string
 }
 
 // Tournament Game 
 export type TournamentGame = {
-    id: number
-    tournamentId: number
+    id?: number
+    tournamentId?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    playedAt: string
-    duration: string
+    playedAt?: string
+    duration?: string
 
-    team1: TournamentTeam
-    team1Score: number
+    team1?: TournamentTeam
+    team1Score?: number
 
-    team2: TournamentTeam
-    team2Score: number
+    team2?: TournamentTeam
+    team2Score?: number
 }
 export type NewTournamentGame = {
     tournamentId: number
@@ -289,34 +289,34 @@ export type NewTournamentGame = {
 }
 export type TournamentGameChange = {
     id: number
-    tournamentId: number | undefined
+    tournamentId?: number
 
-    createdAt: string | undefined
-    lastModifiedAt: string | undefined
+    createdAt?: string
+    lastModifiedAt?: string
 
-    playedAt: string | undefined
-    duration: string | undefined
+    playedAt?: string
+    duration?: string
 
-    team1Id: number | undefined
-    team1Score: number | undefined
+    team1Id?: number
+    team1Score?: number
 
-    team2Id: number | undefined
-    team2Score: number | undefined
+    team2Id?: number
+    team2Score?: number
 }
 
 // Tournament Team
 export type TournamentTeam = {   
-    id: number
-    tournamentId: number
+    id?: number
+    tournamentId?: number
 
-    createdAt: string
-    lastModifiedAt: string
+    createdAt?: string
+    lastModifiedAt?: string
 
-    name: string
-    tag: string
-    rank: string
-    link: string
-    imageLink: string
+    name?: string
+    tag?: string
+    rank?: string
+    link?: string
+    imageLink?: string
 }
 export type NewTournamentTeam = {
     tournamentId: number
@@ -329,16 +329,16 @@ export type NewTournamentTeam = {
 }
 export type TournamentTeamChange = {
     id: number
-    tournamentId: number | undefined
+    tournamentId?: number
 
-    name: string | undefined
-    tag: string | undefined
-    rank: string | undefined
-    link: string | undefined
-    imageLink: string | undefined
+    name?: string
+    tag?: string
+    rank?: string
+    link?: string
+    imageLink?: string
 }
 
 type Record = { 
-    wins: number
-    losses: number
+    wins?: number
+    losses?: number
 }
