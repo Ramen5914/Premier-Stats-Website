@@ -1,4 +1,4 @@
-import { NewPlayer } from "@/app/(types)/GraphQLStructures";
+import { NewPlayer } from "@/app/(types)/gqlTypes";
 import { redirect } from 'next/navigation'
 
 export default async function Page({ params }: { params: { teamid: number } }) {
@@ -62,25 +62,26 @@ export default async function Page({ params }: { params: { teamid: number } }) {
             return false;
         }
 
-        const newPlayer: NewPlayer = {
-            name: playerName,
-            tag: playerTag,
-            teamId: params.teamid,
-            displayName: displayName,
-            currentRank: currentRank,
-            peakRank: peakRank,
-            link: link,
-            imageLink: imageLink,
-            role: role,
-            quote: quote,
-            title: title
-        }
+        // const newPlayer: NewPlayer = {
+        //     name: playerName,
+        //     tag: playerTag,
+        //     teamId: params.teamid,
+        //     displayName: displayName,
+        //     currentRank: currentRank,
+        //     peakRank: peakRank,
+        //     link: link,
+        //     imageLink: imageLink,
+        //     role: role,
+        //     quote: quote,
+        //     title: title
+        // }
 
-        if (await createNewPlayer(newPlayer)) {
-            redirect(`/team/${params.teamid}`)
-        } else {
-            return false
-        }
+        // if (await createNewPlayer(newPlayer)) {
+        //     redirect(`/team/${params.teamid}`)
+        // } else {
+        //     return false
+        // }
+        return false;
     }
 
     return (
@@ -170,39 +171,41 @@ export default async function Page({ params }: { params: { teamid: number } }) {
 }
 
 async function createNewPlayer(newPlayer: NewPlayer) {
-    const response = await fetch(`http://localhost:8080/graphql`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            query: `
-                mutation CreatePlayer {
-                    createPlayer(
-                        newPlayer: {
-                            teamId: ${newPlayer.teamId}
-                            displayName: "${newPlayer.displayName}"
-                            name: "${newPlayer.name}"
-                            tag: "${newPlayer.tag}"
-                            currentRank: "${newPlayer.currentRank}"
-                            peakRank: "${newPlayer.peakRank}"
-                            link: "${newPlayer.link}"
-                            imageLink: "${newPlayer.imageLink}"
-                            role: "${newPlayer.role}"
-                            quote: "${newPlayer.quote}"
-                            title: "${newPlayer.title}"
-                        }
-                    ) {
-                        id
-                    }
-                }
-            `
-        })
-    })
+    // const response = await fetch(`http://localhost:8080/graphql`, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //         query: `
+    //             mutation CreatePlayer {
+    //                 createPlayer(
+    //                     newPlayer: {
+    //                         teamId: ${newPlayer.teamId}
+    //                         displayName: "${newPlayer.displayName}"
+    //                         name: "${newPlayer.name}"
+    //                         tag: "${newPlayer.tag}"
+    //                         currentRank: "${newPlayer.currentRank}"
+    //                         peakRank: "${newPlayer.peakRank}"
+    //                         link: "${newPlayer.link}"
+    //                         imageLink: "${newPlayer.imageLink}"
+    //                         role: "${newPlayer.role}"
+    //                         quote: "${newPlayer.quote}"
+    //                         title: "${newPlayer.title}"
+    //                     }
+    //                 ) {
+    //                     id
+    //                 }
+    //             }
+    //         `
+    //     })
+    // })
 
-    if (response.ok) {
-        return true;
-    } else {
-        throw new Error('Failed to create team.');
-    }
+    // if (response.ok) {
+    //     return true;
+    // } else {
+    //     throw new Error('Failed to create team.');
+    // }
+
+    return false;
 }

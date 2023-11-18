@@ -1,6 +1,5 @@
 'use client'
 
-import { isType } from "graphql";
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { TeamPath } from "@/app/(types)/stringmatchers";

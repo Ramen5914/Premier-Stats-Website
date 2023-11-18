@@ -1,4 +1,4 @@
-import { Team } from "@/app/(types)/GraphQLStructures";
+import { Team } from "@/app/(types)/gqlTypes";
 import Image from 'next/image'
 import Link from "next/link";
 
@@ -16,7 +16,6 @@ export default async function Team({ params }: Props) {
 }
 
 async function teamCardRenderer(teamId: number) {
-
     let team: Team = await getTeam(teamId);
 
     const qualifyReq: number = 600;
@@ -52,7 +51,7 @@ async function teamCardRenderer(teamId: number) {
                         <Image className='h-min' priority src={`/images/region/${team.region}.png`} alt="" width={divisionSize} height={divisionSize} />
                     </div>
                 </div>
-                
+
             </div>
             <div className="flex flex-row items-center space-x-2 justify-between">
                 <h1 className="text-3xl flex-row flex items-center">

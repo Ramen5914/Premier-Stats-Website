@@ -1,4 +1,4 @@
-import { NewTeamMatch } from "@/app/(types)/GraphQLStructures";
+import { NewTeamMatch } from "@/app/(types)/gqlTypes";
 import { redirect } from 'next/navigation'
 
 export default async function Page({ params }: { params: { teamid: number } }) {
@@ -54,23 +54,24 @@ export default async function Page({ params }: { params: { teamid: number } }) {
             return false;
         }
 
-        const newTeamMatch: NewTeamMatch = {
-            name: playerName,
-            tag: playerTag,
-            teamId: params.teamid,
-            displayName: displayName,
-            currentRank: currentRank,
-            peakRank: peakRank,
-            link: link,
-            imageLink: imageLink,
-            role: role
-        }
+        // const newTeamMatch: NewTeamMatch = {
+        //     name: playerName,
+        //     tag: playerTag,
+        //     teamId: params.teamid,
+        //     displayName: displayName,
+        //     currentRank: currentRank,
+        //     peakRank: peakRank,
+        //     link: link,
+        //     imageLink: imageLink,
+        //     role: role
+        // }
 
-        if (await createNewTeamMatch(newTeamMatch)) {
-            redirect(`/team/${params.teamid}`)
-        } else {
-            return false
-        }
+        // if (await createNewTeamMatch(newTeamMatch)) {
+        //     redirect(`/team/${params.teamid}`)
+        // } else {
+        //     return false
+        // }
+        return false;
     }
 
     return (
@@ -152,37 +153,38 @@ export default async function Page({ params }: { params: { teamid: number } }) {
 }
 
 async function createNewTeamMatch(newPlayer: NewTeamMatch) {
-    const response = await fetch(`http://localhost:8080/graphql`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            query: `
-                mutation CreatePlayer {
-                    createPlayer(
-                        newPlayer: {
-                            teamId: ${newPlayer.teamId}
-                            displayName: "${newPlayer.displayName}"
-                            name: "${newPlayer.name}"
-                            tag: "${newPlayer.tag}"
-                            currentRank: "${newPlayer.currentRank}"
-                            peakRank: "${newPlayer.peakRank}"
-                            link: "${newPlayer.link}"
-                            imageLink: "${newPlayer.imageLink}"
-                            role: "${newPlayer.role}"
-                        }
-                    ) {
-                        id
-                    }
-                }
-            `
-        })
-    })
+    // const response = await fetch(`http://localhost:8080/graphql`, {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //         query: `
+    //             mutation CreatePlayer {
+    //                 createPlayer(
+    //                     newPlayer: {
+    //                         teamId: ${newPlayer.teamId}
+    //                         displayName: "${newPlayer.displayName}"
+    //                         name: "${newPlayer.name}"
+    //                         tag: "${newPlayer.tag}"
+    //                         currentRank: "${newPlayer.currentRank}"
+    //                         peakRank: "${newPlayer.peakRank}"
+    //                         link: "${newPlayer.link}"
+    //                         imageLink: "${newPlayer.imageLink}"
+    //                         role: "${newPlayer.role}"
+    //                     }
+    //                 ) {
+    //                     id
+    //                 }
+    //             }
+    //         `
+    //     })
+    // })
 
-    if (response.ok) {
-        return true;
-    } else {
-        throw new Error('Failed to create team.');
-    }
+    // if (response.ok) {
+    //     return true;
+    // } else {
+    //     throw new Error('Failed to create team.');
+    // }
+    return false;
 }

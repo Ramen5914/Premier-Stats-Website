@@ -1,69 +1,23 @@
-import { NewTeam } from "@/app/(types)/GraphQLStructures";
+import { newTeam, type NewTeam } from "@/app/(types)/gqlTypes";
 import { redirect } from 'next/navigation'
 
 export default async function Page() {
     async function validate(formData: FormData) {
         'use server'
 
-        const teamName = formData.get('team-name')?.toString();
-        if (teamName == undefined) {
-            return false;
-        }
-        const teamTag = formData.get('team-tag')?.toString();
-        if (teamTag == undefined) {
-            return false;
-        }
-        const episodeValue = formData.get('episode')?.toString();
-        let episode: number
-        if (episodeValue !== undefined && !isNaN(parseInt(episodeValue))) {
-            episode = parseInt(episodeValue);
-        } else {
-            return false
-        }
-        const actValue = formData.get('act')?.toString();
-        let act: number
-        if (actValue !== undefined && !isNaN(parseInt(actValue))) {
-            act = parseInt(actValue);
-        } else {
-            return false
-        }
-        const division = formData.get('division')?.toString();
-        if (division == undefined || division == "null") {
-            return false;
-        }
-        const link = formData.get('link')?.toString();
-        if (link == undefined) {
-            return false;
-        }
-        const imageLink = formData.get('image-link')?.toString();
-        if (imageLink == undefined) {
-            return false;
-        }
-        const region = formData.get('region')?.toString();
-        if (region == undefined || region == "null") {
-            return false;
-        }
-        const rankValue = formData.get('rank')?.toString();
-        let rank: number
-        if (rankValue !== undefined && !isNaN(parseInt(rankValue))) {
-            rank = parseInt(rankValue);
-        } else {
-            return false
-        }
+        const team: NewTeam = newTeam.parse({
+            name: formData.get('team-name'),
+            tag: formData.get('team-tag'),
+            episode: formData.get('episode'),
+            act: formData.get('act'),
+            division: formData.get('division'),
+            rank: formData.get('rank'),
+            link: formData.get('link'),
+            imageLink: formData.get('image-link'),
+            region: formData.get('region')
+        })
 
-        const newTeam: NewTeam = {
-            name: teamName,
-            tag: teamTag,
-            episode: episode,
-            act: act,
-            division: division,
-            link: link,
-            imageLink: imageLink,
-            region: region,
-            rank: rank
-        }
-
-        if (await createNewTeam(newTeam)) {
+        if (await createNewTeam(team)) {
             redirect("/")
         } else {
             return false

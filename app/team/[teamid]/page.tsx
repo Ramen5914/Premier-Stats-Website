@@ -1,11 +1,10 @@
-import type { Team as TeamType, TeamMatch as TeamMatchType, Tournament as TournamentType, Player as PlayerType, Team } from '@/app/(types)/GraphQLStructures'
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import Image from 'next/image'
-import Players from './@players/page'
-import Team from './@team/page'
+import { team as teamSchema, player as playerSchema, teamMatch as teamMatchSchema, tournament as tournamentSchema } from './schemas';
+import type { Team as TeamType, Player as PlayerType, TeamMatch as TeamMatchType, Tournament as TournamentType } from './schemas'
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 
 type Props = {
     params: { teamid: number }
@@ -43,45 +42,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
     const teamData: TeamType = await getAllData(params.teamid);
 
-    if (teamData.record == undefined) {
-        throw new Error('Missing Team Record');
-    }
-    if (teamData.roundRecord == undefined) {
-        throw new Error('Missing Team Round Record.')
-    }
-    if (teamData.players == undefined) {
-        throw new Error('Missing Players.')
-    }
-    if (teamData.teamMatches == undefined) {
-        throw new Error('Missing Team Matches.')
-    }
-    // if (teamData.tournament == undefined) {
-    //     throw new Error('Missing Tournament.')
-    // }
-
-    const team: TeamType = {
-        id: teamData.id,
-        name: teamData.name,
-        tag: teamData.tag,
-        episode: teamData.episode,
-        act: teamData.act,
-        division: teamData.division,
-        score: teamData.score,
-        record: {
-            wins: teamData.record.wins,
-            losses: teamData.record.losses
-        },
-        roundRecord: {
-            wins: teamData.roundRecord.wins,
-            losses: teamData.roundRecord.losses
-        },
-        rank: teamData.rank,
-        link: teamData.link,
-        imageLink: teamData.imageLink,
-        region: teamData.region
-    }
-
-
     const players: PlayerType[] = teamData.players;
     const teamMatches: TeamMatchType[] = teamData.teamMatches;
     const tourmanent: TournamentType | undefined = teamData.tournament;
@@ -89,15 +49,13 @@ export default async function Page({ params }: Props) {
     return (
         <main className="grow grid grid-cols-7 mx-auto">
             <div className='col-span-2'>
-                {await playerCardRenderer(players)}
-                <Players params={{ teamid: params.teamid }} />
+                {playerCardRenderer(players)}
             </div>
             <div className="flex flex-col space-y-4 col-span-3 mx-8">
-                {await teamMatchCardRenderer(teamMatches, tourmanent)}
+                {teamMatchCardRenderer(teamMatches, tourmanent)}
             </div>
             <div className='col-span-2'>
-                {await teamCardRenderer(team)}
-                {/* <Team params={{ teamid: params.teamid }} /> */}
+                {teamCardRenderer(teamData)}
             </div>
         </main>
     )
@@ -113,6 +71,7 @@ async function getAllData(teamid: number): Promise<TeamType> {
             query: `
                 query GetTeamById {
                     teamById(id: ${teamid}) {
+                        id
                         name
                         tag
                         episode
@@ -124,8 +83,11 @@ async function getAllData(teamid: number): Promise<TeamType> {
                         imageLink
                         region
                         teamMatches {
+                            id
+                            teamId
                             enemyName
                             enemyTag
+                            practice
                             teamScore
                             enemyScore
                             playedAt
@@ -144,6 +106,7 @@ async function getAllData(teamid: number): Promise<TeamType> {
                         }
                         players {
                             id
+                            teamId
                             displayName
                             name
                             tag
@@ -165,7 +128,11 @@ async function getAllData(teamid: number): Promise<TeamType> {
 
     let data: TeamType = (await response.json()).data.teamById;
 
-    return data;
+    if (teamSchema.parse(data)) {
+        return data as TeamType;
+    } else {
+        throw new Error('Response data is incorrect.')
+    }
 }
 
 function playerCardRenderer(players: PlayerType[]): React.ReactNode {
@@ -178,20 +145,23 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
     let exCards: React.ReactNode[] = [];
 
     for (let player of players) {
+        if (!playerSchema.parse(player)) {
+            throw new Error('Player incorrect');
+        }
+
         const captain: boolean = (player.role == "Captain")
         const substitute: boolean = (player.role == "Substitute")
-        const exPlayer: boolean = (player.role == "Ex-Player")
+        const exPlayer: boolean = (player.role == "Ex-Member")
 
         let tempCard: React.ReactNode = (
             <Link key={player.id} href={`/team/${player.teamId}/player/${player.id}`}>
-                <div className="rounded-lg border-slate-800 hover:border-slate-600 duration-[350ms] border-2 p-1 flex flex-row min-w-max space-x-2">
+                <div className="rounded-lg border-slate-700 hover:border-slate-600 duration-[350ms] border-2 p-1 flex flex-row min-w-max space-x-2">
                     <Image priority className='rounded-sm' src={player.imageLink} alt="" width={bannerSize} height={bannerSize} />
-                    <div className="my-1 w-[2px] bg-slate-800"></div>
+                    <div className="my-1 w-[2px] bg-slate-700"></div>
                     <div className="flex flex-col grow">
                         <div className="flex flex-row justify-between items-center space-x-8">
                             <div className="flex flex-row items-center space-x-2">
-                                <h1 className="text-2xl">{player.displayName}</h1>
-                                <span className='text-sm font-normal text-white bg-indigo-500 px-[0.4rem] rounded-lg'>{player.name}#{player.tag}</span>
+                                <h1 className="text-2xl text-slate-400">{player.displayName}</h1>
                                 {
                                     (
                                         captain
@@ -220,7 +190,7 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
                             </div>
                         </div>
                         <div className="flex flex-row">
-                            <span className="italic text-slate-700">{player.title}</span>
+                            <span className="italic text-slate-500">{player.title}</span>
                         </div>
                     </div>
                     <div className="items-center flex">
@@ -237,221 +207,279 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
         } else {
             playerCards.push(tempCard);
         }
+    }
 
-        let cards: React.ReactNode = (
-            <>
-                <h1 className="text-lg border-b-[1px] border-current">Current Roster:</h1>
-                {playerCards}
-                {
-                    (subCards.length > 0) &&
-                    <>
-                        <h1 className="text-lg border-b-[1px] border-current">Substitutes:</h1>
-                        {subCards}
-                    </>
-                }
-                {
-                    (exCards.length > 0) &&
-                    <>
-                        <h1 className="text-lg border-b-[1px] border-current">Ex-Players:</h1>
-                        {exCards}
-                    </>
-                }
-            </>
-        );
+    let cards: React.ReactNode = (
+        <>
+            <h1 className="text-lg border-b-[1px] border-current">Current Roster:</h1>
+            {playerCards}
+            {
+                (subCards.length > 0) &&
+                <>
+                    <h1 className="text-lg border-b-[1px] border-current">Substitutes:</h1>
+                    {subCards}
+                </>
+            }
+            {
+                (exCards.length > 0) &&
+                <>
+                    <h1 className="text-lg border-b-[1px] border-current">Ex-Players:</h1>
+                    {exCards}
+                </>
+            }
+        </>
+    );
 
-        return <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max mr-2'>
-        <h1 className="text-3xl self-center">Players:</h1>
+    return (
+        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max mr-2'>
+            <h1 className="text-3xl self-center">Players:</h1>
             <div className="flex flex-col space-y-2">
                 {cards}
             </div>
         </div>
-    }
+    )
 }
 
-    async function teamCardRenderer(team: TeamType) {
-        return (<h1>Hello</h1>)
+function teamCardRenderer(team: TeamType) {
+    const qualifyReq: number = 600;
+    const divisionSize: number = 56;
+    const teamIconSize: number = 128;
+    var barPercent: number = (team.score / qualifyReq) * 100;
+    if (barPercent > 100) {
+        barPercent = 100;
     }
 
-    async function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: TournamentType | undefined) {
-        const enemyImageSize: number = 80;
+    const barFill: string = `${barPercent}%`
 
-        let compiledMatches: React.ReactNode[] = [];
+    // Chart Stuff:
+    const datasetIdKey = 'id';
+    let labels: string[] = [];
+    let data: number[] = [];
+    for (let teamMatch of team.teamMatches) {
+        labels.push(teamMatch.enemyName);
+        data.push(teamMatch.teamScore - teamMatch.enemyScore)
+    }
 
-        if (undefined != tournament) {
-            compiledMatches.push(<h1>Tourney?</h1>)
+    return (
+        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
+            <div className="flex flex-row justify-between">
+                <Image priority src={team.imageLink} alt="" width={teamIconSize} height={teamIconSize} />
+                <div className="flex flex-col justify-between items-end">
+                    <div className='flex flex-row space-x-2 items-center h-min'>
+                        <span className="text-xl">{team.division}</span>
+                        <Image className='h-min' priority src={`/images/premier/${team.division}.png`} alt="" width={divisionSize} height={divisionSize} />
+                    </div>
+                    <div className='flex flex-row space-x-2 items-center h-min'>
+                        <span className="text-xl">{team.region}</span>
+                        <Image className='h-min' priority src={`/images/region/${team.region}.png`} alt="" width={divisionSize} height={divisionSize} />
+                    </div>
+                </div>
+
+            </div>
+            <div className="flex flex-row items-center space-x-2 justify-between">
+                <h1 className="text-3xl flex-row flex items-center">
+                    {team.name}
+                    <span className='ml-2 text-xl font-normal text-white bg-indigo-500 px-2 py-1 rounded-lg'>#{team.tag}</span>
+                </h1>
+                <Link className="p-2 rounded-md bg-slate-800 hover:bg-slate-700 duration-350" href={team.link}>
+                    <svg className="h-4 dark:text-white" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 189.177 64.563" xmlSpace="preserve">
+                        <g transform="translate(-40.878 -103.185)">
+                            <g fillOpacity="1" transform="translate(-.132 13.232)">
+                                <path fill="#e44020" d="M184.415 134.607v-19.91l13.272 19.91 13.272 19.91h19.228V89.958h-17.462v19.05c0 10.478-.09 19.047-.198 19.043-.11-.004-5.903-8.577-12.876-19.05l-12.676-19.043h-20.288v64.559h17.728z" display="inline" />
+                                <path fill="currentColor" d="M79.11 130.44v-24.078H99.483v48.155h17.727v-48.155h28.84v8.462l-12.766.069-12.766.068-.07 7.866-.07 7.866 5.482.072 5.482.071 6.324 11.84 6.323 11.84H163.226l-1.03-1.918c-.567-1.055-3.415-6.38-6.33-11.835l-5.298-9.916 1.992-.337c5.426-.916 9.627-5.179 10.441-10.594.182-1.213.254-5.226.193-10.848 0-7.46.342-19.11-10.939-18.977l-54.822-.069-56.423-.068v16.409H61.383v48.154H79.11z" display="inline" />
+                            </g>
+                        </g>
+                    </svg>
+                </Link>
+            </div>
+            <div className="flex flex-row items-center space-x-2">
+                <label className="text-lg">{team.score}/600</label>
+                <div className="bg-slate-700 h-5 rounded-lg" style={{ width: "100%" }}>
+                    <div style={{ width: barFill, height: "100%" }} className="bg-amber-400 rounded-lg" />
+                </div>
+            </div>
+            <div className="flex flex-row justify-between">
+                <h2 className="text-xl">
+                    <span>Record: </span>
+                    <span className="text-green-400">{team.record.wins}W</span>
+                    <span className="font-bold m-1">-</span>
+                    <span className="text-red-500">{team.record.losses}L</span>
+                </h2>
+                <h2 className="text-xl">
+                    <span>Rounds: </span>
+                    <span className="text-green-400">{team.roundRecord.wins}</span>
+                    <span className="font-bold m-1">-</span>
+                    <span className="text-red-500">{team.roundRecord.losses}</span>
+                </h2>
+            </div>
+        </div>
+    )
+}
+
+function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: TournamentType | undefined) {
+    const enemyImageSize: number = 80;
+
+    let compiledMatches: React.ReactNode[] = [];
+
+    if (undefined != tournament) {
+        compiledMatches.push(<h1>Tourney?</h1>)
+    }
+
+    for (let teamMatch of teamMatches) {
+        let win: boolean = teamMatch.score == 100;
+        let [date, time] = teamMatch.playedAt.split('T');
+        let [year, month, day] = date.split('-');
+        let [hour, minute] = time.split(':');
+        let timeOfDay: String = "a"; // default time in the AM
+
+
+        if (hour == '00') {
+            hour = "12";
+        } else if (parseInt(hour) > 12) {
+            hour = (parseInt(hour) - 12).toString();
+            timeOfDay = "p"
         }
 
-        for (let teamMatch of teamMatches) {
-            if (teamMatch.teamScore == null) {
-                throw new Error('Team score not found.')
-            }
-            if (teamMatch.enemyScore == null) {
-                throw new Error('Enemy score not found.')
-            }
-            if (teamMatch.playedAt == null) {
-                throw new Error('Match date/time not found.')
-            }
-            if (teamMatch.duration == null) {
-                throw new Error('Match duration not found.')
-            }
-            if (teamMatch.enemyImageLink == null) {
-                throw new Error('Enemy image not found.')
-            }
+        let finalDuration = formatDuration(teamMatch.duration);
+        let finalDate = `${month}/${day}/${year.toString().substring(2)}`;
+        let finalTime = `${hour}:${minute}${timeOfDay}`;
 
-            let win: boolean = teamMatch.teamScore > teamMatch.enemyScore;
-            let [date, time] = teamMatch.playedAt.split('T');
-            let [year, month, day] = date.split('-');
-            let [hour, minute] = time.split(':');
-            let timeOfDay: String = "a"; // default time in the AM
-
-
-            if (hour == '00') {
-                hour = "12";
-            } else if (parseInt(hour) > 12) {
-                hour = (parseInt(hour) - 12).toString();
-                timeOfDay = "p"
-            }
-
-            let finalDuration = formatDuration(teamMatch.duration);
-            let finalDate = `${month}/${day}/${year.toString().substring(2)}`;
-            let finalTime = `${hour}:${minute}${timeOfDay}`;
-
-            compiledMatches.push(
-                <Link key={teamMatch.id} href={`/team/${teamMatch.teamId}/match/${teamMatch.id}`}>
-                    <div className='text-slate-300 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[300ms] hover:translate-x-1 hover:-translate-y-1'>
-                        <Image className='rounded-md' priority src={teamMatch.enemyImageLink} alt="" width={enemyImageSize} height={enemyImageSize} />
-                        <div className='dark:bg-slate-200 w-[2px]'></div>
-                        <div className='flex flex-col grow'>
-                            <div className='flex flex-row h-min justify-between space-x-8'>
-                                <div className='flex flex-row h-min space-x-2 items-center'>
-                                    <h1 className='text-2xl font-medium'>{teamMatch.enemyName}</h1>
-                                    <span className='text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min'>#{teamMatch.enemyTag}</span>
-                                </div>
-                                <span className='text-lg text-slate-500 items-start h-min'>
-                                    {`${finalDate}@${finalTime} | ${finalDuration}`}
-                                </span>
+        compiledMatches.push(
+            <Link key={teamMatch.id} href={`/team/${teamMatch.teamId}/match/${teamMatch.id}`}>
+                <div className='text-slate-400 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[350ms] hover:translate-x-1 hover:-translate-y-1'>
+                    <Image className='rounded-md' priority src={teamMatch.enemyImageLink} alt="" width={enemyImageSize} height={enemyImageSize} />
+                    <div className='dark:bg-slate-200 w-[2px]'></div>
+                    <div className='flex flex-col grow'>
+                        <div className='flex flex-row h-min justify-between space-x-8'>
+                            <div className='flex flex-row h-min space-x-2 items-center'>
+                                <h1 className='text-2xl font-medium'>{teamMatch.enemyName}</h1>
+                                <span className='text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min'>#{teamMatch.enemyTag}</span>
                             </div>
-                            <div className='grid grid-cols-3 grow items-center'>
-                                <h1 className='text-xl'>{teamMatch.map}
-                                    {
-                                        teamMatch.practice
-                                        &&
-                                        <span className='ml-1 text-sm text-orange-400'>(Practice)</span>
-                                    }
-                                </h1>
-                                <h1 className='text-3xl mx-auto flex flex-row space-x-1'>
-                                    {
-                                        (
-                                            win
-                                            &&
-                                            <>
-                                                <span className='font-bold text-green-400'>{teamMatch.teamScore}</span>
-                                                <span className='font-bold'>-</span>
-                                                <span className='font-normal text-red-500'>{teamMatch.enemyScore}</span>
-                                            </>
-                                        )
-                                        ||
-                                        (
-                                            !win
-                                            &&
-                                            <>
-                                                <span className='font-normal text-green-400'>{teamMatch.teamScore}</span>
-                                                <span className='font-bold'>-</span>
-                                                <span className='font-bold text-red-500'>{teamMatch.enemyScore}</span>
-                                            </>
-                                        )
-                                    }
-                                </h1>
+                            <span className='text-lg text-slate-500 items-start h-min'>
+                                {`${finalDate}@${finalTime} | ${finalDuration}`}
+                            </span>
+                        </div>
+                        <div className='grid grid-cols-3 grow items-center'>
+                            <h1 className='text-xl text-slate-500'>{teamMatch.map}
+                                {
+                                    teamMatch.practice
+                                    &&
+                                    <span className='ml-1 text-sm text-orange-400'>(Practice)</span>
+                                }
+                            </h1>
+                            <h1 className='text-2xl mx-auto flex flex-row space-x-1'>
                                 {
                                     (
                                         win
                                         &&
-                                        !teamMatch.practice
-                                        &&
-                                        <div className='rounded-lg bg-green-400 px-2 py-1 max-w-min ml-auto'>
-                                            <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
-                                        </div>
+                                        <>
+                                            <span className='font-bold text-green-400'>{teamMatch.teamScore}</span>
+                                            <span className='font-bold'>-</span>
+                                            <span className='font-normal text-red-500'>{teamMatch.enemyScore}</span>
+                                        </>
                                     )
                                     ||
                                     (
                                         !win
                                         &&
-                                        !teamMatch.practice
-                                        &&
-                                        <div className='rounded-lg bg-red-500 px-2 py-1 max-w-min ml-auto'>
-                                            <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
-                                        </div>
-                                    )
-                                    ||
-                                    (
-                                        teamMatch.practice
-                                        &&
-                                        <div className='rounded-lg bg-orange-400 px-2 py-1 max-w-min ml-auto'>
-                                            <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
-                                        </div>
+                                        <>
+                                            <span className='font-normal text-green-400'>{teamMatch.teamScore}</span>
+                                            <span className='font-bold'>-</span>
+                                            <span className='font-bold text-red-500'>{teamMatch.enemyScore}</span>
+                                        </>
                                     )
                                 }
-                            </div>
+                            </h1>
+                            {
+                                (
+                                    win
+                                    &&
+                                    !teamMatch.practice
+                                    &&
+                                    <div className='rounded-lg bg-green-400 px-2 py-1 max-w-min ml-auto'>
+                                        <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
+                                    </div>
+                                )
+                                ||
+                                (
+                                    !win
+                                    &&
+                                    !teamMatch.practice
+                                    &&
+                                    <div className='rounded-lg bg-red-500 px-2 py-1 max-w-min ml-auto'>
+                                        <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
+                                    </div>
+                                )
+                                ||
+                                (
+                                    teamMatch.practice
+                                    &&
+                                    <div className='rounded-lg bg-orange-400 px-2 py-1 max-w-min ml-auto'>
+                                        <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
-                </Link>
-            )
-        }
-
-        return compiledMatches;
+                </div>
+            </Link>
+        )
     }
 
-    function formatDuration(duration: string): string {
-        const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+    return compiledMatches;
+}
 
-        const match = duration.match(regex);
+function formatDuration(duration: string): string {
+    const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
 
-        if (match == null) {
-            throw new Error(`RegEx match not found in ${duration}`)
-        }
+    const match = duration.match(regex);
 
-        let h: number = parseInt(match[1]);
-        let hours: string;
-        let m: number = parseInt(match[2]);
-        let minutes: string;
-        let s: number = parseInt(match[3]);
-        let seconds: string;
-
-        if (Number.isNaN(h) || h == 0) {
-            hours = '';
-        } else {
-            if (h.toString().length > 2) {
-                throw new Error('Hours in duration is too long.');
-            } else if (h.toString().length == 2) {
-                hours = `${h}h `;
-            } else {
-                hours = `0${h}h `;
-            }
-        }
-
-        if (Number.isNaN(m) || m == 0) {
-            minutes = '00m '
-        } else {
-            if (m.toString().length > 2) {
-                throw new Error('Minutes in duration is too long.');
-            } else if (m.toString().length == 2) {
-                minutes = `${m}m `;
-            } else {
-                minutes = `0${m}m `;
-            }
-        }
-
-        if (Number.isNaN(s) || s == 0) {
-            seconds = '00s'
-        } else {
-            if (s.toString().length > 2) {
-                throw new Error('Seconds in duration is too long.');
-            } else if (m.toString().length == 2) {
-                seconds = `${s}s`
-            } else {
-                seconds = `0${s}s`
-            }
-        }
-
-        return `${hours}${minutes}${seconds}`;
+    if (match == null) {
+        throw new Error(`RegEx match not found in ${duration}`)
     }
+
+    let h: number = parseInt(match[1]);
+    let hours: string;
+    let m: number = parseInt(match[2]);
+    let minutes: string;
+    let s: number = parseInt(match[3]);
+    let seconds: string;
+
+    if (Number.isNaN(h) || h == 0) {
+        hours = '';
+    } else {
+        if (h.toString().length > 2) {
+            throw new Error('Hours in duration is too long.');
+        } else if (h.toString().length == 2) {
+            hours = `${h}h `;
+        } else {
+            hours = `0${h}h `;
+        }
+    }
+
+    if (Number.isNaN(m) || m == 0) {
+        minutes = '00m '
+    } else {
+        if (m.toString().length > 2) {
+            throw new Error('Minutes in duration is too long.');
+        } else if (m.toString().length == 2) {
+            minutes = `${m}m `;
+        } else {
+            minutes = `0${m}m `;
+        }
+    }
+
+    if (Number.isNaN(s) || s == 0) {
+        seconds = '00s'
+    } else {
+        if (s.toString().length > 2) {
+            throw new Error('Seconds in duration is too long.');
+        } else if (m.toString().length == 2) {
+            seconds = `${s}s`
+        } else {
+            seconds = `0${s}s`
+        }
+    }
+
+    return `${hours}${minutes}${seconds}`;
+}

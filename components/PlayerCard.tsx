@@ -1,4 +1,4 @@
-import { Player } from '@/app/(types)/GraphQLStructures'
+import { Player } from '@/app/(types)/gqlTypes'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -6,11 +6,11 @@ export default async function PlayerCard({ player }: { player: Player }) {
     const rankSize: number = 45;
     const captain: boolean = (player.role == "Captain")
     const substitute: boolean = (player.role == "Substitute")
-    const exPlayer: boolean = (player.role == "Ex-Player")
+    const exPlayer: boolean = (player.role == "Ex-Member")
 
     return (
         <Link href={`/team/${player.teamId}/player/${player.id}`}>
-            <div className='dark:bg-slate-900 shadow-lg hover:shadow-2xl p-4 rounded-2xl flex flex-row space-x-4 xl:w-[76rem] ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[300ms] hover:translate-x-1 hover:-translate-y-1'>
+            <div className='dark:bg-slate-900 shadow-lg hover:shadow-2xl p-4 rounded-2xl flex flex-row space-x-4 xl:w-[76rem] ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[350ms] hover:translate-x-1 hover:-translate-y-1'>
                 <Image priority className='border-4 rounded-xl border-indigo-500' src={player.imageLink} alt="" width={128} height={128} />
                 <div className='dark:bg-current w-[2px]'></div>
                 <div className='flex flex-col justify-between grow'>
@@ -21,7 +21,7 @@ export default async function PlayerCard({ player }: { player: Player }) {
                             {
                                 (
                                     captain
-                                    && 
+                                    &&
                                     <svg className='w-6 h-6 ml-3 text-yellow-500' fill='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                         <path d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
                                     </svg>

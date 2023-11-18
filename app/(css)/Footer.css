@@ -12,6 +12,6 @@
             hover:translate-x-[0.25rem]
             hover:-translate-y-[0.3rem]
             transition-transform
-            duration-[500ms]
+            duration-[350ms]
     }
 }
