@@ -25,11 +25,6 @@ ChartJS.register(
 
 export function GenLine(): React.ReactNode {
     const options = {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        },
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
