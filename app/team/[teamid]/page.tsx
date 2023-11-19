@@ -352,7 +352,7 @@ function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: Tournam
             <Link key={teamMatch.id} href={`/team/${teamMatch.teamId}/match/${teamMatch.id}`}>
                 <div className='text-slate-400 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[350ms] hover:translate-x-1 hover:-translate-y-1'>
                     <Image className='rounded-md' priority src={teamMatch.enemyImageLink} alt="" width={enemyImageSize} height={enemyImageSize} />
-                    <div className='dark:bg-slate-200 w-[2px]'></div>
+                    <div className='dark:bg-slate-400 w-[2px]'></div>
                     <div className='flex flex-col grow'>
                         <div className='flex flex-row h-min justify-between space-x-8'>
                             <div className='flex flex-row h-min space-x-2 items-center'>
