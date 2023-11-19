@@ -223,7 +223,7 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
             {
                 (exCards.length > 0) &&
                 <>
-                    <h1 className="text-lg border-b-[1px] border-current">Ex-Players:</h1>
+                    <h1 className="text-lg border-b-[1px] border-current">Ex-Members:</h1>
                     {exCards}
                 </>
             }
