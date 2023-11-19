@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const tournamentTeam = z.object({   
+export const tournamentTeamSchema = z.object({
     id: z.coerce.number(),
     tournamentid: z.coerce.number(),
 
@@ -13,7 +13,7 @@ export const tournamentTeam = z.object({
     link: z.string(),
     imageLink: z.string()
 })
-export const tournamentGame = z.object({
+export const tournamentGameSchema = z.object({
     id: z.coerce.number(),
     tournamentid: z.coerce.number(),
 
@@ -23,13 +23,13 @@ export const tournamentGame = z.object({
     playedAt: z.string(),
     duration: z.string(),
 
-    team1: tournamentTeam,
+    team1: tournamentTeamSchema,
     team1Score: z.number(),
 
-    team2: tournamentTeam,
+    team2: tournamentTeamSchema,
     team2Score: z.number()
 })
-export const tournament = z.object({
+export const tournamentSchema = z.object({
     id: z.coerce.number(),
     teamid: z.coerce.number(),
 
@@ -39,42 +39,12 @@ export const tournament = z.object({
     datePlayedAt: z.string(),
 
     tournamentGames: z.array(
-        tournamentGame
+        tournamentGameSchema
     ),
     tournamentTeams: z.array(
-        tournamentTeam
+        tournamentTeamSchema
     )
 })
-export const agent = z.enum([
-    "Astra",
-    "Breach",
-    "Brimstone",
-    "Chamber",
-    "Cypher",
-    "Deadlock",
-    "Fade",
-    "Gekko",
-    "Harbor",
-    "Iso",
-    "Jett",
-    "KAY_O",
-    "Killjoy",
-    "Neon",
-    "Omen",
-    "Phoenix",
-    "Raze",
-    "Reyna",
-    "Sage",
-    "Skye",
-    "Sova",
-    "Viper",
-    "Yoru"
-])
-export const mvp = z.enum([
-    "None",
-    "Team MVP",
-    "Match MVP"
-])
 export const rank = z.enum([
     "Unranked",
     "Iron 1", "Iron 2", "Iron 3",
@@ -93,7 +63,7 @@ export const role = z.enum([
     "Substitute",
     "Ex-Member"
 ])
-export const player = z.object({
+export const playerSchema = z.object({
     id: z.coerce.number(),
     displayName: z.string(),
     name: z.string(),
@@ -117,7 +87,7 @@ export const map = z.enum([
     "Split",
     "Sunset"
 ])
-export const teamMatch = z.object({
+export const teamMatchSchema = z.object({
     id: z.coerce.number(),
     playedAt: z.string(),
     duration: z.string(),
@@ -151,7 +121,7 @@ const record = z.object({
     wins: z.number(),
     losses: z.number()
 })
-export const team = z.object({
+export const teamSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
     tag: z.string(),
@@ -166,18 +136,18 @@ export const team = z.object({
     imageLink: z.string(),
     region: region,
 
-    tournament: tournament.optional(),
+    tournament: tournamentSchema.optional(),
     players: z.array(
-        player
+        playerSchema
     ),
     teamMatches: z.array(
-        teamMatch
+        teamMatchSchema
     )
 })
 
-export type Team = z.infer<typeof team>;
-export type TeamMatch = z.infer<typeof teamMatch>;
-export type Player = z.infer<typeof player>;
-export type Tournament = z.infer<typeof tournament>;
-export type TournamentGame = z.infer<typeof tournamentGame>;
-export type TournamentTeam = z.infer<typeof tournamentTeam>;
+export type TeamType = z.infer<typeof teamSchema>;
+export type TeamMatchType = z.infer<typeof teamMatchSchema>;
+export type PlayerType = z.infer<typeof playerSchema>;
+export type TournamentType = z.infer<typeof tournamentSchema>;
+export type TournamentGameType = z.infer<typeof tournamentGameSchema>;
+export type TournamentTeamType = z.infer<typeof tournamentTeamSchema>;

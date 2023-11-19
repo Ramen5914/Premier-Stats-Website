@@ -1,5 +1,5 @@
-import { team as teamSchema, player as playerSchema, teamMatch as teamMatchSchema, tournament as tournamentSchema } from './schemas';
-import type { Team as TeamType, Player as PlayerType, TeamMatch as TeamMatchType, Tournament as TournamentType } from './schemas'
+import { teamSchema, playerSchema, teamMatchSchema, tournamentSchema } from './schemas';
+import type { TeamType, PlayerType, TeamMatchType, TournamentType } from './schemas'
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -326,6 +326,10 @@ function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: Tournam
     }
 
     for (let teamMatch of teamMatches) {
+        if (!teamMatchSchema.parse(teamMatch)) {
+            throw new Error('Team match incorrect');
+        }
+
         let win: boolean = teamMatch.score == 100;
         let [date, time] = teamMatch.playedAt.split('T');
         let [year, month, day] = date.split('-');
