@@ -331,6 +331,24 @@ function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: Tournam
         }
 
         let win: boolean = teamMatch.score == 100;
+
+        let teamBold: string;
+        let enemyBold: string;
+        if (win) {
+            teamBold = 'font-bold ';
+            enemyBold = '';
+        } else {
+            teamBold = '';
+            enemyBold = 'font-bold ';
+        }
+
+        let practiceText: React.ReactNode;
+        if (teamMatch.practice) {
+            practiceText = <span className='ml-1 text-sm text-orange-400'>(Practice)</span>;
+        } else {
+            practiceText = <></>
+        }
+
         let [date, time] = teamMatch.playedAt.split('T');
         let [year, month, day] = date.split('-');
         let [hour, minute] = time.split(':');
@@ -365,34 +383,12 @@ function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: Tournam
                         </div>
                         <div className='grid grid-cols-3 grow items-center'>
                             <h1 className='text-xl text-slate-500'>{teamMatch.map}
-                                {
-                                    teamMatch.practice
-                                    &&
-                                    <span className='ml-1 text-sm text-orange-400'>(Practice)</span>
-                                }
+                                {practiceText}
                             </h1>
                             <h1 className='text-2xl mx-auto flex flex-row space-x-1'>
-                                {
-                                    (
-                                        win
-                                        &&
-                                        <>
-                                            <span className='font-bold text-green-400'>{teamMatch.teamScore}</span>
-                                            <span className='font-bold'>-</span>
-                                            <span className='font-normal text-red-500'>{teamMatch.enemyScore}</span>
-                                        </>
-                                    )
-                                    ||
-                                    (
-                                        !win
-                                        &&
-                                        <>
-                                            <span className='font-normal text-green-400'>{teamMatch.teamScore}</span>
-                                            <span className='font-bold'>-</span>
-                                            <span className='font-bold text-red-500'>{teamMatch.enemyScore}</span>
-                                        </>
-                                    )
-                                }
+                                <span className={`${teamBold}text-green-400`}>{teamMatch.teamScore}</span>
+                                <span className='font-bold'>-</span>
+                                <span className={`${enemyBold}text-red-500`}>{teamMatch.enemyScore}</span>
                             </h1>
                             {
                                 (
