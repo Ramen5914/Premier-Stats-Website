@@ -341,12 +341,19 @@ function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: Tournam
             teamBold = '';
             enemyBold = 'font-bold ';
         }
-
+        
         let practiceText: React.ReactNode;
+        let scoreColor: string;
         if (teamMatch.practice) {
+            scoreColor = 'bg-orange-400';
             practiceText = <span className='ml-1 text-sm text-orange-400'>(Practice)</span>;
         } else {
             practiceText = <></>
+            if (win) {
+                scoreColor = 'bg-green-400'
+            } else {
+                scoreColor = 'bg-red-500'
+            }
         }
 
         let [date, time] = teamMatch.playedAt.split('T');
@@ -390,35 +397,9 @@ function teamMatchCardRenderer(teamMatches: TeamMatchType[], tournament: Tournam
                                 <span className='font-bold'>-</span>
                                 <span className={`${enemyBold}text-red-500`}>{teamMatch.enemyScore}</span>
                             </h1>
-                            {
-                                (
-                                    win
-                                    &&
-                                    !teamMatch.practice
-                                    &&
-                                    <div className='rounded-lg bg-green-400 px-2 py-1 max-w-min ml-auto'>
-                                        <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
-                                    </div>
-                                )
-                                ||
-                                (
-                                    !win
-                                    &&
-                                    !teamMatch.practice
-                                    &&
-                                    <div className='rounded-lg bg-red-500 px-2 py-1 max-w-min ml-auto'>
-                                        <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
-                                    </div>
-                                )
-                                ||
-                                (
-                                    teamMatch.practice
-                                    &&
-                                    <div className='rounded-lg bg-orange-400 px-2 py-1 max-w-min ml-auto'>
-                                        <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
-                                    </div>
-                                )
-                            }
+                            <div className={`${scoreColor} rounded-lg px-2 py-1 max-w-min ml-auto`}>
+                                <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
