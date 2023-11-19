@@ -1,3 +1,5 @@
+// import { data, genLine } from "@/components/charts/line/lineCharts";
+import { GenLine } from "@/components/charts/line/lineCharts";
 import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic';
@@ -20,11 +22,77 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page({ params }: Props) {
+    
+
+    // const data2 = {
+    //     labels2,
+    //     datasets: [
+    //         {
+    //             label: 'Dataset 1',
+    //             data: [7, 6, 5, 4, 3, 2, 1],
+    //             borderColor: 'rgb(255, 99, 132)',
+    //             backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    //         },
+    //         {
+    //             label: 'Dataset 2',
+    //             data: [1, 2, 3, 4, 5, 6, 7],
+    //             borderColor: 'rgb(53, 162, 235)',
+    //             backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    //         },
+    //     ],
+    // };
+
+    // const data3 = {
+    //     labels3,
+    //     datasets: [
+    //         {
+    //             label: 'Dataset 1',
+    //             data: [7, 6, 5, 4, 3, 2, 1],
+    //             borderColor: 'rgb(255, 99, 132)',
+    //             backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    //         },
+    //         {
+    //             label: 'Dataset 2',
+    //             data: [1, 2, 3, 4, 5, 6, 7],
+    //             borderColor: 'rgb(53, 162, 235)',
+    //             backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    //         },
+    //     ],
+    // };
+
+    // const data4 = {
+    //     labels4,
+    //     datasets: [
+    //         {
+    //             label: 'Dataset 1',
+    //             data: [7, 6, 5, 4, 3, 2, 1],
+    //             borderColor: 'rgb(255, 99, 132)',
+    //             backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    //         },
+    //         {
+    //             label: 'Dataset 2',
+    //             data: [1, 2, 3, 4, 5, 6, 7],
+    //             borderColor: 'rgb(53, 162, 235)',
+    //             backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    //         },
+    //     ],
+    // };
+
     return (
-        <>
-            <h1 className="text-3xl">Player view:</h1>
-            <h2 className="text-xl">{`Team ${params.teamid} Player ${params.playerid}`}</h2>
-        </>
+        <main className="grow mx-auto flex">
+            <div className="w-96 h-5/6">
+                <GenLine />
+                {/* <div className="bg-slate-900 p-2 rounded-3xl shadow-xl">
+                    <GenLine data={data1} />
+                </div>
+                <div className="bg-slate-900 p-2 rounded-3xl shadow-xl">
+                    <GenLine data={data1} />
+                </div>
+                <div className="bg-slate-900 p-2 rounded-3xl shadow-xl">
+                    <GenLine data={data1} />
+                </div> */}
+            </div>
+        </main>
     )
 }
 
