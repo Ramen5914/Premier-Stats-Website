@@ -82,6 +82,8 @@ export const playerSchema = z.object({
     name: z.string(),
     tag: z.string(),
     peakRank: rank,
+    currentRank: rank,
+    link: z.string(),
     imageLink: z.string(),
     role: role,
     playerMatches: z.array(
