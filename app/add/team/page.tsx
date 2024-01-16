@@ -36,7 +36,7 @@ export default async function Page() {
                 </div>
                 <div>
                     <label>Episode: </label>
-                    <input required type="number" name="episode" min={1} max={7} />
+                    <input required type="number" name="episode" min={7} />
                     <label>Act: </label>
                     <input required type="number" name="act" min={1} max={3} />
                 </div>
