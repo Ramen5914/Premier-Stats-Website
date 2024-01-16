@@ -241,7 +241,7 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
 }
 
 function teamCardRenderer(team: TeamType) {
-    const qualifyReq: number = 600;
+    const qualifyReq: number = 675;
     const divisionSize: number = 56;
     const teamIconSize: number = 128;
     var barPercent: number = (team.score / qualifyReq) * 100;
@@ -293,7 +293,7 @@ function teamCardRenderer(team: TeamType) {
                 </Link>
             </div>
             <div className="flex flex-row items-center space-x-2">
-                <label className="text-lg">{team.score}/600</label>
+                <label className="text-lg">{team.score}/{qualifyReq}</label>
                 <div className="bg-slate-700 h-5 rounded-lg" style={{ width: "100%" }}>
                     <div style={{ width: barFill, height: "100%" }} className="bg-amber-400 rounded-lg" />
                 </div>
