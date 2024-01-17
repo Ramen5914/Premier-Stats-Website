@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { type PlayerMatchType, type PlayerType, playerSchema } from "./schemas";
+import { type PlayerMatchType, type PlayerType, playerSchema, teamMatchSchema } from "./schemas";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -174,16 +174,97 @@ function createPlayerCard(player: PlayerType): React.ReactNode {
 }
 
 function createPlayerMatchCards(playerMatches: PlayerMatchType[]): React.ReactNode {
-    let matchCardList: React.ReactNode[] = [];
-    
+    const agentImageSize: number = 80;
+
+    let compiledMatches: React.ReactNode[] = [];
+
     playerMatches.forEach(match => {
-        matchCardList.push(
-            <div key={match.id}>{match.agent}</div>
-        )
+        if (!teamMatchSchema.parse(match)) {
+            throw new Error('Team match incorrect')
+        }
     })
 
+    for (let teamMatch of teamMatches) {
+        if (!teamMatchSchema.parse(teamMatch)) {
+            throw new Error('Team match incorrect');
+        }
 
-    return (
-        matchCardList
-    )
+        let win: boolean = teamMatch.score == 100;
+
+        let teamBold: string;
+        let enemyBold: string;
+        if (win) {
+            teamBold = 'font-bold ';
+            enemyBold = '';
+        } else {
+            teamBold = '';
+            enemyBold = 'font-bold ';
+        }
+        
+        let practiceText: React.ReactNode;
+        let scoreColor: string;
+        if (teamMatch.practice) {
+            scoreColor = 'bg-orange-400';
+            practiceText = <span className='ml-1 text-sm text-orange-400'>(Practice)</span>;
+        } else {
+            practiceText = <></>
+            if (win) {
+                scoreColor = 'bg-green-400'
+            } else {
+                scoreColor = 'bg-red-500'
+            }
+        }
+
+        let [date, time] = teamMatch.playedAt.split('T');
+        let [year, month, day] = date.split('-');
+        let [hour, minute] = time.split(':');
+        let timeOfDay: String = "a"; // default time in the AM
+
+
+        if (hour == '00') {
+            hour = "12";
+        } else if (parseInt(hour) > 12) {
+            hour = (parseInt(hour) - 12).toString();
+            timeOfDay = "p"
+        }
+
+        let finalDuration = formatDuration(teamMatch.duration);
+        let finalDate = `${month}/${day}/${year.toString().substring(2)}`;
+        let finalTime = `${hour}:${minute}${timeOfDay}`;
+
+        compiledMatches.push(
+            <Link key={teamMatch.id} href={`/team/${teamMatch.teamId}/match/${teamMatch.id}`}>
+                <div className='text-slate-400 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[350ms] hover:translate-x-1 hover:-translate-y-1'>
+                    <Image className='rounded-md' priority src={teamMatch.enemyImageLink} alt="" width={agentImageSize} height={agentImageSize} />
+                    <div className='dark:bg-slate-400 w-[2px]'></div>
+                    <div className='flex flex-col grow'>
+                        <div className='flex flex-row h-min justify-between space-x-8'>
+                            <div className='flex flex-row h-min space-x-2 items-center'>
+                                <h1 className='text-2xl font-medium'>{teamMatch.enemyName}</h1>
+                                <span className='text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min'>#{teamMatch.enemyTag}</span>
+                            </div>
+                            <span className='text-lg text-slate-500 items-start h-min'>
+                                {`${finalDate}@${finalTime} | ${finalDuration}`}
+                            </span>
+                        </div>
+                        <div className='grid grid-cols-3 grow items-center'>
+                            <h1 className='text-xl text-slate-500'>{teamMatch.map}
+                                {practiceText}
+                            </h1>
+                            <h1 className='text-2xl mx-auto flex flex-row space-x-1'>
+                                <span className={`${teamBold}text-green-400`}>{teamMatch.teamScore}</span>
+                                <span className='font-bold'>-</span>
+                                <span className={`${enemyBold}text-red-500`}>{teamMatch.enemyScore}</span>
+                            </h1>
+                            <div className={`${scoreColor} rounded-lg px-2 py-1 max-w-min ml-auto`}>
+                                <h1 className='text-xl font-normal text-slate-900'>+{teamMatch.score}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Link>
+        )
+    }
+
+    return compiledMatches;
 }
