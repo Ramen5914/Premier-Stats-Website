@@ -119,6 +119,7 @@ export const rank = z.enum([
 ])
 export const role = z.enum([
     "Captain",
+    "Co-Captain",
     "Member",
     "Substitute",
     "Ex-Member"
