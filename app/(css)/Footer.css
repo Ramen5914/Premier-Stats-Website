@@ -1,15 +1,15 @@
 @tailwind components;
 
 @layer components {
-  .si {
-    @apply h-6
+    .si {
+        @apply h-6
             w-6;
-  }
+    }
 
-  .si-animation {
-    @apply hover:translate-x-[0.25rem]
+    .si-animation {
+        @apply hover:translate-x-[0.25rem]
             hover:-translate-y-[0.3rem]
             transition-transform
             duration-[350ms];
-  }
+    }
 }
