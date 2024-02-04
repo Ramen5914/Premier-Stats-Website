@@ -54,13 +54,6 @@ export const rank = z.enum([
     "Immortal 3",
     "Radiant",
 ]);
-export const role = z.enum([
-    "Captain",
-    "Co-Captain",
-    "Member",
-    "Substitute",
-    "Ex-Member",
-]);
 export const playerMatchSchema = z.object({
     id: z.coerce.number(),
     playerId: z.number(),
@@ -98,11 +91,9 @@ export const playerSchema = z.object({
     currentRank: rank,
     link: z.string(),
     imageLink: z.string(),
-    role: role,
     playerMatches: z.array(playerMatchSchema),
     playerMatchCount: z.number(),
     teamId: z.coerce.number(),
-    title: z.string(),
     quote: z.string(),
 });
 export const map = z.enum([

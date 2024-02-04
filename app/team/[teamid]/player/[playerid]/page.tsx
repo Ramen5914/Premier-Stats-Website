@@ -7,6 +7,7 @@ import {
 } from "./schemas";
 import Image from "next/image";
 import Link from "next/link";
+import { rps } from "@/app/(functions)/functions";
 
 export const dynamic = "force-dynamic";
 
@@ -83,8 +84,6 @@ async function getAllData(playerid: number): Promise<PlayerType> {
                         peakRank
                         link
                         imageLink
-                        role
-                        title
                         quote
                         playerMatches {
                             id
@@ -317,25 +316,42 @@ function createPlayerMatchCards(
                                     {practiceText}
                                 </h1>
                                 <h1 className="text-2xl mx-auto flex flex-row space-x-1">
-                                    {/* <span
+                                    <span
                                         className={`${teamBold}text-green-400`}
                                     >
-                                        {match.teamScore}
-                                    </span> */}
-                                    <span className="font-bold">-</span>
-                                    {/* <span
+                                        {match.kills}
+                                    </span>
+                                    <span className="font-bold">
+                                        {match.deaths}
+                                    </span>
+                                    <span
                                         className={`${enemyBold}text-red-500`}
                                     >
-                                        {match.enemyScore}
-                                    </span> */}
+                                        {match.assists}
+                                    </span>
                                 </h1>
-                                {/* <div
+                                <div
                                     className={`${scoreColor} rounded-lg px-2 py-1 max-w-min ml-auto`}
                                 >
                                     <h1 className="text-xl font-normal text-slate-900">
-                                        +{match.score}
+                                        +
+                                        {rps(
+                                            match.placement,
+                                            match.trackerNetworkScore,
+                                            match.averageCombatScore,
+                                            match.kills,
+                                            match.deaths,
+                                            match.assists,
+                                            match.damageDelta,
+                                            match.averageDamagePerRound,
+                                            match.headshotPercentage,
+                                            match.killedAssistedSurvivedTraded,
+                                            match.firstKills,
+                                            match.firstDeaths,
+                                            match.multies,
+                                        )}
                                     </h1>
-                                </div> */}
+                                </div>
                             </div>
                         </div>
                     </div>
