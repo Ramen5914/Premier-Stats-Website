@@ -85,23 +85,23 @@ export default async function Page({ params }: { params: { teamid: number } }) {
     }
 
     return (
-        <div className="flex flex-col items-center space-y-4">
-            <h1 className="text-3xl">Add New Player</h1>
+        <div className='flex flex-col items-center space-y-4'>
+            <h1 className='text-3xl'>Add New Player</h1>
             <form
-                method="POST"
-                className="flex flex-col space-y-2"
+                method='POST'
+                className='flex flex-col space-y-2'
                 action={validate}
             >
                 <div>
                     <label>Display Name: </label>
-                    <input required type="text" name="display-name" />
+                    <input required type='text' name='display-name' />
                 </div>
                 <div>
                     <label>In-Game Name: </label>
                     <input
                         required
-                        type="text"
-                        name="player-name"
+                        type='text'
+                        name='player-name'
                         size={17}
                         minLength={3}
                         maxLength={16}
@@ -109,8 +109,8 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                     <span>#</span>
                     <input
                         required
-                        type="text"
-                        name="player-tag"
+                        type='text'
+                        name='player-tag'
                         size={6}
                         minLength={3}
                         maxLength={5}
@@ -118,7 +118,7 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                 </div>
                 <div>
                     <label>Current Rank: </label>
-                    <select required itemType="text" name="current-rank">
+                    <select required itemType='text' name='current-rank'>
                         <option value={"null"}>--Select Rank--</option>
                         <option value={"Unranked"}>Unranked</option>
                         <option value={"Iron"}>Iron</option>
@@ -131,11 +131,11 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Immortal"}>Immortal</option>
                         <option value={"Radiant"}>Radiant</option>
                     </select>
-                    <input type="number" name="current-level" min={1} max={3} />
+                    <input type='number' name='current-level' min={1} max={3} />
                 </div>
                 <div>
                     <label>Peak Rank: </label>
-                    <select required itemType="text" name="peak-rank">
+                    <select required itemType='text' name='peak-rank'>
                         <option value={"null"}>--Select Rank--</option>
                         <option value={"Unranked"}>Unranked</option>
                         <option value={"Iron"}>Iron</option>
@@ -148,19 +148,19 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                         <option value={"Immortal"}>Immortal</option>
                         <option value={"Radiant"}>Radiant</option>
                     </select>
-                    <input type="number" name="peak-level" min={1} max={3} />
+                    <input type='number' name='peak-level' min={1} max={3} />
                 </div>
                 <div>
                     <label>Profile Link: </label>
-                    <input required type="url" name="link" />
+                    <input required type='url' name='link' />
                 </div>
                 <div>
                     <label>Image Link: </label>
-                    <input required type="url" name="image-link" />
+                    <input required type='url' name='image-link' />
                 </div>
                 <div>
                     <label>Role: </label>
-                    <select required itemType="text" name="role">
+                    <select required itemType='text' name='role'>
                         <option value={"null"}>--Select Role--</option>
                         <option value={"Owner"}>Owner</option>
                         <option value={"Team Captain"}>Team Captain</option>
@@ -171,25 +171,25 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                 </div>
                 <div>
                     <label>Title: </label>
-                    <input required type="text" name="title" />
+                    <input required type='text' name='title' />
                 </div>
                 <div>
                     <label>Quote: </label>
-                    <textarea required name="quote" className="resize-none" />
+                    <textarea required name='quote' className='resize-none' />
                 </div>
                 <button
-                    className="px-3 py-2 bg-indigo-500 text-white hover:bg-indigo-400 w-fit mx-auto shadow-sm font-semibold text-sm rounded-md inline-flex items-center gap-x-1.5"
-                    type="submit"
+                    className='px-3 py-2 bg-indigo-500 text-white hover:bg-indigo-400 w-fit mx-auto shadow-sm font-semibold text-sm rounded-md inline-flex items-center gap-x-1.5'
+                    type='submit'
                 >
                     <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='16'
+                        height='16'
+                        fill='currentColor'
+                        viewBox='0 0 16 16'
                     >
-                        <path d="M12 2h-2v3h2V2Z" />
-                        <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0H1.5ZM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1H4ZM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1Z" />
+                        <path d='M12 2h-2v3h2V2Z' />
+                        <path d='M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0H1.5ZM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1H4ZM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1Z' />
                     </svg>
                     Save Changes
                 </button>

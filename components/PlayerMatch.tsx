@@ -1,3 +1,1 @@
-export default function PlayerMatch() {
-    
-}
+export default function PlayerMatch() {}
