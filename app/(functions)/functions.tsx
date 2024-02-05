@@ -13,11 +13,11 @@ export function rps(
     fd: number,
     multies: number,
 ): number {
-    for (let i = -30; i < 350; i++) {
-        for (let j = -100; j < 500; j++) {
-            console.log(`i=${i}, j=${j}: ${kastAdrFunc(i, j)}`)
-        }
-    }
+    // for (let i = -30; i < 350; i++) {
+    //     for (let j = -100; j < 500; j++) {
+    //         console.log(`i=${i}, j=${j}: ${kastAdrFunc(i, j)}`)
+    //     }
+    // }
     // {Name} (Weight / 1000)
     let finalRPS: number = 0;
 
@@ -79,7 +79,7 @@ function ddFunc(x: number) {
 }
 
 function kastAdrFunc(adr: number, kast: number) {
-    return ((2 * adrFunc(adr)) + kastFunc(kast)) / 3;
+    return (2 * adrFunc(adr) + kastFunc(kast)) / 3;
 }
 
 function adrFunc(x: number) {

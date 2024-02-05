@@ -109,18 +109,18 @@ export const map = z.enum([
     "Sunset",
 ]);
 export const teamMatchSchema = z.object({
-    id: z.coerce.number(),
+    // id: z.coerce.number(),
     playedAt: z.string(),
     duration: z.string(),
-    practice: z.boolean(),
+    // practice: z.boolean(),
     map: map,
-    enemyName: z.string(),
-    enemyTag: z.string(),
-    enemyImageLink: z.string(),
-    teamScore: z.number(),
-    enemyScore: z.number(),
-    teamId: z.number(),
-    score: z.number(),
+    // enemyName: z.string(),
+    // enemyTag: z.string(),
+    // enemyImageLink: z.string(),
+    // teamScore: z.number(),
+    // enemyScore: z.number(),
+    // teamId: z.number(),
+    // score: z.number(),
 });
 
 export type TeamMatchType = z.infer<typeof teamMatchSchema>;

@@ -70,8 +70,8 @@ export const rank = z.enum([
     "Radiant",
 ]);
 export const role = z.enum([
-    "Captain",
-    "Co-Captain",
+    "Owner",
+    "Team Captain",
     "Member",
     "Substitute",
     "Ex-Member",

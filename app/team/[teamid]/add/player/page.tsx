@@ -162,7 +162,8 @@ export default async function Page({ params }: { params: { teamid: number } }) {
                     <label>Role: </label>
                     <select required itemType="text" name="role">
                         <option value={"null"}>--Select Role--</option>
-                        <option value={"Captain"}>Captain</option>
+                        <option value={"Owner"}>Owner</option>
+                        <option value={"Team Captain"}>Team Captain</option>
                         <option value={"Member"}>Member</option>
                         <option value={"Substitute"}>Substitute</option>
                         <option value={"Ex-Member"}>Ex-Member</option>

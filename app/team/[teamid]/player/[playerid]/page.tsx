@@ -4,6 +4,8 @@ import {
     type PlayerType,
     playerSchema,
     playerMatchSchema,
+    TeamMatchType,
+    teamMatchSchema,
 } from "./schemas";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,7 +58,7 @@ export default async function Page({ params }: Props) {
             <div className="grid-cols-3 grid gap-4">
                 <div className="col-span-1">{createPlayerCard(playerData)}</div>
                 <div className="col-span-2 flex flex-col space-y-4">
-                    {createPlayerMatchCards(playerMatches)}
+                    {createPlayerMatchCards(playerMatches, playerData)}
                 </div>
             </div>
         </main>
@@ -133,6 +135,38 @@ async function getAllData(playerid: number): Promise<PlayerType> {
     }
 }
 
+async function getTeamMatchData(teamMatchId: number): Promise<TeamMatchType> {
+    const response = await fetch(`http://localhost:8080/graphql`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            query: `
+                query GetTeamMatchById {
+                    teamMatchById(id: ${teamMatchId}) {
+                        playedAt
+                        duration
+                        map
+                    }
+                }   
+            `,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    let data: TeamMatchType = (await response.json()).data.teamMatchById;
+
+    if (teamMatchSchema.parse(data)) {
+        return data as TeamMatchType;
+    } else {
+        throw new Error("Response data is incorrect.");
+    }
+}
+
 function createPlayerCard(player: PlayerType): React.ReactNode {
     const playerIconSize: number = 128;
     const rankSize: number = 56;
@@ -146,6 +180,7 @@ function createPlayerCard(player: PlayerType): React.ReactNode {
                     alt=""
                     width={playerIconSize}
                     height={playerIconSize}
+                    className="rounded-lg border-2 border-slate-400"
                 />
                 <div className="flex flex-col justify-between items-end">
                     <div className="flex flex-row space-x-2 items-center h-min">
@@ -219,12 +254,17 @@ function createPlayerCard(player: PlayerType): React.ReactNode {
 
 function createPlayerMatchCards(
     playerMatches: PlayerMatchType[],
+    playerData: PlayerType,
 ): React.ReactNode {
     const agentImageSize: number = 80;
 
     let compiledMatches: React.ReactNode[] = [];
 
-    playerMatches.forEach((match) => {
+    playerMatches.forEach(async (match) => {
+        const teamMatchData: TeamMatchType = await getTeamMatchData(
+            match.teamMatchId,
+        );
+
         if (!playerMatchSchema.parse(match)) {
             throw new Error("Team match incorrect");
         } else {
@@ -284,7 +324,8 @@ function createPlayerMatchCards(
             compiledMatches.push(
                 <Link
                     key={match.id}
-                    href={`/team/${match.teamMatchId}/match/${match.teamMatchId}`}
+                    href={`/team/${playerData.teamId}/match/${match.teamMatchId}`}
+                    // href={`THIS IS TEMPORARY: Match ID = ${match.id}`}
                 >
                     <div className="text-slate-400 dark:bg-slate-900 shadow-xl hover:shadow-2xl p-3 rounded-2xl flex flex-row space-x-4 ring-2 ring-transparent ring-inset hover:ring-indigo-500 duration-[350ms] hover:translate-x-1 hover:-translate-y-1">
                         <Image
@@ -300,7 +341,7 @@ function createPlayerMatchCards(
                             <div className="flex flex-row h-min justify-between space-x-8">
                                 <div className="flex flex-row h-min space-x-2 items-center">
                                     <h1 className="text-2xl font-medium">
-                                        {match.agent}
+                                        {teamMatchData.map}
                                     </h1>
                                     <span className="text-md px-2 py-[2px] bg-indigo-500 text-white rounded-md max-h-min">
                                         #{match.placement}

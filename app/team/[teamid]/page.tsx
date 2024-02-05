@@ -156,8 +156,8 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
             throw new Error("Player incorrect");
         }
 
-        const captain: boolean = player.role == "Captain";
-        const coCaptain: boolean = player.role == "Co-Captain";
+        const owner: boolean = player.role == "Owner";
+        const teamCaptain: boolean = player.role == "Team Captain";
         const substitute: boolean = player.role == "Substitute";
         const exPlayer: boolean = player.role == "Ex-Member";
 
@@ -182,7 +182,7 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
                                 <h1 className="text-2xl text-slate-400">
                                     {player.displayName}
                                 </h1>
-                                {(captain && (
+                                {(owner && (
                                     <svg
                                         className="text-yellow-500"
                                         fill="currentColor"
@@ -194,7 +194,7 @@ function playerCardRenderer(players: PlayerType[]): React.ReactNode {
                                         <path d="M309 106c11.4-7 19-19.7 19-34c0-22.1-17.9-40-40-40s-40 17.9-40 40c0 14.4 7.6 27 19 34L209.7 220.6c-9.1 18.2-32.7 23.4-48.6 10.7L72 160c5-6.7 8-15 8-24c0-22.1-17.9-40-40-40S0 113.9 0 136s17.9 40 40 40c.2 0 .5 0 .7 0L86.4 427.4c5.5 30.4 32 52.6 63 52.6H426.6c30.9 0 57.4-22.1 63-52.6L535.3 176c.2 0 .5 0 .7 0c22.1 0 40-17.9 40-40s-17.9-40-40-40s-40 17.9-40 40c0 9 3 17.3 8 24l-89.1 71.3c-15.9 12.7-39.5 7.5-48.6-10.7L309 106z" />
                                     </svg>
                                 )) ||
-                                    (coCaptain && (
+                                    (teamCaptain && (
                                         <svg
                                             className="text-gray-200"
                                             fill="currentColor"
