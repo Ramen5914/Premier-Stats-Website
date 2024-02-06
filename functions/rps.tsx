@@ -1,4 +1,9 @@
-export function rps(
+function sigmoid(input: number, min: number, max: number): number {
+    let x = (input - min) / (max - min)
+    return 1 / (1 + Math.exp(-x));
+}
+
+export default function rps(
     place: number,
     tns: number,
     acs: number,
@@ -13,12 +18,6 @@ export function rps(
     fd: number,
     multies: number,
 ): number {
-    // for (let i = -30; i < 350; i++) {
-    //     for (let j = -100; j < 500; j++) {
-    //         console.log(`i=${i}, j=${j}: ${kastAdrFunc(i, j)}`)
-    //     }
-    // }
-    // {Name} (Weight / 1000)
     let finalRPS: number = 0;
 
     // Placement (50) -> 50
