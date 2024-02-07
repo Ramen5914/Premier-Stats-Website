@@ -256,14 +256,12 @@ function createPlayerMatchCards(
     playerMatches: PlayerMatchType[],
     playerData: PlayerType,
 ): React.ReactNode {
-
     let compiledMatches: React.ReactNode[] = [];
 
     playerMatches.forEach((match) => {
         compiledMatches.push(
-            <PlayerMatch key={match.id} playerMatchId={match.id}></PlayerMatch>
+            <PlayerMatch key={match.id} playerMatchId={match.id}></PlayerMatch>,
         );
     });
-    
+
     return compiledMatches;
-}
