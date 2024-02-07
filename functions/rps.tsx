@@ -1,9 +1,9 @@
 const BEZIER_PRECISION = 4;
 
-const PLACEMENT_W = 50;
 const TRACKER_NETWORK_W = 250;
 const COMBAT_SCORE_W = 100;
 const KD_RATIO_W = 0;
+const PLACEMENT_W = 50; // 50
 const PLUS_MINUS_W = 0;
 const DAMAGE_DELTA_W = 0;
 const AVERAGE_DAMAGE_W = 0;
