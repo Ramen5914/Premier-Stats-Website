@@ -3,9 +3,6 @@ const BEZIER_PRECISION = 4;
 const PLACEMENT_W = 50;
 const TRACKER_NETWORK_W = 250;
 const COMBAT_SCORE_W = 100;
-const KILLS_W = 0;
-const DEATHS_W = 0;
-const ASSISTS_W = 0;
 const KD_RATIO_W = 0;
 const PLUS_MINUS_W = 0;
 const DAMAGE_DELTA_W = 0;
@@ -20,6 +17,11 @@ const THREE_K_W = 0;
 const FOUR_K_W = 0;
 const FIVE_K_W = 0;
 const SIX_K_W = 0;
+
+const KDA_W = 0;
+const KILLS_W = 1;
+const DEATHS_W = 1.5;
+const ASSISTS_W = 0.5;
 
 export default function getRPS(
     place: number,
@@ -48,6 +50,7 @@ export default function getRPS(
     pScore += modifiedBezier(place, 10, 1, PLACEMENT_W);
     pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
     pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
+    pScore += modifiedBezier((k * KILLS_W - d * DEATHS_W) + (ASSISTS_W * a), 0, 0, KDA_W);
 
     return Math.round(pScore);
 }
