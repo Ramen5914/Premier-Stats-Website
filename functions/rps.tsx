@@ -42,8 +42,13 @@ export default function getRPS(
     sixK: number,
     multies: number,
 ): number {
+    let pScore = 0;
 
+    pScore += modifiedBezier(hs, 15, 30, HEADSHOT_W);
+    pScore += modifiedBezier(place, 10, 1, PLACEMENT_W);
+    pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
 
+    return Math.round(pScore);
 }
 
 function modifiedBezier(input: number, minVal: number, maxVal: number, weight: number) {
