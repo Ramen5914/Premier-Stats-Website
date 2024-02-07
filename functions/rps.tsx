@@ -2,7 +2,7 @@ const BEZIER_PRECISION = 4;
 
 const PLACEMENT_W = 50;
 const TRACKER_NETWORK_W = 250;
-const COMBAT_SCORE_W = 0;
+const COMBAT_SCORE_W = 100;
 const KILLS_W = 0;
 const DEATHS_W = 0;
 const ASSISTS_W = 0;
@@ -47,12 +47,74 @@ export default function getRPS(
     pScore += modifiedBezier(hs, 15, 30, HEADSHOT_W);
     pScore += modifiedBezier(place, 10, 1, PLACEMENT_W);
     pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
+    pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
 
     return Math.round(pScore);
 }
 
-function modifiedBezier(input: number, minVal: number, maxVal: number, weight: number) {
-    let x = (Math.min(Math.max(input, minVal), maxVal) - minVal) / (maxVal - minVal);
+function modifiedBezier(
+    input: number,
+    minVal: number,
+    maxVal: number,
+    weight: number,
+) {
+    let x =
+        (Math.min(Math.max(input, minVal), maxVal) - minVal) /
+        (maxVal - minVal);
 
-    return (Math.round((-2 * Math.pow(((Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20)) / (2 * Math.pow(5, (2/3)))) - (1/(2 * Math.cbrt(5) * Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20))) + (1/2), 3) + 3 * Math.pow(((Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20)) / (2 * Math.pow(5, (2/3)))) - (1/(2 * Math.cbrt(5) * Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20))) + (1/2), 2)) * (Math.pow(10, BEZIER_PRECISION))) / (Math.pow(10, BEZIER_PRECISION))) * weight;
+    return (
+        (Math.round(
+            (-2 *
+                Math.pow(
+                    Math.cbrt(
+                        Math.sqrt(5) *
+                            Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) +
+                            40 * x -
+                            20,
+                    ) /
+                        (2 * Math.pow(5, 2 / 3)) -
+                        1 /
+                            (2 *
+                                Math.cbrt(5) *
+                                Math.cbrt(
+                                    Math.sqrt(5) *
+                                        Math.sqrt(
+                                            320 * Math.pow(x, 2) - 320 * x + 81,
+                                        ) +
+                                        40 * x -
+                                        20,
+                                )) +
+                        1 / 2,
+                    3,
+                ) +
+                3 *
+                    Math.pow(
+                        Math.cbrt(
+                            Math.sqrt(5) *
+                                Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) +
+                                40 * x -
+                                20,
+                        ) /
+                            (2 * Math.pow(5, 2 / 3)) -
+                            1 /
+                                (2 *
+                                    Math.cbrt(5) *
+                                    Math.cbrt(
+                                        Math.sqrt(5) *
+                                            Math.sqrt(
+                                                320 * Math.pow(x, 2) -
+                                                    320 * x +
+                                                    81,
+                                            ) +
+                                            40 * x -
+                                            20,
+                                    )) +
+                            1 / 2,
+                        2,
+                    )) *
+                Math.pow(10, BEZIER_PRECISION),
+        ) /
+            Math.pow(10, BEZIER_PRECISION)) *
+        weight
+    );
 }
