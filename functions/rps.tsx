@@ -1,13 +1,13 @@
 const BEZIER_PRECISION = 4;
 
-const TRACKER_NETWORK_W = 250;
-const COMBAT_SCORE_W = 100;
-const KD_RATIO_W = 0;
 const PLACEMENT_W = 50; // 50
+const TRACKER_NETWORK_W = 250; // 300
+const COMBAT_SCORE_W = 100; // 400
+const KDA_W = 150; // 550
+const KD_PM_RATIO_W = 50; // 600
 const PLUS_MINUS_W = 0;
-const DAMAGE_DELTA_W = 0;
-const AVERAGE_DAMAGE_W = 0;
-const HEADSHOT_W = 500;
+const ADR_DD_W = 50; // 650
+const HEADSHOT_W = 350; // 1000
 const KAST_W = 0;
 const FIRST_KILLS_W = 0;
 const FIRST_DEATHS_W = 0;
@@ -18,10 +18,11 @@ const FOUR_K_W = 0;
 const FIVE_K_W = 0;
 const SIX_K_W = 0;
 
-const KDA_W = 0;
 const KILLS_W = 1;
 const DEATHS_W = 1.5;
 const ASSISTS_W = 0.5;
+
+const DD_W = 1;
 
 export default function getRPS(
     place: number,
