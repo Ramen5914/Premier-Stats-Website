@@ -1,5 +1,5 @@
 import formatDuration from "@/functions/formatDuration";
-import rps from "@/functions/rps";
+import getRPS from "@/functions/rps";
 import Image from "next/image";
 import Link from "next/link";
 import { z } from "zod";
@@ -79,19 +79,25 @@ export default async function PlayerMatch({
                         >
                             <h1 className='text-xl font-normal text-slate-900'>
                                 +
-                                {rps(
+                                {getRPS(
                                     playerMatchData.placement,
                                     playerMatchData.trackerNetworkScore,
                                     playerMatchData.averageCombatScore,
                                     playerMatchData.kills,
                                     playerMatchData.deaths,
                                     playerMatchData.assists,
+                                    playerMatchData.killDeathRatio,
+                                    playerMatchData.plusMinus,
                                     playerMatchData.damageDelta,
                                     playerMatchData.averageDamagePerRound,
                                     playerMatchData.headshotPercentage,
                                     playerMatchData.killedAssistedSurvivedTraded,
                                     playerMatchData.firstKills,
                                     playerMatchData.firstDeaths,
+                                    playerMatchData.threeK,
+                                    playerMatchData.fourK,
+                                    playerMatchData.fiveK,
+                                    playerMatchData.sixK,
                                     playerMatchData.multies,
                                 )}
                             </h1>
