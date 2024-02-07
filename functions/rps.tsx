@@ -94,6 +94,8 @@ function adrFunc(x: number) {
         return 0;
     }
 }
+function modifiedBezier(input: number, minVal: number, maxVal: number, weight: number) {
+    let x = (Math.min(Math.max(input, minVal), maxVal) - minVal) / (maxVal - minVal);
 
 function kastFunc(x: number) {
     if (x > 80) {
@@ -107,4 +109,5 @@ function kastFunc(x: number) {
     } else {
         return 0;
     }
+    return (Math.round((-2 * Math.pow(((Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20)) / (2 * Math.pow(5, (2/3)))) - (1/(2 * Math.cbrt(5) * Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20))) + (1/2), 3) + 3 * Math.pow(((Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20)) / (2 * Math.pow(5, (2/3)))) - (1/(2 * Math.cbrt(5) * Math.cbrt(Math.sqrt(5) * Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) + 40 * x - 20))) + (1/2), 2)) * (Math.pow(10, BEZIER_PRECISION))) / (Math.pow(10, BEZIER_PRECISION))) * weight;
 }
