@@ -51,7 +51,19 @@ export default function getRPS(
     pScore += modifiedBezier(place, 10, 1, PLACEMENT_W);
     pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
     pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
-    pScore += modifiedBezier((k * KILLS_W - d * DEATHS_W) + (ASSISTS_W * a), 0, 0, KDA_W);
+    pScore += modifiedBezier(
+        k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
+        -18,
+        6.5,
+        KDA_W,
+    );
+    pScore += modifiedBezier(kdRatio + plusMinus, -10, 13, KD_PM_RATIO_W);
+    pScore += modifiedBezier(
+        adr * modifiedBezier(dd, -50, 50, DD_W),
+        0,
+        165,
+        ADR_DD_W,
+    );
 
     return Math.round(pScore);
 }
