@@ -21,18 +21,25 @@ const FOUR_K_W = 0;
 const FIVE_K_W = 0;
 const SIX_K_W = 0;
 
+export default function getRPS(
     place: number,
     tns: number,
     acs: number,
     k: number,
     d: number,
     a: number,
+    kdRatio: number,
+    plusMinus: number,
     dd: number,
     adr: number,
     hs: number,
     kast: number,
     fk: number,
     fd: number,
+    threeK: number,
+    fourK: number,
+    fiveK: number,
+    sixK: number,
     multies: number,
 ): number {
 
