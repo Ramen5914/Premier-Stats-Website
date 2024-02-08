@@ -45,7 +45,7 @@ export default function getRPS(
 ): number {
     let pScore = 0;
 
-    pScore += modifiedBezier(hs, 15, 30, HEADSHOT_W);
+    pScore += modifiedBezier(hs, 10, 30, HEADSHOT_W);
     pScore += modifiedBezier(place, 10, 1, PLACEMENT_W);
     pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
     pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
