@@ -46,7 +46,7 @@ export default function getRPS(
     let pScore = 0;
 
     pScore += modifiedBezier(hs, 10, 30, HEADSHOT_W);
-    pScore += modifiedBezier(place, 10, 1, PLACEMENT_W);
+    pScore += PLACEMENT_W - modifiedBezier(place, 1, 10, PLACEMENT_W);
     pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
     pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
     pScore += modifiedBezier(
@@ -65,7 +65,7 @@ export default function getRPS(
     pScore += modifiedBezier(kast, 55, 90, KAST_W);
     pScore += modifiedBezier(fk - fd, -2, 2, FIRST_K_D_W);
 
-    return Math.round(pScore);
+    return Math.min(Math.max(Math.round(pScore), 1), 1000);
 }
 
 function modifiedBezier(
