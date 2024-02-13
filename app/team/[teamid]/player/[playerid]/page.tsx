@@ -63,7 +63,7 @@ export default async function Page({ params }: Readonly<Props>) {
                         <AgentPieChart />
                     </div>
                     <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
-                        <RPSRadarChart />
+                        <RPSRadarChart playerMatches={playerMatches} />
                     </div>
                 </div>
                 <div className='col-span-2 flex flex-col space-y-4'>

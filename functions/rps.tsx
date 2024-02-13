@@ -44,48 +44,166 @@ export default function getRPS(
 ): number {
     let pScore = 0;
 
-    pScore += modifiedBezier(hs, 10, 30, HEADSHOT_W);
-    pScore += PLACEMENT_W - modifiedBezier(place, 1, 10, PLACEMENT_W);
-    pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
-    pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
-    pScore += modifiedBezier(
-        k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
-        -18,
-        6.5,
-        KDA_W,
-    );
-    pScore += modifiedBezier(kdRatio + plusMinus, -10, 13, KD_PM_RATIO_W);
-    pScore += modifiedBezier(
-        adr * modifiedBezier(dd, -50, 50, DD_W),
-        0,
-        165,
-        ADR_DD_W,
-    );
-    pScore += modifiedBezier(kast, 55, 90, KAST_W);
-    pScore += modifiedBezier(fk - fd, -2, 2, FIRST_K_D_W);
-    pScore += modifiedBezier(
-        threeK * THREE_K_W +
-            fourK * FOUR_K_W +
-            fiveK * FIVE_K_W +
-            sixK * SIX_K_W,
-        0,
-        5,
-        MULTI_KILLS_W,
-    );
-
-    // console.log(
-    //     modifiedBezier(
-    //         threeK * THREE_K_W +
-    //             fourK * FOUR_K_W +
-    //             fiveK * FIVE_K_W +
-    //             sixK * SIX_K_W,
-    //         0,
-    //         4, // 4 or 5
-    //         MULTI_KILLS_W,
-    //     ) / MULTI_KILLS_W
-    // )
+    pScore += headshot(hs);
+    pScore += placement(place);
+    pScore += trackerNetworkScore(tns);
+    pScore += averageCombatScore(acs);
+    pScore += killsDeathsAssists(k, d, a);
+    pScore += killDeathRatioAndPM(kdRatio, plusMinus);
+    pScore += adrAndDamageDelta(adr, dd);
+    pScore += killedAssistedSurvivedTraded(kast);
+    pScore += firstKillsFirstDeaths(fk, fd);
+    pScore += multiKills(threeK, fourK, fiveK, sixK);
 
     return Math.min(Math.max(Math.round(pScore), 1), 1000);
+}
+
+export function headshot(hs: number, chart: boolean = false): number {
+    if (chart) {
+        return modifiedBezier(hs, 10, 30, 100);
+    } else {
+        return modifiedBezier(hs, 10, 30, HEADSHOT_W);
+    }
+}
+
+export function placement(place: number, chart: boolean = false): number {
+    if (chart) {
+        return 100 - modifiedBezier(place, 1, 10, 100);
+    } else {
+        return PLACEMENT_W - modifiedBezier(place, 1, 10, PLACEMENT_W);
+    }
+}
+
+export function trackerNetworkScore(
+    tns: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(tns, 90, 1000, 100);
+    } else {
+        return modifiedBezier(tns, 90, 1000, TRACKER_NETWORK_W);
+    }
+}
+
+export function averageCombatScore(
+    acs: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(acs, 75, 250, 100);
+    } else {
+        return modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
+    }
+}
+
+export function killsDeathsAssists(
+    k: number,
+    d: number,
+    a: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(
+            k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
+            -18,
+            6.5,
+            100,
+        );
+    } else {
+        return modifiedBezier(
+            k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
+            -18,
+            6.5,
+            KDA_W,
+        );
+    }
+}
+
+export function killDeathRatioAndPM(
+    kdRatio: number,
+    plusMinus: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(kdRatio + plusMinus, -10, 13, 100);
+    } else {
+        return modifiedBezier(kdRatio + plusMinus, -10, 13, KD_PM_RATIO_W);
+    }
+}
+
+export function adrAndDamageDelta(
+    adr: number,
+    dd: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(
+            adr * modifiedBezier(dd, -50, 50, DD_W),
+            0,
+            165,
+            100,
+        );
+    } else {
+        return modifiedBezier(
+            adr * modifiedBezier(dd, -50, 50, DD_W),
+            0,
+            165,
+            ADR_DD_W,
+        );
+    }
+}
+
+export function killedAssistedSurvivedTraded(
+    kast: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(kast, 55, 90, 100);
+    } else {
+        return modifiedBezier(kast, 55, 90, KAST_W);
+    }
+}
+
+export function firstKillsFirstDeaths(
+    fk: number,
+    fd: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(fk - fd, -2, 2, 100);
+    } else {
+        return modifiedBezier(fk - fd, -2, 2, FIRST_K_D_W);
+    }
+}
+
+export function multiKills(
+    threeK: number,
+    fourK: number,
+    fiveK: number,
+    sixK: number,
+    chart: boolean = false,
+): number {
+    if (chart) {
+        return modifiedBezier(
+            threeK * THREE_K_W +
+                fourK * FOUR_K_W +
+                fiveK * FIVE_K_W +
+                sixK * SIX_K_W,
+            0,
+            5,
+            100,
+        );
+    } else {
+        return modifiedBezier(
+            threeK * THREE_K_W +
+                fourK * FOUR_K_W +
+                fiveK * FIVE_K_W +
+                sixK * SIX_K_W,
+            0,
+            5,
+            MULTI_KILLS_W,
+        );
+    }
 }
 
 function modifiedBezier(

@@ -1,30 +1,80 @@
 "use client";
 
-// import React from "react";
-import { Radar } from "react-chartjs-2";
-// import {
-//     Chart as ChartJS,
-//     RadialLinearScale,
-//     Colors,
-//     Tooltip,
-//     Legend,
-//     PointElement,
-//     LineElement,
-//     Filler,
-// } from "chart.js";
-
-// ChartJS.register(
-//     RadialLinearScale,
-//     PointElement,
-//     LineElement,
-//     Colors,
-//     Tooltip,
-//     Legend,
-//     Filler,
-// );
+import {
+    averageCombatScore,
+    headshot,
+    killDeathRatioAndPM,
+    killsDeathsAssists,
+    placement,
+    trackerNetworkScore,
+    adrAndDamageDelta,
+    killedAssistedSurvivedTraded,
+    firstKillsFirstDeaths,
+    multiKills,
+} from "@/functions/rps";
 import "chart.js/auto";
+import { Radar } from "react-chartjs-2";
+import { PlayerMatch } from "./radarSchemas";
 
-export default function AgentPieChart() {
+export default function AgentPieChart({
+    playerMatches,
+}: Readonly<{ playerMatches: PlayerMatch[] }>) {
+    let hs: number = 0,
+        place: number = 0,
+        trs: number = 0,
+        acs: number = 0,
+        kda: number = 0,
+        kd: number = 0,
+        adr: number = 0,
+        kast: number = 0,
+        fkfd: number = 0,
+        multies: number = 0;
+    let matchCount: number = playerMatches.length;
+    for (let match of playerMatches) {
+        hs += headshot(match.headshotPercentage, true) / matchCount;
+
+        place += placement(match.placement, true) / matchCount;
+
+        trs +=
+            trackerNetworkScore(match.trackerNetworkScore, true) / matchCount;
+
+        acs += averageCombatScore(match.averageCombatScore, true) / matchCount;
+
+        kda +=
+            killsDeathsAssists(match.kills, match.deaths, match.assists, true) /
+            matchCount;
+
+        kd +=
+            killDeathRatioAndPM(match.killDeathRatio, match.plusMinus, true) /
+            matchCount;
+
+        adr +=
+            adrAndDamageDelta(
+                match.averageDamagePerRound,
+                match.damageDelta,
+                true,
+            ) / matchCount;
+
+        kast +=
+            killedAssistedSurvivedTraded(
+                match.killedAssistedSurvivedTraded,
+                true,
+            ) / matchCount;
+
+        fkfd +=
+            firstKillsFirstDeaths(match.firstKills, match.firstDeaths, true) /
+            matchCount;
+
+        multies +=
+            multiKills(
+                match.threeK,
+                match.fourK,
+                match.fiveK,
+                match.sixK,
+                true,
+            ) / matchCount;
+    }
+
     return (
         <Radar
             datasetIdKey='rpsRadarChart'
@@ -45,16 +95,18 @@ export default function AgentPieChart() {
                     {
                         label: "Ramen's Score",
                         data: [
-                            51.5025, 70.85875, 74.95, 80.8625, 73.73625, 72.315,
-                            62.44, 59.4225, 38.855, 33.87875,
+                            hs.toFixed(1),
+                            place.toFixed(1),
+                            trs.toFixed(1),
+                            acs.toFixed(1),
+                            kda.toFixed(1),
+                            kd.toFixed(1),
+                            adr.toFixed(1),
+                            kast.toFixed(1),
+                            fkfd.toFixed(1),
+                            multies.toFixed(1),
                         ],
                         fill: true,
-                    },
-                    {
-                        label: "75%",
-                        data: [75, 75, 75, 75, 75, 75, 75, 75, 75, 75],
-                        fill: false,
-                        drawActiveElementsOnTop: true,
                     },
                 ],
             }}
@@ -83,6 +135,29 @@ export default function AgentPieChart() {
                             font: {
                                 size: 14,
                                 family: "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+                            },
+                        },
+                    },
+                },
+                interaction: {
+                    intersect: false,
+                    mode: "nearest",
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.dataset.label ?? "";
+
+                                if (label) {
+                                    label += ": ";
+                                }
+
+                                if (context.parsed.r !== null) {
+                                    label += `${context.parsed.r}%`;
+                                }
+
+                                return label;
                             },
                         },
                     },

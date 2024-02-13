@@ -13,7 +13,6 @@ import type {
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { platform } from "os";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: Readonly<Props>) {
     const teamData: TeamType = await getAllData(params.teamid);
 
     const players: PlayerType[] = teamData.players;
