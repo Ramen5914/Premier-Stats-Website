@@ -3,13 +3,13 @@ import {
     type PlayerMatchType,
     type PlayerType,
     playerSchema,
-    playerMatchSchema,
     TeamMatchType,
     teamMatchSchema,
 } from "./schemas";
 import Image from "next/image";
 import Link from "next/link";
 import PlayerMatch from "@/components/PlayerMatch";
+import AgentPieChart from "@/components/charts/pie/AgentPieChart";
 
 export const dynamic = "force-dynamic";
 
@@ -56,7 +56,14 @@ export default async function Page({ params }: Readonly<Props>) {
     return (
         <main className='grow mx-auto flex'>
             <div className='grid-cols-3 grid gap-4'>
-                <div className='col-span-1'>{createPlayerCard(playerData)}</div>
+                <div className='col-span-1 flex flex-col space-y-4'>
+                    <div>{createPlayerCard(playerData)}</div>
+                    <div>
+                        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
+                            <AgentPieChart />
+                        </div>
+                    </div>
+                </div>
                 <div className='col-span-2 flex flex-col space-y-4'>
                     {createPlayerMatchCards(playerMatches, playerData)}
                 </div>
@@ -161,7 +168,7 @@ async function getTeamMatchData(teamMatchId: number): Promise<TeamMatchType> {
     let data: TeamMatchType = (await response.json()).data.teamMatchById;
 
     if (teamMatchSchema.parse(data)) {
-        return data as TeamMatchType;
+        return data;
     } else {
         throw new Error("Response data is incorrect.");
     }
