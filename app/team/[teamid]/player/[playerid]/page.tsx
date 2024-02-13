@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PlayerMatch from "@/components/PlayerMatch";
 import AgentPieChart from "@/components/charts/pie/AgentPieChart";
+import RPSRadarChart from "@/components/charts/pie/RPSRadarChart";
 
 export const dynamic = "force-dynamic";
 
@@ -58,10 +59,11 @@ export default async function Page({ params }: Readonly<Props>) {
             <div className='grid-cols-3 grid gap-4'>
                 <div className='col-span-1 flex flex-col space-y-4'>
                     <div>{createPlayerCard(playerData)}</div>
-                    <div>
-                        <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
-                            <AgentPieChart />
-                        </div>
+                    <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
+                        <AgentPieChart />
+                    </div>
+                    <div className='dark:bg-slate-900 shadow-lg p-4 rounded-2xl flex flex-col min-w-max space-y-2 ml-2'>
+                        <RPSRadarChart />
                     </div>
                 </div>
                 <div className='col-span-2 flex flex-col space-y-4'>

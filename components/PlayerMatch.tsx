@@ -48,7 +48,6 @@ export default async function PlayerMatch({
         playerMatchData.fourK,
         playerMatchData.fiveK,
         playerMatchData.sixK,
-        playerMatchData.multies,
     );
 
     return (
