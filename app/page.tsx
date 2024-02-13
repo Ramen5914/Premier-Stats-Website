@@ -73,7 +73,7 @@ function teamCardRenderer(teams: TeamSchemaType) {
                         width={128}
                         height={128}
                     />
-                    <div className='dark:bg-current w-[2px]'></div>
+                    <div className='dark:bg-current w-[2px]' />
                     <div className='flex flex-col justify-between grow'>
                         <div className='flex flex-row h-min justify-between items-center'>
                             <div className='flex flex-row h-min'>
