@@ -1,110 +1,156 @@
-function sigmoid(input: number, min: number, max: number): number {
-    let x = (input - min) / (max - min)
-    return 1 / (1 + Math.exp(-x));
-}
+const BEZIER_PRECISION = 4;
 
-export default function rps(
+const PLACEMENT_W = 50; // 50
+const TRACKER_NETWORK_W = 250; // 300
+const COMBAT_SCORE_W = 100; // 400
+const KDA_W = 150; // 550
+const KD_PM_RATIO_W = 50; // 600
+const ADR_DD_W = 50; // 650
+const HEADSHOT_W = 300; // 950
+const KAST_W = 10; // 960
+const FIRST_K_D_W = 30; // 990
+const MULTI_KILLS_W = 10; // 1000
+
+const THREE_K_W = 1;
+const FOUR_K_W = 1.5;
+const FIVE_K_W = 2;
+const SIX_K_W = 2.5;
+
+const KILLS_W = 1;
+const DEATHS_W = 1.5;
+const ASSISTS_W = 0.5;
+
+const DD_W = 1;
+
+export default function getRPS(
     place: number,
     tns: number,
     acs: number,
     k: number,
     d: number,
     a: number,
+    kdRatio: number,
+    plusMinus: number,
     dd: number,
     adr: number,
     hs: number,
     kast: number,
     fk: number,
     fd: number,
-    multies: number,
+    threeK: number,
+    fourK: number,
+    fiveK: number,
+    sixK: number,
 ): number {
-    let finalRPS: number = 0;
+    let pScore = 0;
 
-    // Placement (50) -> 50
-    if (place <= 3) {
-        finalRPS += 50;
-    } else if (place <= 6) {
-        finalRPS += 25;
-    }
+    pScore += modifiedBezier(hs, 10, 30, HEADSHOT_W);
+    pScore += PLACEMENT_W - modifiedBezier(place, 1, 10, PLACEMENT_W);
+    pScore += modifiedBezier(tns, 90, 900, TRACKER_NETWORK_W);
+    pScore += modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
+    pScore += modifiedBezier(
+        k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
+        -18,
+        6.5,
+        KDA_W,
+    );
+    pScore += modifiedBezier(kdRatio + plusMinus, -10, 13, KD_PM_RATIO_W);
+    pScore += modifiedBezier(
+        adr * modifiedBezier(dd, -50, 50, DD_W),
+        0,
+        165,
+        ADR_DD_W,
+    );
+    pScore += modifiedBezier(kast, 55, 90, KAST_W);
+    pScore += modifiedBezier(fk - fd, -2, 2, FIRST_K_D_W);
+    pScore += modifiedBezier(
+        threeK * THREE_K_W +
+            fourK * FOUR_K_W +
+            fiveK * FIVE_K_W +
+            sixK * SIX_K_W,
+        0,
+        5,
+        MULTI_KILLS_W,
+    );
 
-    // Tracker Score (50) -> 100
-    if (tns >= 800) {
-        finalRPS += 5;
-    } else if (tns >= 200) {
-        finalRPS += (1 / 12) * (tns - 200);
-    }
+    // console.log(
+    //     modifiedBezier(
+    //         threeK * THREE_K_W +
+    //             fourK * FOUR_K_W +
+    //             fiveK * FIVE_K_W +
+    //             sixK * SIX_K_W,
+    //         0,
+    //         4, // 4 or 5
+    //         MULTI_KILLS_W,
+    //     ) / MULTI_KILLS_W
+    // )
 
-    // KDA (100) -> 200
-    if (k - d + a / 3 > 12) {
-        finalRPS += 100;
-    } else {
-        finalRPS += (25 / 3) * (k - d + a / 3);
-    }
-
-    // ACS (50) -> 250
-    if (acs >= 320) {
-        finalRPS += 50;
-    } else {
-        finalRPS += (5 / 24) * (acs - 80);
-    }
-
-    // Headshot (200) -> 450
-    if (35 <= hs) {
-        finalRPS += 200;
-    } else if (30 <= hs) {
-        finalRPS += 5 * (hs - 30) + 175;
-    } else if (20 <= hs) {
-        finalRPS += 9.5 * (hs - 20) + 80;
-    } else {
-        finalRPS += 4 * hs;
-    }
-
-    // Damage Delta (50) -> 500
-    finalRPS += ddFunc(dd) * 50;
-    // KAST x ADR (150) -> 650
-    finalRPS += kastAdrFunc(adr, kast) * 150;
-
-    return Math.ceil(finalRPS);
+    return Math.min(Math.max(Math.round(pScore), 1), 1000);
 }
 
-function ddFunc(x: number) {
-    if (x > 75) {
-        return 1;
-    } else if (x < -30) {
-        return 0;
-    } else {
-        return (1 / 105) * (x + 30);
-    }
-}
+function modifiedBezier(
+    input: number,
+    minVal: number,
+    maxVal: number,
+    weight: number,
+) {
+    let x =
+        (Math.min(Math.max(input, minVal), maxVal) - minVal) /
+        (maxVal - minVal);
 
-function kastAdrFunc(adr: number, kast: number) {
-    return (2 * adrFunc(adr) + kastFunc(kast)) / 3;
-}
-
-function adrFunc(x: number) {
-    if (x > 200) {
-        return 1;
-    } else if (x > 125 && x <= 200) {
-        return (3 / 500) * (x - 125) + 0.55;
-    } else if (x > 50 && x <= 125) {
-        return (3 / 1500) * (x - 50) + 0.4;
-    } else if (x > 0 && x <= 50) {
-        return (1 / 125) * x;
-    } else {
-        return 0;
-    }
-}
-
-function kastFunc(x: number) {
-    if (x > 80) {
-        return 1;
-    } else if (x > 70 && x <= 80) {
-        return (1 / 40) * (x - 70) + 0.75;
-    } else if (x > 55 && x <= 70) {
-        return (13 / 300) * (x - 55) + 0.1;
-    } else if (x > 0 && x <= 55) {
-        return x / 125;
-    } else {
-        return 0;
-    }
+    return (
+        (Math.round(
+            (-2 *
+                Math.pow(
+                    Math.cbrt(
+                        Math.sqrt(5) *
+                            Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) +
+                            40 * x -
+                            20,
+                    ) /
+                        (2 * Math.pow(5, 2 / 3)) -
+                        1 /
+                            (2 *
+                                Math.cbrt(5) *
+                                Math.cbrt(
+                                    Math.sqrt(5) *
+                                        Math.sqrt(
+                                            320 * Math.pow(x, 2) - 320 * x + 81,
+                                        ) +
+                                        40 * x -
+                                        20,
+                                )) +
+                        1 / 2,
+                    3,
+                ) +
+                3 *
+                    Math.pow(
+                        Math.cbrt(
+                            Math.sqrt(5) *
+                                Math.sqrt(320 * Math.pow(x, 2) - 320 * x + 81) +
+                                40 * x -
+                                20,
+                        ) /
+                            (2 * Math.pow(5, 2 / 3)) -
+                            1 /
+                                (2 *
+                                    Math.cbrt(5) *
+                                    Math.cbrt(
+                                        Math.sqrt(5) *
+                                            Math.sqrt(
+                                                320 * Math.pow(x, 2) -
+                                                    320 * x +
+                                                    81,
+                                            ) +
+                                            40 * x -
+                                            20,
+                                    )) +
+                            1 / 2,
+                        2,
+                    )) *
+                Math.pow(10, BEZIER_PRECISION),
+        ) /
+            Math.pow(10, BEZIER_PRECISION)) *
+        weight
+    );
 }
