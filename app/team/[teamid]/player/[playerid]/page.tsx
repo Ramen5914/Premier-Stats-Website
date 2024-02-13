@@ -9,8 +9,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import PlayerMatch from "@/components/PlayerMatch";
-import AgentPieChart from "@/components/charts/pie/AgentPieChart";
-import RPSRadarChart from "@/components/charts/pie/RPSRadarChart";
+import AgentPieChart from "@/components/charts/pie/agents/AgentPieChart";
+import RPSRadarChart from "@/components/charts/radar/rps/RPSRadarChart";
 
 export const dynamic = "force-dynamic";
 
