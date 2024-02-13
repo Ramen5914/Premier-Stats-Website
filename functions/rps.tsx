@@ -11,10 +11,10 @@ const KAST_W = 10; // 960
 const FIRST_K_D_W = 30; // 990
 const MULTI_KILLS_W = 10; // 1000
 
-const THREE_K_W = 0;
-const FOUR_K_W = 0;
-const FIVE_K_W = 0;
-const SIX_K_W = 0;
+const THREE_K_W = 1;
+const FOUR_K_W = 1.5;
+const FIVE_K_W = 2;
+const SIX_K_W = 2.5;
 
 const KILLS_W = 1;
 const DEATHS_W = 1.5;
@@ -41,7 +41,6 @@ export default function getRPS(
     fourK: number,
     fiveK: number,
     sixK: number,
-    multies: number,
 ): number {
     let pScore = 0;
 
@@ -70,9 +69,21 @@ export default function getRPS(
             fiveK * FIVE_K_W +
             sixK * SIX_K_W,
         0,
-        10,
+        5,
         MULTI_KILLS_W,
     );
+
+    // console.log(
+    //     modifiedBezier(
+    //         threeK * THREE_K_W +
+    //             fourK * FOUR_K_W +
+    //             fiveK * FIVE_K_W +
+    //             sixK * SIX_K_W,
+    //         0,
+    //         4, // 4 or 5
+    //         MULTI_KILLS_W,
+    //     ) / MULTI_KILLS_W
+    // )
 
     return Math.min(Math.max(Math.round(pScore), 1), 1000);
 }
