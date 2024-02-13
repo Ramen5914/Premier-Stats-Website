@@ -64,6 +64,15 @@ export default function getRPS(
     );
     pScore += modifiedBezier(kast, 55, 90, KAST_W);
     pScore += modifiedBezier(fk - fd, -2, 2, FIRST_K_D_W);
+    pScore += modifiedBezier(
+        threeK * THREE_K_W +
+            fourK * FOUR_K_W +
+            fiveK * FIVE_K_W +
+            sixK * SIX_K_W,
+        0,
+        10,
+        MULTI_KILLS_W,
+    );
 
     return Math.min(Math.max(Math.round(pScore), 1), 1000);
 }
