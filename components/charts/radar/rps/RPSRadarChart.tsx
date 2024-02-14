@@ -14,7 +14,7 @@ import {
 } from "@/functions/rps";
 import "chart.js/auto";
 import { Radar } from "react-chartjs-2";
-import { PlayerMatch } from "./radarSchemas";
+import { PlayerMatch } from "./rpsRadarSchema";
 
 export default function AgentPieChart({
     playerMatches,
