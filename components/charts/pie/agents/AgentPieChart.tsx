@@ -2,8 +2,13 @@
 
 import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
+import { PlayerMatch } from "./agentPieSchema";
 
-export default function AgentPieChart() {
+export default function AgentPieChart({
+    playerMatches,
+}: Readonly<{ playerMatches: PlayerMatch[] }>) {
+    console.log(playerMatches);
+
     return (
         <Pie
             datasetIdKey='agentPieChart'
