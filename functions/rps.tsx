@@ -12,9 +12,9 @@ const FIRST_K_D_W = 30; // 990
 const MULTI_KILLS_W = 10; // 1000
 
 const THREE_K_W = 1;
-const FOUR_K_W = 1.5;
-const FIVE_K_W = 2;
-const SIX_K_W = 2.5;
+const FOUR_K_W = 2;
+const FIVE_K_W = 3;
+const SIX_K_W = 4;
 
 const KILLS_W = 1;
 const DEATHS_W = 1.5;
@@ -59,11 +59,12 @@ export default function getRPS(
 }
 
 export function headshot(hs: number, chart: boolean = false): number {
+    let weight: number = HEADSHOT_W;
     if (chart) {
-        return modifiedBezier(hs, 10, 30, 100);
-    } else {
-        return modifiedBezier(hs, 10, 30, HEADSHOT_W);
+        weight = 100;
     }
+
+    return modifiedBezier(hs, 10, 30, weight);
 }
 
 export function placement(place: number, chart: boolean = false): number {
@@ -183,27 +184,19 @@ export function multiKills(
     sixK: number,
     chart: boolean = false,
 ): number {
+    let weight: number = MULTI_KILLS_W;
     if (chart) {
-        return modifiedBezier(
-            threeK * THREE_K_W +
-                fourK * FOUR_K_W +
-                fiveK * FIVE_K_W +
-                sixK * SIX_K_W,
-            0,
-            5,
-            100,
-        );
-    } else {
-        return modifiedBezier(
-            threeK * THREE_K_W +
-                fourK * FOUR_K_W +
-                fiveK * FIVE_K_W +
-                sixK * SIX_K_W,
-            0,
-            5,
-            MULTI_KILLS_W,
-        );
+        weight = 100;
     }
+    return modifiedBezier(
+        threeK * THREE_K_W +
+            fourK * FOUR_K_W +
+            fiveK * FIVE_K_W +
+            sixK * SIX_K_W,
+        0,
+        4,
+        weight,
+    );
 }
 
 function modifiedBezier(
