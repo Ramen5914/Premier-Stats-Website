@@ -1,4 +1,4 @@
-import { NewPlayer } from "@/app/(types)/gqlTypes";
+import { NewPlayer } from "@/types/gqlTypes";
 import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { teamid: number } }) {

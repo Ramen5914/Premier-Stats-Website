@@ -1,4 +1,4 @@
-import { newTeam, type NewTeam } from "@/app/(types)/gqlTypes";
+import { newTeam, type NewTeam } from "@/types/gqlTypes";
 import { redirect } from "next/navigation";
 
 export default async function Page() {

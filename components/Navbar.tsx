@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { TeamPath } from "@/app/(types)/stringmatchers";
+import { TeamPath } from "@/types/stringmatchers";
 
 export default function Navbar() {
     const pathname = usePathname();
