@@ -80,12 +80,12 @@ export default function AgentPieChart({
             datasetIdKey='rpsRadarChart'
             data={{
                 labels: [
-                    "HS%",
+                    "Headshot",
                     "Place",
-                    "TRS",
+                    "TNS",
                     "ACS",
-                    "KDA",
-                    "K/D",
+                    "K/D/A",
+                    "K/D Ratio",
                     "ADR",
                     "KAST",
                     "FK/FD",
@@ -93,7 +93,7 @@ export default function AgentPieChart({
                 ],
                 datasets: [
                     {
-                        label: "Ramen's Score",
+                        label: "Rating",
                         data: [
                             hs.toFixed(1),
                             place.toFixed(1),
@@ -142,25 +142,6 @@ export default function AgentPieChart({
                 interaction: {
                     intersect: false,
                     mode: "nearest",
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function (context) {
-                                let label = context.dataset.label ?? "";
-
-                                if (label) {
-                                    label += ": ";
-                                }
-
-                                if (context.parsed.r !== null) {
-                                    label += `${context.parsed.r}%`;
-                                }
-
-                                return label;
-                            },
-                        },
-                    },
                 },
             }}
         />
