@@ -68,33 +68,36 @@ export function headshot(hs: number, chart: boolean = false): number {
 }
 
 export function placement(place: number, chart: boolean = false): number {
+    let weight: number = PLACEMENT_W;
     if (chart) {
-        return 100 - modifiedBezier(place, 1, 10, 100);
-    } else {
-        return PLACEMENT_W - modifiedBezier(place, 1, 10, PLACEMENT_W);
+        weight = 100;
     }
+
+    return 100 - modifiedBezier(place, 1, 10, weight);
 }
 
 export function trackerNetworkScore(
     tns: number,
     chart: boolean = false,
 ): number {
+    let weight: number = TRACKER_NETWORK_W;
     if (chart) {
-        return modifiedBezier(tns, 90, 1000, 100);
-    } else {
-        return modifiedBezier(tns, 90, 1000, TRACKER_NETWORK_W);
+        weight = 100;
     }
+
+    return modifiedBezier(tns, 90, 1000, weight);
 }
 
 export function averageCombatScore(
     acs: number,
     chart: boolean = false,
 ): number {
+    let weight: number = COMBAT_SCORE_W;
     if (chart) {
-        return modifiedBezier(acs, 75, 250, 100);
-    } else {
-        return modifiedBezier(acs, 75, 250, COMBAT_SCORE_W);
+        weight = 100;
     }
+
+    return modifiedBezier(acs, 75, 250, weight);
 }
 
 export function killsDeathsAssists(
@@ -103,21 +106,17 @@ export function killsDeathsAssists(
     a: number,
     chart: boolean = false,
 ): number {
+    let weight: number = KDA_W;
     if (chart) {
-        return modifiedBezier(
-            k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
-            -18,
-            6.5,
-            100,
-        );
-    } else {
-        return modifiedBezier(
-            k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
-            -18,
-            6.5,
-            KDA_W,
-        );
+        weight = 100;
     }
+
+    return modifiedBezier(
+        k * KILLS_W - d * DEATHS_W + ASSISTS_W * a,
+        -18,
+        6.5,
+        weight,
+    );
 }
 
 export function killDeathRatioAndPM(
@@ -125,11 +124,12 @@ export function killDeathRatioAndPM(
     plusMinus: number,
     chart: boolean = false,
 ): number {
+    let weight: number = KD_PM_RATIO_W;
     if (chart) {
-        return modifiedBezier(kdRatio + plusMinus, -10, 13, 100);
-    } else {
-        return modifiedBezier(kdRatio + plusMinus, -10, 13, KD_PM_RATIO_W);
+        weight = 100;
     }
+
+    return modifiedBezier(kdRatio + plusMinus, -10, 13, weight);
 }
 
 export function adrAndDamageDelta(
@@ -137,32 +137,29 @@ export function adrAndDamageDelta(
     dd: number,
     chart: boolean = false,
 ): number {
+    let weight: number = ADR_DD_W;
     if (chart) {
-        return modifiedBezier(
-            adr * modifiedBezier(dd, -50, 50, DD_W),
-            0,
-            165,
-            100,
-        );
-    } else {
-        return modifiedBezier(
-            adr * modifiedBezier(dd, -50, 50, DD_W),
-            0,
-            165,
-            ADR_DD_W,
-        );
+        weight = 100;
     }
+
+    return modifiedBezier(
+        adr * modifiedBezier(dd, -50, 50, DD_W),
+        0,
+        165,
+        weight,
+    );
 }
 
 export function killedAssistedSurvivedTraded(
     kast: number,
     chart: boolean = false,
 ): number {
+    let weight: number = KAST_W;
     if (chart) {
-        return modifiedBezier(kast, 55, 90, 100);
-    } else {
-        return modifiedBezier(kast, 55, 90, KAST_W);
+        weight = 100;
     }
+    
+    return modifiedBezier(kast, 55, 90, weight);
 }
 
 export function firstKillsFirstDeaths(
@@ -170,11 +167,12 @@ export function firstKillsFirstDeaths(
     fd: number,
     chart: boolean = false,
 ): number {
+    let weight: number = FIRST_K_D_W;
     if (chart) {
-        return modifiedBezier(fk - fd, -2, 2, 100);
-    } else {
-        return modifiedBezier(fk - fd, -2, 2, FIRST_K_D_W);
+        weight = 100;
     }
+    
+    return modifiedBezier(fk - fd, -2, 2, weight);
 }
 
 export function multiKills(
@@ -188,6 +186,7 @@ export function multiKills(
     if (chart) {
         weight = 100;
     }
+    
     return modifiedBezier(
         threeK * THREE_K_W +
             fourK * FOUR_K_W +
