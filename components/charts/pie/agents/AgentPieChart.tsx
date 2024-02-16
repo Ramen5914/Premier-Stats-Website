@@ -1,8 +1,10 @@
 "use client";
 
 import { Pie } from "react-chartjs-2";
-import "chart.js/auto";
 import { PlayerMatch } from "./agentPieSchema";
+import { ArcElement, Chart as ChartJS, Legend, Title, Tooltip } from "chart.js";
+
+ChartJS.register(Title, ArcElement, Legend, Tooltip);
 
 export default function AgentPieChart({
     playerMatches,

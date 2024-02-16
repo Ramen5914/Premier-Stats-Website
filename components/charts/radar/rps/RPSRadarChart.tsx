@@ -12,11 +12,28 @@ import {
     firstKillsFirstDeaths,
     multiKills,
 } from "@/functions/rps";
-import "chart.js/auto";
 import { Radar } from "react-chartjs-2";
 import { PlayerMatch } from "./rpsRadarSchema";
+import {
+    Chart as ChartJS,
+    Title,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Colors,
+} from "chart.js";
 
-export default function AgentPieChart({
+ChartJS.register(
+    Title,
+    RadialLinearScale,
+    PointElement,
+    LineElement,
+    Filler,
+    Colors,
+);
+
+export default function RPSRadarChart({
     playerMatches,
 }: Readonly<{ playerMatches: PlayerMatch[] }>) {
     let hs: number = 0,
@@ -142,6 +159,22 @@ export default function AgentPieChart({
                 interaction: {
                     intersect: false,
                     mode: "nearest",
+                },
+                plugins: {
+                    title: {
+                        text: "RPS Breakdown",
+                        color: "#fff",
+                        display: true,
+                        position: "top",
+                        align: "center",
+                        font: {
+                            weight: "bold",
+                            size: 20,
+                        },
+                    },
+                    legend: {
+                        display: false,
+                    },
                 },
             }}
         />
