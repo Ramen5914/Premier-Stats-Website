@@ -144,38 +144,6 @@ async function getAllData(playerid: number): Promise<PlayerType> {
     }
 }
 
-async function getTeamMatchData(teamMatchId: number): Promise<TeamMatchType> {
-    const response = await fetch(`http://localhost:8080/graphql`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            query: `
-                query GetTeamMatchById {
-                    teamMatchById(id: ${teamMatchId}) {
-                        playedAt
-                        duration
-                        map
-                    }
-                }   
-            `,
-        }),
-    });
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch data");
-    }
-
-    let data: TeamMatchType = (await response.json()).data.teamMatchById;
-
-    if (teamMatchSchema.parse(data)) {
-        return data;
-    } else {
-        throw new Error("Response data is incorrect.");
-    }
-}
-
 function createPlayerCard(player: PlayerType): React.ReactNode {
     const playerIconSize: number = 128;
     const rankSize: number = 56;
