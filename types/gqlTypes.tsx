@@ -180,6 +180,7 @@ export const teamMatch = z.object({
     enemyImageLink: z.string(),
     teamScore: z.number(),
     enemyScore: z.number(),
+    playerMatches: z.array(playerMatch),
 });
 export const division = z.enum([
     "Unranked",
