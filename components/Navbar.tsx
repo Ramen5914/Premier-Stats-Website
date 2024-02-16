@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { TeamPath } from "@/types/stringmatchers";
 
-export default function Navbar() {
+export default function Page() {
     const pathname = usePathname();
     let extra: boolean = false;
     let trash: boolean = true;
