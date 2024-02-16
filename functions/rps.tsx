@@ -158,7 +158,7 @@ export function killedAssistedSurvivedTraded(
     if (chart) {
         weight = 100;
     }
-    
+
     return modifiedBezier(kast, 55, 90, weight);
 }
 
@@ -171,7 +171,7 @@ export function firstKillsFirstDeaths(
     if (chart) {
         weight = 100;
     }
-    
+
     return modifiedBezier(fk - fd, -2, 2, weight);
 }
 
@@ -186,7 +186,7 @@ export function multiKills(
     if (chart) {
         weight = 100;
     }
-    
+
     return modifiedBezier(
         threeK * THREE_K_W +
             fourK * FOUR_K_W +
